@@ -355,12 +355,13 @@ Route::controller(AdminCrudController::class)->group(function () {
     Route::post('admin/video/updated/{id}', 'video_updated')->name('admin.video.updated')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
 
     // video category 
-    Route::get('admin/blog/category_video/create/', 'create_video_category')->name('admin.create.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
-    Route::get('admin/blog/video/view/', 'view_video_category')->name('admin.view.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
-    Route::POST('admin/blog/category_video/save/', 'save_video_category')->name('admin.save.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
-    Route::get('admin/blog/category_video/edit/{id}', 'edit_video_category')->name('admin.edit.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
-    Route::POST('admin/blog/category_video/update/{id}', 'update_video_category')->name('admin.update.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
-    
+    Route::get('admin/video/video/view/', 'view_video_category')->name('admin.view.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+    Route::get('admin/video/category_video/create/', 'create_video_category')->name('admin.create.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+    Route::POST('admin/video/category_video/save/', 'save_video_category')->name('admin.save.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+    Route::get('admin/video/category_video/edit/{id}', 'edit_video_category')->name('admin.edit.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+    Route::POST('admin/video/category_video/update/{id}', 'update_video_category')->name('admin.update.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+    Route::get('admin/video/category/delete/{id}', 'delete_video_category')->name('admin.delete.video.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+
 
    //  Admin Manage Group Route 
    Route::get('admin/group', 'groups')->name('admin.group')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
@@ -452,7 +453,6 @@ Route::controller(AdminCrudController::class)->group(function () {
     Route::POST('admin/blog/category/save/', 'save_blog_category')->name('admin.save.blog.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
     Route::get('admin/blog/category/edit/{id}', 'edit_blog_category')->name('admin.edit.blog.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
     Route::POST('admin/blog/category/update/{id}', 'update_blog_category')->name('admin.update.blog.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
-    Route::get('admin/blog/category/delete/{id}', 'delete_blog_category')->name('admin.delete.blog.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
     Route::get('admin/blog/category/delete/{id}', 'delete_blog_category')->name('admin.delete.blog.category')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
 
     Route::get('admin/settings/payment', 'payment_settings')->name('admin.settings.payment')->middleware('auth', 'verified', 'admin', 'prevent-back-history');

@@ -31,6 +31,7 @@ use Session;
 use App\Models\Badge;
 use App\Models\Posts;
 use App\Models\Video;
+use App\Models\VideoCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -324,6 +325,64 @@ class AdminCrudController extends Controller
         flash()->addSuccess('Blog Category Brand has been Deleted successfully!');
         return redirect()->back();
     }
+    
+    // blog category
+    public function view_video_category()
+    {
+        $page_data['all_category'] = VideoCategory::all();
+        $page_data['view_path'] = 'video_category.index';
+        return view('backend.index', $page_data);
+    }
+
+    public function create_video_category()
+    {
+        $page_data['view_path'] = 'video_category.create';
+        return view('backend.index', $page_data);
+    }
+
+    public function save_video_category(Request $request)
+    {
+        $validated = $request->validate([
+            'video_category' => 'required|max:255|string|unique:blogcategories,name',
+        ]);
+        $video_categories = new VideoCategory();
+        $video_categories->type = $request->video_category;
+        $done = $video_categories->save();
+        if ($done) {
+            flash()->addSuccess('Video Category has been added successfully!');
+        }
+        return redirect()->back();
+    }
+
+    public function edit_video_category($id)
+    {
+        $page_data['video_categories'] = VideoCategory::find($id);
+        $page_data['view_path'] = 'video_category.edit';
+        return view('backend.index', $page_data);
+    }
+
+    public function update_video_category(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'video_category' => 'required|max:255|string|unique:blogcategories,name,' . $id,
+        ]);
+        $video_categories = VideoCategory::find($id);
+        $video_categories->type = $request->video_category;
+        $done = $video_categories->save();
+        if ($done) {
+            flash()->addSuccess('Video Category has been updated successfully!');
+        }
+        return redirect()->route('admin.view.video.category');
+    }
+
+    public function delete_video_category($id)
+    {
+        $video_categories = VideoCategory::find($id);
+        $video_categories->delete();
+        flash()->addSuccess('Video Category Brand has been Deleted successfully!');
+        return redirect()->back();
+    }
+
 
     public function about()
     {
