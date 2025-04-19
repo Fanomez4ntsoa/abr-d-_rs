@@ -83,37 +83,45 @@
             )
         <div class="widget">
             <div class="d-flex align-items-center">
-                @php
-
-                    $tz = auth()->user()->timezone;
-                    if (!empty($tz)) {
-                        $timestamp = time();
-                        $dt = new DateTime('now', new DateTimeZone($tz)); //first argument "must" be a string
-                        $dt->setTimestamp($timestamp);
-                        $current_hour = $dt->format('H');
-                    } else {
-                        $current_hour = date('H', time());
-                    }
-                @endphp
-
-                @if ($current_hour >= 5 && $current_hour < 12)
-                    <img class="img-fluid" src="{{ asset('assets/frontend/images/sun.svg') }}" height="30px"
-                        width="30px" alt="">
-                @elseif($current_hour >= 12 && $current_hour < 17)
-                    <img class="img-fluid" src="{{ asset('storage/images/cloud-sun.png') }}" alt="">
+                @auth
                     
-                @else
-                  <img class="img-fluid" src="{{ asset('assets/frontend/images/moon2.png') }}" height="30px"
-                width="30px" alt="">
-                @endif
-                <h3 class="h6 ms-2">{{ get_phrase('Hi') }}, {{ Auth()->user()->name }}
+                    @php
+                        $tz = auth()->user()->timezone;
+                        if (!empty($tz)) {
+                            $timestamp = time();
+                            $dt = new DateTime('now', new DateTimeZone($tz)); //first argument "must" be a string
+                            $dt->setTimestamp($timestamp);
+                            $current_hour = $dt->format('H');
+                        } else {
+                            $current_hour = date('H', time());
+                        }
+                    @endphp
+                    
                     @if ($current_hour >= 5 && $current_hour < 12)
-                        <span class="d-block text-primary">{{ get_phrase('Good Morning') }}!</span>
+                        <img class="img-fluid" src="{{ asset('assets/frontend/images/sun.svg') }}" height="30px"
+                            width="30px" alt="">
                     @elseif($current_hour >= 12 && $current_hour < 17)
-                        <span class="d-block text-primary">{{ get_phrase('Good Afternoon') }}!</span>
+                        <img class="img-fluid" src="{{ asset('storage/images/cloud-sun.png') }}" alt="">
+                        
                     @else
-                        <span class="d-block text-primary">{{ get_phrase('Good Evening') }}!</span>
+                    <img class="img-fluid" src="{{ asset('assets/frontend/images/moon2.png') }}" height="30px"
+                    width="30px" alt="">
                     @endif
+
+                @endauth
+
+                <h3 class="h6 ms-2">{{ get_phrase('Hi') }}, 
+                    @auth
+                        {{ Auth()->user()->name }}
+       
+                        @if ($current_hour >= 5 && $current_hour < 12)
+                            <span class="d-block text-primary">{{ get_phrase('Good Morning') }}!</span>
+                        @elseif($current_hour >= 12 && $current_hour < 17)
+                            <span class="d-block text-primary">{{ get_phrase('Good Afternoon') }}!</span>
+                        @else
+                            <span class="d-block text-primary">{{ get_phrase('Good Evening') }}!</span>
+                        @endif
+                    @endauth
                 </h3>
             </div>
         </div> <!-- Widget End -->
@@ -160,78 +168,68 @@
             <div class="d-flex align-items-center justify-content-between">
                 <h3 class="widget-title">{{ get_phrase('Active users') }} </h3>
                 <div class="d-flex align-items-center widget-controls">
-
+        
                 </div>
             </div>
             <div class="contact-lists side_contact mt-3">
-                @php
-                    $friends = \App\Models\Friendships::where(function ($query) {
-                        $query->where('accepter', auth()->user()->id)->orWhere('requester', auth()->user()->id);
-                    })
+                @auth
+                    @php
+                        $friends = \App\Models\Friendships::where(function ($query) {
+                            $query->where('accepter', auth()->user()->id)->orWhere('requester', auth()->user()->id);
+                        })
                         ->where('is_accepted', 1)
                         ->get();
-                 // Block User Each Other
-                $blockedByUser = DB::table('block_users')->where('user_id', auth()->user()->id)->pluck('block_user')->toArray();
-                $blockedByOthers = DB::table('block_users')->where('block_user', auth()->user()->id)->pluck('user_id')->toArray();
-                @endphp
-                @foreach ($friends as $friend)
-                @php 
-                //  User Block
-                if (in_array($friend->accepter, $blockedByUser)) {
-                        continue;
-                    }
-                    if (in_array($friend->requester, $blockedByOthers)) {
-                        continue;
-                    }
+            
+                        // Block User Each Other
+                        $blockedByUser = DB::table('block_users')->where('user_id', auth()->user()->id)->pluck('block_user')->toArray();
+                        $blockedByOthers = DB::table('block_users')->where('block_user', auth()->user()->id)->pluck('user_id')->toArray();
+                    @endphp
                 
-                @endphp
-                    @if ($friend->requester == auth()->user()->id)
-                        {{-- @if ($friend->getFriendAccepter->isOnline()) --}}
-                        @if (!empty($friend->getFriendAccepter) && $friend->getFriendAccepter->isOnline())
-                            @if ($friend->getFriendAccepter->id != auth()->user()->id)
-                                <div class="single-contact d-flex align-items-center justify-content-between">
-                                    <div class="avatar d-flex">
-                                        <a href="{{ route('chat', $friend->getFriendAccepter->id) }}"
-                                            class="d-flex align-items-center">
-                                            <div class="avatar me-2">
-                                                <img src="{{ get_user_image($friend->getFriendAccepter->photo, 'optimized') }}"
-                                                    class="rounded-circle w-45px" alt="">
-                                                <span class="online-status active"></span>
-                                            </div>
-                                            <h4>{{ $friend->getFriendAccepter->name }}</h4>
-                                        </a>
-                                    </div>
-                                    <div class="login-time">
-
-                                    </div>
+                    @php
+                        $displayedUsers = []; // Liste des utilisateurs déjà affichés
+                    @endphp
+                    
+                    @foreach ($friends as $friend)
+                        @php 
+                            // Vérification si l'utilisateur est bloqué par l'autre utilisateur ou si l'autre utilisateur est bloqué
+                            if (in_array($friend->accepter, $blockedByUser) || in_array($friend->requester, $blockedByOthers)) {
+                                continue;
+                            }
+            
+                            // Définir l'ami à afficher
+                            $user = null;
+                            if ($friend->requester == auth()->user()->id && !empty($friend->getFriendAccepter)) {
+                                $user = $friend->getFriendAccepter;
+                            } elseif (!empty($friend->getFriend)) {
+                                $user = $friend->getFriend;
+                            }
+                        @endphp
+            
+                        @if ($user && $user->id != auth()->user()->id && $user->isOnline() && !in_array($user->id, $displayedUsers))
+                            @php
+                                $displayedUsers[] = $user->id; // Marquer cet utilisateur comme déjà affiché
+                            @endphp
+            
+                            <div class="single-contact d-flex align-items-center justify-content-between">
+                                <div class="avatar d-flex">
+                                    <a href="{{ route('chat', $user->id) }}" class="d-flex align-items-center">
+                                        <div class="avatar me-2">
+                                            <img src="{{ get_user_image($user->photo, 'optimized') }}" class="rounded-circle w-45px h-45" alt="">
+                                            <span class="online-status active"></span>
+                                        </div>
+                                        <h4>{{ $user->name }}</h4>
+                                    </a>
                                 </div>
-                            @endif
-                        @endif
-                    @else
-                        @if ($friend->getFriend->isOnline())
-                            @if ($friend->getFriend->id != auth()->user()->id)
-                                <div class="single-contact d-flex align-items-center justify-content-between">
-                                    <div class="avatar d-flex">
-                                        <a href="{{ route('chat', $friend->getFriend->id) }}"
-                                            class="d-flex align-items-center">
-                                            <div class="avatar me-2">
-                                                <img src="{{ get_user_image($friend->getFriend->photo, 'optimized') }}"
-                                                    class="rounded-circle w-45px h-45" alt="">
-                                                <span class="online-status active"></span>
-                                            </div>
-                                            <h4>{{ $friend->getFriend->name }}</h4>
-                                        </a>
-                                    </div>
-                                    <div class="login-time">
-
-                                    </div>
+                                <div class="login-time">
+                                    <!-- Optionnel : ajout d'autres infos comme la dernière activité -->
                                 </div>
-                            @endif
+                            </div>
                         @endif
-                    @endif
-                @endforeach
+                    @endforeach
+                @endauth
+                
             </div>
-        </div> <!-- Widget End -->
+        </div> <!-- Widget End -->        
     @endif
     @if (Route::currentRouteName() == 'profile' ||
             Route::currentRouteName() == 'profile.photos' ||

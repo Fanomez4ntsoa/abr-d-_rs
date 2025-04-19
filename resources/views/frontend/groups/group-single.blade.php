@@ -9,8 +9,11 @@
                 @if ($join>0)
                 <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('group.rjoin',$group->id); ?>')" class="btn common_btn_2">{{ get_phrase('Joined')}}</a>
                 @else
+                @if (Auth::check())
                     <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('group.join',$group->id); ?>')" class="btn common_btn">{{ get_phrase('Join')}}</a>
-                @endif
+                @else
+                    <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('login'); ?>')" class="btn common_btn">{{ get_phrase('Join')}}</a>
+                @endif                @endif
             </div>
         </div>
         @if (isset($search)&&!empty($search))

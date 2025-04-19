@@ -6,6 +6,7 @@ use App\Models\Posts;
 use App\Models\Saveforlater;
 use App\Models\Video;
 use App\Models\FileUploader;
+use App\Models\VideoCategory;
 //Used for Form data validation
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -17,11 +18,19 @@ class VideoController extends Controller
 { 
     public function videos()
     {
-        $page_data['vidoes'] = Video::where('category', 'video')->where('privacy', 'public')->orderBy('id', 'DESC')->limit(5)->get();
+        $page_data['categories'] = VideoCategory::all();
+        $page_data['videos'] = Video::where('category', 'video')->where('privacy', 'public')->orderBy('id', 'DESC')->limit(5)->get();
         $page_data['view_path'] = 'frontend.video-shorts.video';
         return view('frontend.index', $page_data);
     }
 
+    public function category_video($category){
+        $page_data['categories'] = VideoCategory::all();
+        $page_data['category_id'] = $category;
+        $page_data['videos'] = Video::where('category', 'video')->where('privacy', 'public')->where('video_category_id',$category)->get();
+        $page_data['view_path'] = 'frontend.video-shorts.category_video';
+        return view('frontend.index', $page_data);
+    }
 
     public function store(Request $request)
     {
@@ -83,9 +92,9 @@ class VideoController extends Controller
         $page_data['letestvideos'] = Video::where('category', 'video')->where('privacy', 'public')->orderBy('id', 'DESC')->limit('5')->get();
         $last_data = Video::latest()->first();
         if($last_data->id == $id){
-            $page_data['vidoes'] = Video::where('id','<',$id)->where('category', 'video')->where('privacy', 'public')->orderBy('id', 'DESC')->limit('2')->get();
+            $page_data['videos'] = Video::where('id','<',$id)->where('category', 'video')->where('privacy', 'public')->orderBy('id', 'DESC')->limit('2')->get();
         }else{
-            $page_data['vidoes'] = Video::where('id','>',$id)->where('category', 'video')->where('privacy', 'public')->orderBy('id', 'ASC')->limit('2')->get();
+            $page_data['videos'] = Video::where('id','>',$id)->where('category', 'video')->where('privacy', 'public')->orderBy('id', 'ASC')->limit('2')->get();
         }
         $page_data['view_path'] = 'frontend.video-shorts.video-detail';
         return view('frontend.index', $page_data);
@@ -94,8 +103,8 @@ class VideoController extends Controller
 
     public function load_videos_by_scrolling(Request $request)
     {
-        $vidoes =  Video::where('category', 'video')->where('privacy', 'public')->skip($request->offset)->take(5)->orderBy('id', 'DESC')->get();
-        $page_data['vidoes'] = $vidoes;
+        $videos =  Video::where('category', 'video')->where('privacy', 'public')->skip($request->offset)->take(5)->orderBy('id', 'DESC')->get();
+        $page_data['videos'] = $videos;
         return view('frontend.video-shorts.single-video', $page_data);
     }
 

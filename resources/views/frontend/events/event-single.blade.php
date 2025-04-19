@@ -52,15 +52,19 @@
                     </div>
                 </div>
                 <div class="og_btn d-flex justify-content-between e_event mt-2">
-                    <div class=" interest_text @if (!in_array(auth()->user()->id, json_decode($event->interested_users_id)) && !in_array(auth()->user()->id, json_decode($event->going_users_id))) displaynone @endif" id="dropdown_interest{{ $event->id }}">
+                    <div class=" interest_text @if (Auth::check()) && (!in_array(auth()->user()->id, json_decode($event->interested_users_id)) && !in_array(auth()->user()->id, json_decode($event->going_users_id))) displaynone @endif" id="dropdown_interest{{ $event->id }}">
                         <div class="btn-group">
                             <button type="button" class="btn btn-primary dropdown_event_label" >
                                 <i class="fa-solid fa-star"></i>
+                                @if (Auth::check())
                                     @if (in_array(auth()->user()->id, json_decode($event->going_users_id)))
-                                   {{get_phrase('Going')}}
+                                    {{get_phrase('Going')}}
                                     @elseif(in_array(auth()->user()->id, json_decode($event->interested_users_id)))
                                     {{get_phrase('Interested')}} 
                                     @endif
+                                @else
+                                    {{get_phrase('Interested')}}
+                                @endif
                             </button>
 
                             <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
@@ -68,34 +72,61 @@
                                 <span class="visually-hidden"></span>
                             </button>
                             <ul class="dropdown-menu">
-                                <li class="btn-interested @if (in_array(auth()->user()->id, json_decode($event->interested_users_id))) displaynone @endif">
-                                    <a class="dropdown-item " href="#"
-                                        onclick="ajaxAction('<?php echo route('event.interested', $event->id); ?>')">
-                                        <i class="fa-solid fa-star me-1"></i>
-                                        {{get_phrase('Interested')}}
-                                    </a>
-                                </li>
-                                <li class="btn-going @if (in_array(auth()->user()->id, json_decode($event->going_users_id))) displaynone @endif">
-                                    <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('event.going', $event->id); ?>')"
-                                        class="dropdown-item"> <i class="fa-solid fa-circle-check me-1"></i>
-                                        {{ get_phrase('Going') }}</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('event.cancel', $event->id); ?>')"
-                                        class="dropdown-item"><i class="fa-solid fa-circle-xmark"></i>
-                                        {{ get_phrase('Cancel') }}
-                                    </a>
-                                </li>
+                                @if (Auth::check())
+                                    <li class="btn-interested @if (in_array(auth()->user()->id, json_decode($event->interested_users_id))) displaynone @endif">
+                                        <a class="dropdown-item " href="#"
+                                            onclick="ajaxAction('<?php echo route('event.interested', $event->id); ?>')">
+                                            <i class="fa-solid fa-star me-1"></i>
+                                            {{get_phrase('Interested')}}
+                                        </a>
+                                    </li>
+                                    <li class="btn-going @if (in_array(auth()->user()->id, json_decode($event->going_users_id))) displaynone @endif">
+                                        <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('event.going', $event->id); ?>')"
+                                            class="dropdown-item"> <i class="fa-solid fa-circle-check me-1"></i>
+                                            {{ get_phrase('Going') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('event.cancel', $event->id); ?>')"
+                                            class="dropdown-item"><i class="fa-solid fa-circle-xmark"></i>
+                                            {{ get_phrase('Cancel') }}
+                                        </a>
+                                    </li>
+                                @else
+                                    <li class="btn-interested ">
+                                        <a class="dropdown-item " href="{{ route('login') }}">
+                                            <i class="fa-solid fa-star me-1"></i>
+                                            {{get_phrase('Interested')}}
+                                        </a>
+                                    </li>
+                                    <li class="btn-going">
+                                        <a href="{{ route('login') }}"
+                                            class="dropdown-item"> <i class="fa-solid fa-circle-check me-1"></i>
+                                            {{ get_phrase('Going') }}</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{ route('login') }}"
+                                            class="dropdown-item"><i class="fa-solid fa-circle-xmark"></i>
+                                            {{ get_phrase('Cancel') }}
+                                        </a>
+                                    </li>
+                                @endif
                             </ul>
                         </div>
                     </div>
 
-
-                    <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('event.interested', $event->id); ?>')"
-                        class="btn ni_btn btn-primary @if (in_array(auth()->user()->id, json_decode($event->interested_users_id)) || in_array(auth()->user()->id, json_decode($event->going_users_id))) displaynone @endif"
-                        id="btn_interest{{ $event->id }}">
-                        <i class="fa-solid fa-star me-2"></i>{{ get_phrase('Interest') }}
-                    </a>
+                    @if(Auth::check())
+                        <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('event.interested', $event->id); ?>')"
+                            class="btn ni_btn btn-primary @if (in_array(auth()->user()->id, json_decode($event->interested_users_id)) || in_array(auth()->user()->id, json_decode($event->going_users_id))) displaynone @endif"
+                            id="btn_interest{{ $event->id }}">
+                            <i class="fa-solid fa-star me-2"></i>{{ get_phrase('Interest') }}
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="btn ni_btn btn-primary displaynone"
+                            id="btn_interest{{ $event->id }}">
+                            <i class="fa-solid fa-star me-2"></i>{{ get_phrase('Interest') }}
+                        </a>
+                    @endif
 
 
                     <div class="post-controls ev_event_con dropdown">
@@ -105,26 +136,34 @@
                                 <i class="fa-solid fa-ellipsis"></i>
                             </button>
                             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                @if ($event->user_id == auth()->user()->id)
-                                    <li>
-                                        <button
-                                            onclick="showCustomModal('{{ route('load_modal_content', ['view_path' => 'frontend.events.edit_event', 'event_id' => $event->id]) }}', '{{ get_phrase('Edit Event') }}');"
-                                            class="dropdown-item  ed_ve btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#createEvent"><i class="fa fa-edit me-1"></i>
-                                            {{ get_phrase('Edit Event') }}</button>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:void(0)"
-                                            onclick="confirmAction('<?php echo route('event.delete', ['event_id' => $event->id]); ?>', true)"
-                                            class="dropdown-item  ed_ve btn-primary btn-sm"><i
-                                                class="fa fa-trash me-1"></i> {{ get_phrase('Delete Event') }}</a>
-                                    </li>
-                                @endif
+                                @auth
+                                    @if ($event->user_id == auth()->user()->id)
+                                        <li>
+                                            <button
+                                                onclick="showCustomModal('{{ route('load_modal_content', ['view_path' => 'frontend.events.edit_event', 'event_id' => $event->id]) }}', '{{ get_phrase('Edit Event') }}');"
+                                                class="dropdown-item  ed_ve btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#createEvent"><i class="fa fa-edit me-1"></i>
+                                                {{ get_phrase('Edit Event') }}</button>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)"
+                                                onclick="confirmAction('<?php echo route('event.delete', ['event_id' => $event->id]); ?>', true)"
+                                                class="dropdown-item  ed_ve btn-primary btn-sm"><i
+                                                    class="fa fa-trash me-1"></i> {{ get_phrase('Delete Event') }}</a>
+                                        </li>
+                                    @endif
+                                @endauth
                                 @if ($postId != 0)
                                     <li>
-                                        <a href="javascript:void(0)"
-                                            onclick="showCustomModal('{{ route('load_modal_content', ['view_path' => 'frontend.main_content.share_post_modal', 'post_id' => $postId]) }}', '{{ get_phrase('Share Event') }}');"
-                                            class="dropdown-item btn ed_ve btn-primary btn-sm"><i class="fa fa-share me-1"></i>
+                                        @if (Auth::check())
+                                            <a href="javascript:void(0)"
+                                                onclick="showCustomModal('{{ route('load_modal_content', ['view_path' => 'frontend.main_content.share_post_modal', 'post_id' => $postId]) }}', '{{ get_phrase('Share Event') }}');"
+                                                class="dropdown-item btn ed_ve btn-primary btn-sm">
+                                        @else
+                                            <a href="{{ route('login') }}"
+                                                class="dropdown-item btn ed_ve btn-primary btn-sm">
+                                        @endif
+                                            <i class="fa fa-share me-1"></i>
                                             {{ get_phrase('Share Event') }}</a>
                                     </li>
                                 @endif

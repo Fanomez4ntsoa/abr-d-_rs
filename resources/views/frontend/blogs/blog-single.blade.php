@@ -4,7 +4,9 @@
         <article class="single-entry sblog_entry h-100 p-0">
             <a href="{{ route('single.blog',$blog->id) }}">
                 <div class="entry-img thumbnail-210-200" style="background-image: url('{{ get_blog_image($blog->thumbnail,'thumbnail') }}')">
-                    <span class="date-meta">{{ $blog->created_at->timezone(Auth::user()->timezone)->format("d-M-Y") }}</span>
+                    <span class="date-meta">
+                        {{ $blog->created_at->timezone(Auth::check() ? Auth::user()->timezone : 'UTC')->format('d-M-Y') }}
+                    </span>                
                 </div>
             </a>
             <div class="entry-txt p-8">
@@ -16,7 +18,7 @@
                     <img src="{{ get_user_image($blog->user_id,'optimized') }}" class="user-round" alt="">
                     <div class="ava-info">
                         <h6><a href="{{ route('user.profile.view',$blog->getUser->id) }}">{{ $blog->getUser->name }} </a></h6>
-                        <small>{{ $blog->created_at->timezone(Auth::user()->timezone)->diffForHumans()  }} </small>
+                        <small>{{ $blog->created_at->timezone(Auth::user()->timezone ?? 'UTC')->diffForHumans() }}</small>
                     </div>
                 </div>
             </div>

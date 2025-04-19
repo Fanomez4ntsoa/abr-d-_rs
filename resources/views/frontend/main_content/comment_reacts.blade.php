@@ -36,7 +36,7 @@
 @endif
 
 @if(isset($my_react) && $my_react == true)
-    @if(array_key_exists(Auth()->user()->id, $user_comment_reacts))
+    @if((Auth::check()) && (array_key_exists(Auth()->user()->id, $user_comment_reacts)))
         @if($user_comment_reacts[Auth()->user()->id] == 'like')
             {{-- <div class="like-color"><img class="w-17px mt--6px" src="{{asset('storage/images/liked.svg')}}" alt=""> {{get_phrase('Liked')}}</div> --}}
             <div class="like-color"><svg width="20" class="mt-3px" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">

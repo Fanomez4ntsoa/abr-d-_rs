@@ -11,6 +11,7 @@ use App\Models\Albums;
 use App\Models\Pagecategory;
 use App\Models\FileUploader;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Session;
 use Image;
 use Illuminate\Support\Facades\Validator;
@@ -20,14 +21,23 @@ class PageController extends Controller
 {
     public function pages(){
         $pageLiked = [];
-        $likepages = Page_like::where('user_id',auth()->user()->id)->get();
-        foreach($likepages as $likepage){
-            $likepageid = $likepage->page_id;
-            array_push($pageLiked,$likepageid);
+        if(Auth::check()){
+            $likepages = Page_like::where('user_id',auth()->user()->id)->get();
+            foreach($likepages as $likepage){
+                $likepageid = $likepage->page_id;
+                array_push($pageLiked,$likepageid);
+            }
+            
+            $page_data['mypages'] = Page::where('user_id',auth()->user()->id)->orderBy('id','DESC')->limit('5')->get();
+            $page_data['likedpage'] = Page_like::where('user_id',auth()->user()->id)->orderBy('id','DESC')->limit('10')->get();
+        
+        }else {
+            $likepages = collect();
+            $page_data['mypages'] = collect();
+            $page_data['likedpage'] = collect();
         }
-        $page_data['mypages'] = Page::where('user_id',auth()->user()->id)->orderBy('id','DESC')->limit('5')->get();
+        
         $page_data['suggestedpages'] = Page::whereNotIn('id',$pageLiked)->get();
-        $page_data['likedpage'] = Page_like::where('user_id',auth()->user()->id)->orderBy('id','DESC')->limit('10')->get();
         $page_data['view_path'] = 'frontend.pages.pages';
         return view('frontend.index', $page_data);
     }

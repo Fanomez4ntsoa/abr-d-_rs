@@ -286,6 +286,41 @@
                         href="{{ route('admin.create.blog.category') }}">{{ get_phrase('Create Category') }}</a></li>
             </ul>
         </li>
+
+        {{-- Video Section --}}
+        <li class="nav-links-li  @if (Route::currentRouteName() == 'admin.video' ||
+                Route::currentRouteName() == 'admin.view.video.category' ||
+                Route::currentRouteName() == 'admin.create.video.category' ||
+                Route::currentRouteName() == 'admin.video.create' ||
+                Route::currentRouteName() == 'admin.video.edit') showMenu @endif">
+            <div class="iocn-link">
+                <a href="#">
+                    <div class="sidebar_icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
+                    <span class="link_name">{{ get_phrase('video') }}</span>
+                </a>
+                <span class="arrow">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="4.743" height="7.773" viewBox="0 0 4.743 7.773">
+                        <path id="navigate_before_FILL0_wght600_GRAD0_opsz24"
+                            d="M1.466.247,4.5,3.277a.793.793,0,0,1,.189.288.92.92,0,0,1,0,.643A.793.793,0,0,1,4.5,4.5l-3.03,3.03a.828.828,0,0,1-.609.247.828.828,0,0,1-.609-.247.875.875,0,0,1,0-1.219L2.668,3.886.247,1.466A.828.828,0,0,1,0,.856.828.828,0,0,1,.247.247.828.828,0,0,1,.856,0,.828.828,0,0,1,1.466.247Z"
+                            fill="#fff" opacity="1" />
+                    </svg>
+                </span>
+            </div>
+            <ul class="sub-menu">
+                <li><a class="@if (Route::currentRouteName() == 'admin.video') Active @endif"
+                        href="{{ route('admin.video') }}">{{ get_phrase('Videos') }}</a></li> 
+                <li><a class="@if (Route::currentRouteName() == 'admin.video.create') Active @endif"
+                        href="{{ route('admin.video.create') }}">{{ get_phrase('Add Video') }}</a></li>
+                <li><a class="@if (Route::currentRouteName() == 'admin.view.video.category') Active @endif"
+                        href="{{ route('admin.view.video.category') }}">{{ get_phrase('Category') }}</a></li>
+                <li><a class="@if (Route::currentRouteName() == 'admin.create.video.category') Active @endif"
+                        href="{{ route('admin.create.video.category') }}">{{ get_phrase('Create Category') }}</a></li>
+            </ul>
+        </li>
+
+
         {{-- Badge --}}
         <li class="nav-links-li  @if (Route::currentRouteName() == 'admin.badge') showMenu  @endif">
             <div class="iocn-link">

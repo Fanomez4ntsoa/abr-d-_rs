@@ -54,10 +54,10 @@
 
     <style>
         .btn-custom {
-            background: #020202; 
+            background: #0D3475; 
             padding: 10px 32px;
             color: #fff;
-            border: 1px solid #020202;
+            border: 1px solid #0D3475;
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
@@ -65,16 +65,16 @@
     
         /* Survol (devient orange) */
         .btn-custom:hover {
-            background: #fc8b15;  /* Orange */
-            color: #020202;
-            border: 1px solid #fc8b15;
+            background: #FFAA01;  /* Orange */
+            color: #0D3475;
+            border: 1px solid #FFAA01;
         }
     
         /* Lorsque l'élément est cliqué (focus) */
         .btn-custom:active {
-            background: #fc8b15;  /* Orange */
-            color: #020202;
-            border: 1px solid #fc8b15;
+            background: #FFAA01;  /* Orange */
+            color: #0D3475;
+            border: 1px solid #FFAA01;
         }
     </style>
 

@@ -5,7 +5,11 @@
         <div class="nm_place d-flex pagetab-head  align-items-center justify-content-between">
             <h3 class="h5"><span><i class="fa-solid fa-calendar-days"></i></span> {{get_phrase('Marketplace') }}</h3>
             <div class="">
+                @if (Auth::check())
                     <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.marketplace.create_product'])}}', '{{get_phrase('Create Product')}}');" class="btn common_btn" data-bs-toggle="modal" data-bs-target="#createProduct"> <i class="fa fa-plus-circle"></i>{{get_phrase('create')}}</a>
+                @else
+                <a href="{{ route('login') }}" class="btn common_btn"> <i class="fa fa-plus-circle"></i>{{get_phrase('create')}}</a>
+                @endif
                 <a href="{{ route('userproduct') }}" class="btn common_btn  mx-1">{{ get_phrase('My Products') }}</a>
                 <a href="{{ route('product.saved') }}" class="btn common_btn " data-bs-toggle="tooltip" data-bs-placement="bottom" title="{{get_phrase('Saved Product')}}">{{ get_phrase('Saved') }}</a>
             </div>
@@ -15,7 +19,7 @@
             
             <form method="GET" action="{{ route('filter.product') }}" class=" row">
                 <div class="form-group mb-12">
-                    <input type="search" class="submit_on_enter inputs " name="search" value="@if(isset($_GET['search']) && $_GET['search']!="" ){{$_GET['search']}}@endif" class="bg-secondary rounded" placeholder="Type To Search">
+                    <input type="search" class="submit_on_enter inputs " name="search" value="@if(isset($_GET['search']) && $_GET['search']!="" ){{$_GET['search']}}@endif" class="bg-secondary rounded" placeholder="Tapez pour rechercher">
                 </div>
                 <h3 class="sub-title">{{get_phrase('Filters')}}</h3>
                 <div class="row">
@@ -60,7 +64,7 @@
                     </div> --}}
                     <div class="col-md-4">
                         <div class="form-group ">
-                            <input type="text" name="location" class="submit_on_enter pl-18" value="@if(isset($_GET['location']) && $_GET['location']!="" ){{$_GET['location']}}@endif"  placeholder="Location">
+                            <input type="text" name="location" class="submit_on_enter pl-18" value="@if(isset($_GET['location']) && $_GET['location']!="" ){{$_GET['location']}}@endif"  placeholder="Localisation">
                         </div>
                     </div>
                 </div>

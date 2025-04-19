@@ -29,6 +29,11 @@ use Illuminate\Validation\Rule;
 use Image;
 use Session;
 use App\Models\Badge;
+use App\Models\Posts;
+use App\Models\Video;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class AdminCrudController extends Controller
 {
@@ -809,6 +814,145 @@ class AdminCrudController extends Controller
             return redirect()->route('admin.blog');
         }
     }
+
+
+    //Video Start 
+    public function videos()
+    {
+        if (isset($_GET['delete']) && $_GET['delete'] == 'yes' && isset($_GET['id'])) {
+            Video::find($_GET['id'])->delete();
+            flash()->addSuccess('Video deleted successfully');
+            return redirect()->back();
+        }
+
+        $page_data['view_path'] = 'video.list';
+        $page_data['videos'] = Video::get();
+        return view('backend.index', $page_data);
+    }
+
+    public function video_create()
+    {
+        $page_data['view_path'] = 'video.create';
+        return view('backend.index', $page_data);
+    }
+
+    public function video_edit($id)
+    {
+        $page_data['video_details'] = Video::find($id)->first();
+        $page_data['view_path'] = 'video.edit';
+        return view('backend.index', $page_data);
+    }
+
+    public function video_created(Request $request)
+    {
+
+        // Vérifier si une catégorie valide est sélectionnée (facultatif)
+        if ($request->video_category_id == 'Select a category') {
+            flash()->addError('Please select a valid category');
+            return redirect()->back()->withInput();
+        }
+
+        $rules = array('video' => 'required|file|mimes:mp4,mov,wmv,mkv,webm,avi,m4v| max:500000');
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return json_encode(array('validationError' => $validator->getMessageBag()->toArray()));
+        }
+
+        $file_name = FileUploader::upload($request->video,'public/storage/videos');
+        $mobile_app_image = FileUploader::upload($request->mobile_app_image,'public/storage/videos');
+
+        // Valider les données soumises
+        try {
+
+            $video = new Video();
+            $video->title = $request->title;
+            $video->user_id = auth()->user()->id;
+            $video->privacy = $request->privacy;
+            $video->category = 'video';
+            $video->video_category_id = $request->video_category;
+            $video->mobile_app_image = $mobile_app_image;
+            $video->file = $file_name;
+            $video->view = json_encode(array());
+            $done = $video->save();
+            if ($done) {
+                $post = new Posts();
+                $post->user_id = auth()->user()->id;
+                $post->publisher = 'video_and_shorts';
+                $post->publisher_id = $video->id;
+                $post->post_type = $request->category;
+                $post->privacy = $request->privacy;
+                $post->description = $request->title;
+                $post->mobile_app_image = $mobile_app_image;
+                $post->tagged_user_ids = json_encode(array());
+                $post->user_reacts = json_encode(array());
+                $post->status = 'active';
+                $post->created_at = time();
+                $post->updated_at = time();
+                $post->save();
+            }
+            flash('success_message', get_phrase('Video/Shorts Created Successfully'));
+            return redirect()->route('admin.video');
+
+        } catch (\Exception $e) {
+            flash()->addError('Failed to create video: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }   
+
+    public function video_updated(Request $request, $id)
+    {
+
+       // Vérifier si une catégorie valide est sélectionnée (facultatif)
+       if ($request->video_category_id == 'Select a category') {
+            flash()->addError('Please select a valid category');
+            return redirect()->back()->withInput();
+        }
+
+        // Valider les données soumises
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'url' => 'required|url',
+            'video_category_id' => 'nullable|exists:video_categories,id',
+            'mobile_app_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        try {
+            // Trouver la vidéo
+            $video = Video::findOrFail($id);
+
+            // Gérer l'upload de l'image (si présente)
+            $thumbnailPath = $video->mobile_app_image;
+            if ($request->hasFile('mobile_app_image')) {
+                // Supprimer l'ancienne image si elle existe
+                if ($thumbnailPath && Storage::disk('public')->exists($thumbnailPath)) {
+                    Storage::disk('public')->delete($thumbnailPath);
+                }
+                // Uploader la nouvelle image
+                $file = $request->file('mobile_app_image');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $thumbnailPath = $file->storeAs('videos/mobile_app_image', $filename, 'public');
+            }
+
+            // Mettre à jour la vidéo
+            $video->update([
+                'video_category_id' => $request->video_category_id,
+                'title' => $request->title,
+                'description' => $request->description,
+                'url' => $request->url,
+                'mobile_app_image' => $thumbnailPath,
+            ]);
+
+            flash()->addSuccess('Video updated successfully');
+            return redirect()->route('admin.video');
+
+        } catch (\Exception $e) {
+            flash()->addError('Failed to update video: ' . $e->getMessage());
+            return redirect()->back()->withInput();
+        }
+    }
+
 
 
     // Badge Start

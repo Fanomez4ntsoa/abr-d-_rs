@@ -20,13 +20,20 @@ use Image,Session;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use DB;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
     public function groups(){
         $page_data['groups'] = Group::orderBy('id','DESC')->where('privacy','public')->where('status','1')->limit('18')->get();
-        $page_data['managegroups'] = Group::orderBy('id','DESC')->where('user_id',auth()->user()->id)->limit('6')->get();
-        $page_data['joinedgroups'] = Group_member::where('user_id',auth()->user()->id)->where('is_accepted','1')->limit('6')->get();
+        if(Auth::check()){
+            $page_data['managegroups'] = Group::orderBy('id','DESC')->where('user_id',auth()->user()->id)->limit('6')->get();
+            $page_data['joinedgroups'] = Group_member::where('user_id',auth()->user()->id)->where('is_accepted','1')->limit('6')->get();
+        }else{
+            $page_data['managegroups'] = collect();
+            $page_data['joinedgroups'] = collect();
+        }
+
         $page_data['view_path'] = 'frontend.groups.groups';
         return view('frontend.index', $page_data);
     }

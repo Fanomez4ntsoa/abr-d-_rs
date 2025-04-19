@@ -1,25 +1,23 @@
-@foreach ($vidoes as $video )
+@foreach ($videos as $video )
         @php
             $post = DB::table('posts')->where('privacy', '!=', 'private')
             ->where('publisher', 'video_and_shorts')
             ->where('publisher_id', $video->id)
             ->first();
-        @endphp
-        @php
-        
-        $total_comments = DB::table('comments')->where('comments.is_type', 'post')->where('comments.id_of_type', $post->post_id)->where('comments.parent_id', 0)->get()->count();
+
+            $total_comments = DB::table('comments')->where('comments.is_type', 'post')->where('comments.id_of_type', $post->post_id)->where('comments.parent_id', 0)->get()->count();
 
 
-        $comments = DB::table('comments')
-            ->join('users', 'comments.user_id', '=', 'users.id')
-            ->where('comments.is_type', 'post')
-            ->where('comments.id_of_type', $post->post_id)
-            ->where('comments.parent_id', 0)
-            ->select('comments.*', 'users.name', 'users.photo')
-            ->orderBy('comment_id', 'DESC')->take(1)->get();
+            $comments = DB::table('comments')
+                ->join('users', 'comments.user_id', '=', 'users.id')
+                ->where('comments.is_type', 'post')
+                ->where('comments.id_of_type', $post->post_id)
+                ->where('comments.parent_id', 0)
+                ->select('comments.*', 'users.name', 'users.photo')
+                ->orderBy('comment_id', 'DESC')->take(1)->get();
 
 
-        $tagged_user_ids = json_decode($post->tagged_user_ids);
+            $tagged_user_ids = json_decode($post->tagged_user_ids);
         
 
     @endphp
@@ -45,11 +43,16 @@
                             @endif
                             
                         </h3>
-                        <span class="meta-time text-muted">{{ $video->created_at->timezone(Auth::user()->timezone)->format("M d") }} at {{ date('H:i A', strtotime($video->created_at)); }}</span>
+                        <span class="meta-time text-muted">     
+                            {{  $video->created_at->timezone(Auth::check() ? Auth::user()->timezone : 'UTC')->format("M d") }} at {{ date('H:i A', strtotime($video->created_at)); }}
+                        </span>
+                            {{-- add video category --}}
+                            
                         @if ($video->privacy=='public')
                             <span class="meta-privacy text-muted"><i
                                 class="fa-solid fa-earth-americas"></i></span>
                         @endif
+                        
                     </div>
                 </div>
                 <div class="post-controls dropdown">
@@ -59,7 +62,7 @@
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <li>
                             @php
-                                $saved = \App\Models\Saveforlater::where('video_id',$video->id)->where('user_id',auth()->user()->id)->count();
+                                if(Auth::check() ? $saved = \App\Models\Saveforlater::where('video_id',$video->id)->where('user_id',auth()->user()->id)->count() : $saved = 0); 
                             @endphp
                             @if ($saved>0)
                             <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('unsave.video.later',$video->id); ?>')" class="dropdown-item btn btn-primary btn-sm"> <img src="{{ asset('assets/frontend/images/save.png') }}" alt=""> {{get_phrase('Unsave Video')}}</a>
@@ -67,12 +70,13 @@
                             <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('save.video.later',$video->id); ?>')" class="dropdown-item btn btn-primary btn-sm"> <img src="{{ asset('assets/frontend/images/save.png') }}" alt=""> {{get_phrase('Save Video')}}</a>
                             @endif
                         </li>
-                        @if ($video->user_id==auth()->user()->id)
-                            <li>
-                                <a href="javascript:void(0)" onclick="confirmAction('<?php echo route('video.delete', ['video_id' => $video->id]); ?>', true)" class="dropdown-item btn btn-primary btn-sm"><i class="fa fa-trash me-1"></i> {{get_phrase('Delete Video')}}</a>
-                            </li>
-                        @endif
-                        
+                        @auth
+                            @if ($video->user_id==auth()->user()->id)
+                                <li>
+                                    <a href="javascript:void(0)" onclick="confirmAction('<?php echo route('video.delete', ['video_id' => $video->id]); ?>', true)" class="dropdown-item btn btn-primary btn-sm"><i class="fa fa-trash me-1"></i> {{get_phrase('Delete Video')}}</a>
+                                </li>
+                            @endif
+                        @endauth
                     </ul>
                 </div>
             </div>
@@ -129,9 +133,11 @@
         <!-- Comment Start -->
         <div class="user-comments s_comment  d-hidden bg-white" id="user-comments-{{$post->post_id}}">
             <div class="comment-form d-flex mb-1">
-                <img src="{{get_user_image(Auth()->user()->photo, 'optimized')}}" alt="" class="h-39 rounded-circle img-fluid" width="40px">
+                @auth 
+                    <img src="{{get_user_image(Auth()->user()->photo, 'optimized')}}" alt="" class="h-39 rounded-circle img-fluid" width="40px">
+                @endauth
                 <form action="javascript:void(0)" class="w-100 ms-2" method="post">
-                    <input class="form-control py-3" onkeypress="postComment(this, 0, {{$post->post_id}}, 0,'post');" rows="1" placeholder="Write Comments">
+                    <input class="form-control py-3" onkeypress="postComment(this, 0, {{$post->post_id}}, 0,'post');" rows="1" placeholder="Écrire des commentaires.">
                 </form>
             </div>
             <ul class="comment-wrap p-3 pb-0 list-unstyled" id="comments{{$post->post_id}}">

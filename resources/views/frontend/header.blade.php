@@ -4,9 +4,11 @@ use App\Models\User;
 use Carbon\Carbon;
 
         $date = Carbon::today();
-        $new_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('status', '0')
-            ->orderBy('id', 'DESC')->get();
-        $older_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('created_at', '<', $date)->orderBy('id', 'DESC')->get();
+        if(Auth::check()){
+            $new_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('status', '0')
+                ->orderBy('id', 'DESC')->get();
+            $older_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('created_at', '<', $date)->orderBy('id', 'DESC')->get();
+        }
 
 ?>
 
@@ -36,7 +38,7 @@ use Carbon\Carbon;
                     <div class="header-search">
                         <a href="{{ route('timeline') }}">
                             <div class="sc-home rounded">
-                                <i class="fa-solid fa-house" style="color: #020202"></i>
+                                <i class="fa-solid fa-house" style="color: #0D3475"></i>
                             </div>
                         </a>
                         <div class="sc-search">
@@ -60,123 +62,133 @@ use Carbon\Carbon;
                 <div class="col-lg-4 col-sm-8">
                     <div class="header-controls">
                         <div class="align-items-center d-flex justify-content-end g-12">
+                            @if (Auth::check())
 
-                            <div class="group-control">
-                                <a href="{{ route('ai_image.image_generator') }}" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #020202"></i></a>
-                            </div>
-
-                            <div class="group-control">
-                                <a href="javascript:;" class="notification-button"><img id="dark" src="{{$image}}" alt=""></a>
-                            </div>
-                            <div class="group-control">
-                                <a href="{{ route('profile.friends') }}" class="notification-button"><i
-                                        class="fa-solid fa-user-group"  style="color: #020202"></i></a>
-                            </div>
-                            @php
-                                $last_msg = \App\Models\Chat::where('sender_id', auth()->user()->id)
-                                    ->orWhere('reciver_id', auth()->user()->id)
-                                    ->orderBy('id', 'DESC')
-                                    ->limit('1')
-                                    ->first();
-                                if (!empty($last_msg)) {
-                                    if ($last_msg->sender_id == auth()->user()->id) {
-                                        $msg_to = $last_msg->reciver_id;
-                                    } else {
-                                        $msg_to = $last_msg->sender_id;
-                                    }
-                                }
-                                
-                                $unread_msg = \App\Models\Chat::where('reciver_id', auth()->user()->id)
-                                    ->where('read_status', '0')
-                                    ->count();
-                            @endphp
-                            <div class="inbox-control">
-                                <a href="@if(isset($msg_to)) {{ route('chat', $msg_to) }} @else {{route('chat','all')}} @endif"
-                                    class="message_custom_button position-relative">
-                                    <i class="fa-brands fa-rocketchat" style="color: #020202"></i>
-                                    @if ($unread_msg > 0)
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
-                                            {{ get_phrase($unread_msg) }}
-                                        </span>
-                                    @endif
-                                </a>
-                            </div>
-                            @php
-                                $unread_notification = \App\Models\Notification::where('reciver_user_id', auth()->user()->id)
-                                    ->where('status', '0')
-                                    ->count();
-                            @endphp
-
-                            <div class="notify-control ">
-                                <a class="notification-button position-relative" id="notification-button" href="javascript:;">
-                                    <i class="fa-solid fa-bell" style="color: #020202"></i>
-                                    @if ($unread_notification > 0)
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
-                                            {{ get_phrase($unread_notification) }}
-                                        </span>
-                                    @endif
-                                </a>
-                                <div class="notification_panel" id="notification_panel">
-                                    @include('frontend.notification.notification')
+                                <div class="group-control">
+                                    <a href="{{ route('ai_image.image_generator') }}" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #0D3475"></i></a>
                                 </div>
-                            </div>
-                            
-                            <div class="profile-control dropdown">
-                                <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="{{ get_user_image(auth()->user()->photo, 'optimized') }}"
-                                        class="rounded-circle" alt="">
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('profile') }}">{{ get_phrase('My Profile') }}</a></li>
-                                    @if (auth()->user()->user_role == 'admin')
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('admin.dashboard') }}">{{ get_phrase('Go to admin panel') }}</a>
-                                        </li>
-                                    @endif
 
-                                    @if (auth()->user()->user_role == 'general')
-                                        <li><a class="dropdown-item"
-                                                href="{{ route('user.dashboard') }}">{{ get_phrase('Dashboard') }}</a>
-                                        </li>
-                                    @endif
-
-                                    {{-- <li>
-                                        <a class="dropdown-item"
-                                            href="{{ route('addons.manager') }}">{{ get_phrase('Addons') }}
-                                        </a>
-                                    </li> --}}
-                                    <li>
-                                        <a class="dropdown-item"
-                                            href="{{ route('user.settings') }}">{{ get_phrase('Payment Settings') }}
-                                        </a>
-                                    </li>
+                                <div class="group-control">
+                                    <a href="javascript:;" class="notification-button"><img id="dark" src="{{$image}}" alt=""></a>
+                                </div>
+                                <div class="group-control">
+                                    <a href="{{ route('profile.friends') }}" class="notification-button"><i
+                                            class="fa-solid fa-user-group"  style="color: #0D3475"></i></a>
+                                </div>
+                                @php
+                                    $last_msg = \App\Models\Chat::where('sender_id', auth()->user()->id)
+                                        ->orWhere('reciver_id', auth()->user()->id)
+                                        ->orderBy('id', 'DESC')
+                                        ->limit('1')
+                                        ->first();
+                                    if (!empty($last_msg)) {
+                                        if ($last_msg->sender_id == auth()->user()->id) {
+                                            $msg_to = $last_msg->reciver_id;
+                                        } else {
+                                            $msg_to = $last_msg->sender_id;
+                                        }
+                                    }
                                     
-                                    @if (auth()->user()->status == 1)
-                                        <li>
-                                            <a href="{{route('all_settings.view')}}" 
-                                            class="dropdown-item">{{ get_phrase('Settings') }}</a>
-                                        </li>
-                                    @endif
+                                    $unread_msg = \App\Models\Chat::where('reciver_id', auth()->user()->id)
+                                        ->where('read_status', '0')
+                                        ->count();
+                                @endphp
+                                <div class="inbox-control">
+                                    <a href="@if(isset($msg_to)) {{ route('chat', $msg_to) }} @else {{route('chat','all')}} @endif"
+                                        class="message_custom_button position-relative">
+                                        <i class="fa-brands fa-rocketchat" style="color: #0D3475"></i>
+                                        @if ($unread_msg > 0)
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
+                                                {{ get_phrase($unread_msg) }}
+                                            </span>
+                                        @endif
+                                    </a>
+                                </div>
+                                @php
+                                    $unread_notification = \App\Models\Notification::where('reciver_user_id', auth()->user()->id)
+                                        ->where('status', '0')
+                                        ->count();
+                                @endphp
 
-                                    <li><a class="dropdown-item"
-                                            href="{{ route('user.password.change') }}">{{ get_phrase('Change Password') }}</a>
-                                    </li>
-                                    <li>
-                                        <form method="POST" action="{{ route('logout') }}">
-                                            @csrf
-                                            <a class="dropdown-item" href="route('logout')"
-                                                onclick="event.preventDefault();
-                                                                    this.closest('form').submit();">
-                                                {{ get_phrase('Se déconnecter') }}
+                                <div class="notify-control ">
+                                    <a class="notification-button position-relative" id="notification-button" href="javascript:;">
+                                        <i class="fa-solid fa-bell" style="color: #0D3475"></i>
+                                        @if ($unread_notification > 0)
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
+                                                {{ get_phrase($unread_notification) }}
+                                            </span>
+                                        @endif
+                                    </a>
+                                    <div class="notification_panel" id="notification_panel">
+                                        @include('frontend.notification.notification')
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-control dropdown">
+                                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="{{ get_user_image(auth()->user()->photo, 'optimized') }}"
+                                            class="rounded-circle" alt="">
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('profile') }}">{{ get_phrase('My Profile') }}</a></li>
+                                        @if (auth()->user()->user_role == 'admin')
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('admin.dashboard') }}">{{ get_phrase('Go to admin panel') }}</a>
+                                            </li>
+                                        @endif
+
+                                        @if (auth()->user()->user_role == 'general')
+                                            <li><a class="dropdown-item"
+                                                    href="{{ route('user.dashboard') }}">{{ get_phrase('Dashboard') }}</a>
+                                            </li>
+                                        @endif
+
+                                        {{-- <li>
+                                            <a class="dropdown-item"
+                                                href="{{ route('addons.manager') }}">{{ get_phrase('Addons') }}
                                             </a>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                                        </li> --}}
+                                        <li>
+                                            <a class="dropdown-item"
+                                                href="{{ route('user.settings') }}">{{ get_phrase('Payment Settings') }}
+                                            </a>
+                                        </li>
+                                        
+                                        @if (auth()->user()->status == 1)
+                                            <li>
+                                                <a href="{{route('all_settings.view')}}" 
+                                                class="dropdown-item">{{ get_phrase('Settings') }}</a>
+                                            </li>
+                                        @endif
+
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('user.password.change') }}">{{ get_phrase('Change Password') }}</a>
+                                        </li>
+                                        <li>
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
+                                                <a class="dropdown-item" href="route('logout')"
+                                                    onclick="event.preventDefault();
+                                                                        this.closest('form').submit();">
+                                                    {{ get_phrase('Se déconnecter') }}
+                                                </a>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>    
+                            @elseif (!Auth::check())
+                                <!-- Contrôles pour utilisateurs non connectés -->
+                                <div class="group-control login-btns">
+                                    <a href="{{ route('login') }}" class="btn btn-sm-primary">Se connecter</a>
+                                </div>
+                                <div class="group-control login-btns">
+                                    <a href="{{ route('register') }}" class="btn btn-primary">S'inscrire</a>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

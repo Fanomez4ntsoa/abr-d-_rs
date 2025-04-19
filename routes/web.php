@@ -11,6 +11,7 @@ use App\Http\Controllers\Updater;
 use Illuminate\Http\Request;
 use App\Models\Account_active_request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,7 +41,7 @@ Route::get('/clear-cache', function () {
 });
 
 Route::get('/auth-checker', function () {
-    if (auth::check()) {
+    if (Auth::check()) {
         return true;
     } else {
         return false;
@@ -83,8 +84,10 @@ Route::controller(ModalController::class)->middleware('auth', 'user', 'verified'
 });
  
 //Home controllers group routing
+Route::get('/', [MainController::class, 'timeline'])->name('timeline');
+
 Route::controller(MainController::class)->middleware('auth', 'user', 'user', 'verified', 'activity', 'prevent-back-history')->group(function () {
-    Route::get('/', 'timeline')->name('timeline');
+    // Route::get('/', 'timeline')->name('timeline');
     Route::post('/create_post', 'create_post')->name('create_post');
     Route::get('/edit_post_form/{id}', 'edit_post_form')->name('edit_post_form');
     Route::post('/edit_post/{id}', 'edit_post')->name('edit_post');

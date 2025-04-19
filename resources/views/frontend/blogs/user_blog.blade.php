@@ -15,7 +15,7 @@
                 <div class="col-12 col-sm-6 col-md-4 col-lg-6 col-xl-4" id="blog-{{ $blog->id }}">
                     <article class="single-entry sblog_entry p-0">
                         <div class="entry-img">
-                            <a href="{{ route('single.blog',$blog->id) }}"><img src="{{ get_blog_image($blog->thumbnail,'thumbnail') }}" alt="" class="img-fluid w-100 thumbnail-210-200"></a>
+                            <a href="{{ route('single.blog',$blog->id) }}"><img src="{{ get_blog_image($blog->thumbnail,'thumbnail') }}" alt="" class="img-fluid w-200 thumbnail-210-200"></a>
                             <span class="date-meta">{{ $blog->created_at->format("d-M-Y") }}</span>
                         </div>
                         <div class="entry-txt p-8">

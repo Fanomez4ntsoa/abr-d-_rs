@@ -55,25 +55,25 @@
 <style>
     /* Style par défaut (bleu clair) */
     input[type="submit"] {
-        background: #020202;  /* Bleu clair */
+        background: #0D3475;  /* Bleu clair */
         padding: 10px 32px;
         color: #fff;
-        border: 1px solid #020202;
+        border: 1px solid #0D3475;
         cursor: pointer;
     }
 
     /* Survol (devient orange) */
     input[type="submit"]:hover {
-        background: #fc8b15;  /* Orange */
-        color: #020202 !important;;
-        border: 1px solid #fc8b15;
+        background: #FFAA01;  /* Orange */
+        color: #0D3475 !important;;
+        border: 1px solid #FFAA01;
     }
 
     /* Lorsque l'élément est cliqué (focus) */
     input[type="submit"]:active {
-        background: #fc8b15;  /* Orange */
-        color:#020202 !important;;
-        border: 1px solid #fc8b15;
+        background: #FFAA01;  /* Orange */
+        color:#0D3475 !important;;
+        border: 1px solid #FFAA01;
     }
 </style>
 

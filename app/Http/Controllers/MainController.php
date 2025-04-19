@@ -27,6 +27,7 @@ use Carbon\Carbon;
 
 //For used ZOOM
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -58,6 +59,30 @@ class MainController extends Controller
 
     public function timeline()
     {
+
+        if (!Auth::check()) {
+            $posts = Posts::where('posts.privacy', 'public')
+                ->where('posts.status', 'active')
+                ->where('posts.report_status', '0')
+                ->where('publisher', '!=', 'paid_content')
+                ->join('users', 'posts.user_id', '=', 'users.id')
+                ->select('posts.*', 'users.name', 'users.photo', 'posts.created_at as created_at')
+                ->orderBy('posts.post_id', 'DESC')
+                ->take(24)
+                ->get()
+                ->random(8);
+
+            // Pas de stories ni de données d'amitié pour les utilisateurs non connectés
+            $stories = collect();
+            $friendships = collect();
+
+            $page_data['friendships'] = $friendships;
+            $page_data['stories'] = $stories;
+            $page_data['posts'] = $posts;
+            $page_data['view_path'] = 'frontend.main_content.index';
+
+            return view('frontend.index', $page_data);
+        }
 
         //First 10 stories
         $stories = Stories::where(function ($query) {

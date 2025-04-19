@@ -12,12 +12,21 @@
                 @endphp
                 <span class="small text-muted">{{ $likecount }} {{ ('likes') }}</span>
                 @php
-                    $likecount = \App\Models\Page_like::where('page_id',$suggestedpage->id)->where('user_id',auth()->user()->id)->count();
+                    if(Auth::check()){
+                        $likecount = \App\Models\Page_like::where('page_id',$suggestedpage->id)->where('user_id',auth()->user()->id)->count();
+                    }else{
+                        $likecount = 0;
+                    }
                 @endphp
                 @if ($likecount>0)
                     <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('page.dislike',$suggestedpage->id); ?>')" class="btn common_btn_2 "><i class="fa fa-thumbs-up me-1"></i>{{ ('Liked') }}</a>
                 @else
-                    <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('page.like',$suggestedpage->id); ?>')" class="btn common_btn"><i class="fa fa-thumbs-up me-1"></i>{{ get_phrase('Like') }}</a>
+                    @if (Auth::check())
+                        <a href="javascript:void(0)" onclick="ajaxAction('<?php echo route('page.like',$suggestedpage->id); ?>')" class="btn common_btn"><i class="fa fa-thumbs-up me-1"></i>{{ get_phrase('Like') }}</a>
+                    @else 
+                        <a href="{{ route('login') }}" class="btn common_btn"><i class="fa fa-thumbs-up me-1"></i>{{ get_phrase('Like') }}</a>
+                        
+                    @endif
                 @endif
                 </div>
             </div>

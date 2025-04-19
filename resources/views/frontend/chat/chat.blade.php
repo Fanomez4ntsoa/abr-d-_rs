@@ -2,7 +2,7 @@
 <div class="message-box chat_control bg-white border radius-8">
     @if(!empty($reciver_data))
     <div class="modal-header d-flex bg-secondary">
-       
+
         <div class="avatar d-flex">
             <a href="#" class="d-flex align-items-center">
                 <div class="avatar avatar-lg me-2">
@@ -14,9 +14,9 @@
                 <div class="name">
                     <h4 class="m-0 h6">{{ $reciver_data->name }}</h4>
                     @if ($reciver_data->isOnline())
-                        <small class="d-block">{{ get_phrase('Active now') }}</small>   
+                        <small class="d-block">{{ get_phrase('Active now') }}</small>
                     @else
-                        <small class="d-block"> {{ \Carbon\Carbon::parse($reciver_data->lastActive)->diffForHumans();  }}</small>   
+                        <small class="d-block"> {{ \Carbon\Carbon::parse($reciver_data->lastActive)->diffForHumans();  }}</small>
                     @endif
                 </div>
             </a>
@@ -40,21 +40,21 @@
             </div>
         </div>
 
-     @endif   
-        
+     @endif
+
         @php
             if(session()->has('product_ref_id')){
                 $product_url =  url('/')."/product/view/".session('product_ref_id');
             }
         @endphp
-        
-        <div class="mt-action"> 
+
+        <div class="mt-action">
             @if(!empty($reciver_data))
             <!-- Chat textarea -->
-            <form class="ajaxForm" id="chatMessageFieldForm" action="{{ route('chat.save') }}" method="POST" enctype="multipart/form-data">
+            <form class="ajaxForm" action="{{ route('chat.save') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                  <div class="nm_footer d-flex">
-                    
+
                     <div class="d-flex w-100 message_b">
                             <input type="hidden" name="reciver_id" value="{{ $reciver_data->id }}" id="">
                             @if ($product!=null)
@@ -62,32 +62,32 @@
                             @endif
                             <input type="hidden" name="thumbsup" value="0" id="ChatthumbsUpInput">
                             <input type="text" class="form-control mb-sm-0 mb-3 ms-1 " name="message" id="ChatmessageField" value="@if(isset($product_url)&&$product_url!=null) {{ $product_url }} @endif" placeholder="Type a message">
-                            
+
                             <button class="btn btn-primary send no-processing no-uploading" id="ChatsentButton"><i class="fa-solid fa-paper-plane"></i></button>
                             {{-- <button type="submit" class="btn btn-primary  send  no_loading no-processing no-uploading"  id="ChatthumbsUp"><i class="fa-solid fa-thumbs-up"></i> </button> --}}
                     </div>
-                   
+
                  </div>
                 <button type="reset" id="messageResetBox" class="visibility-hidden">{{get_phrase('Reset')}}</button>
                 <div class="mt-footer">
                     <div class="input-images d-hidden  image-uploader_custom_css" id="messageFileUploder">
                     </div>
                     <a href="javascript:void(0)" id="messgeImageUploader"><img src="{{ asset('assets/frontend/images/image-a.png') }}" alt=""></a>
-                    
+
                 </div>
             </form>
             <!-- Button -->
             @php
                 Session::forget('product_ref_id')
             @endphp
-             
+
               @else
               <div style="width: 100%; height: 500px; display:flex; justify-content:center; align-items:center; font-size:20px;">
                  <p>{{get_phrase('No Conversion Start!')}}</p>
-              </div> 
+              </div>
               @endif
         </div>
-      
+
     </div>
 </div>
 
@@ -101,15 +101,15 @@
     $("#ChatmessageField").emojioneArea({
             pickerPosition: "top"
         });
-    
-    
+
+
     $(document).ready(function(){
         //msg scrolling
         var elem = document.getElementById('messageShowDiv');
         elem.scrollTop = elem.scrollHeight;
 
-          
-        setInterval(ajaxCallForDataLoad, 4000);   
+
+        setInterval(ajaxCallForDataLoad, 4000);
     });
 
     $('.input-images:not(.initialized)').imageUploader({
@@ -145,7 +145,7 @@
 
 
 
-    //imagae upload 
+    //imagae upload
     $( "#messgeImageUploader" ).click(function() {
         $('#ChatsentButton').removeClass('d-none');
         $('#ChatthumbsUp').addClass('d-none');
@@ -156,7 +156,7 @@
 
 
     function ajaxCallForDataLoad() {
-        var currentURL = $(location).attr('href'); 
+        var currentURL = $(location).attr('href');
         var id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
         $.ajax({
             type : 'get',
@@ -171,14 +171,14 @@
                 if(response.content !==undefined){
                     var elem = document.getElementById('messageShowDiv');
                     elem.scrollTop = elem.scrollHeight;
-                } 
+                }
             }
         });
     }
 
 
     function ajaxCallForReadData() {
-        var currentURL = $(location).attr('href'); 
+        var currentURL = $(location).attr('href');
         var id = currentURL.substring(currentURL.lastIndexOf('/') + 1);
         $.ajax({
             type : 'get',
@@ -193,9 +193,9 @@
         });
     }
 
-    //chat search 
+    //chat search
     $("#chatSearch").keyup(function(){
-        
+
         let value= $(this).val();
         $.ajax({
             type : 'get',
@@ -214,7 +214,7 @@
     $(document).ready(function() {
     $('#chatMessageFieldForm').on('submit', function(e) {
         e.preventDefault(); // Prevent the form from submitting the traditional way
-        
+
         var form = $(this);
         var formData = form.serialize(); // Serialize the form data
 
@@ -227,16 +227,16 @@
                 $('#ChatmessageField').val('');
                 // Optionally, you can also reset the Emoji area if you’re using emojioneArea:
                 $("#ChatmessageField").emojioneArea().data("emojioneArea").setText('');
-                
+
                 // Append the new message to the message body
                 $('#message_body').append(response.message); // Assuming `response.message` contains the new message HTML
-                
+
                 setTimeout(() => {
                     var elem = document.getElementById('messageShowDiv');
                     elem.scrollTop = elem.scrollHeight;
                 }, 500);
                 // Scroll to the bottom of the message container
-                
+
             },
             error: function(xhr, status, error) {
                 console.log(error); // Handle any errors here

@@ -4,8 +4,13 @@
         class="d-flex pagetab-head video_wrap_title   align-items-center justify-content-between mb-3 p-20 radius-8 bg-white">
         <h3 class="h5 mb-0"><span><i class="fa-solid fa-calendar-days"></i></span> {{ get_phrase('Events') }}</h3>
         <div class="gap_10">
-            <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.events.create_event'])}}', '{{get_phrase('Create Event')}}');" data-bs-toggle="modal"
-                data-bs-target="#createEvent" class="btn common_btn btn-sm"> <i class="fa fa-plus-circle m-0"></i> <div class="d-none d-md-inline-block">{{get_phrase('Create Event')}}</div></a>
+            @if (Auth::check())
+                <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.events.create_event'])}}', '{{get_phrase('Create Event')}}');" data-bs-toggle="modal"
+                    data-bs-target="#createEvent" class="btn common_btn btn-sm"> <i class="fa fa-plus-circle m-0"></i> <div class="d-none d-md-inline-block">{{get_phrase('Create Event')}}</div></a>
+            @else 
+            <a href="{{ route('login') }}"
+                 class="btn common_btn btn-sm"> <i class="fa fa-plus-circle m-0"></i> <div class="d-none d-md-inline-block">{{get_phrase('Create Event')}}</div></a>
+            @endif
             <a href="{{ route('userevent') }}" class="btn common_btn btn-sm">{{ get_phrase("My Event") }}</a>
         </div>
     </div>

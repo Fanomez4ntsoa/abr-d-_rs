@@ -2,8 +2,13 @@
     <div class="page-tab bg-white   p-3 pb-1">
         <div class="d-flex pagetab-head  justify-content-between">
             <h3 class="h5"><span><i class="fa fa-flag"></i></span> {{get_phrase('Pages')}}</h3>
-            <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.pages.create_page'])}}', '{{get_phrase('Create Page')}}');"  data-bs-toggle="modal"
-                data-bs-target="#createPage" class="btn common_btn"> <i class="fa fa-plus-circle"></i>{{get_phrase('Create Page')}}</a>
+            @if (Auth::check())
+                <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.pages.create_page'])}}', '{{get_phrase('Create Page')}}');"  data-bs-toggle="modal"
+                    data-bs-target="#createPage" class="btn common_btn"> <i class="fa fa-plus-circle"></i>{{get_phrase('Create Page')}}</a>
+            @else
+                <a href="{{ route('login') }}" 
+                    class="btn common_btn"> <i class="fa fa-plus-circle"></i>{{get_phrase('Create Page')}}</a>
+            @endif
         </div>
         <ul class="nav ct-tab mt-1" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">

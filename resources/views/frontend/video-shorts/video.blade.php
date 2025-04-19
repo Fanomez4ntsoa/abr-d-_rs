@@ -2,9 +2,17 @@
     <div class="d-md-flex pagetab-head video_wrap_title   align-items-center justify-content-between mb-3 p-20 radius-8 bg-white">
         <h3 class="h5 mb-0"><span><i class="fa-solid fa-file-video"></i></span> {{ get_phrase('Watch') }}</h3>
         <div class="gap_10">
-            <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.video-shorts.create'])}}', '{{get_phrase('Create Video & Shorts ')}}');" class="btn common_btn" data-bs-toggle="modal"
-                data-bs-target=""> <i
-                class="fa-solid fa-plus-circle me-2"></i>{{get_phrase('Create')}}</a>
+            @if(Auth::check())
+                <a href="javascript:void(0)" onclick="showCustomModal('{{route('load_modal_content', ['view_path' => 'frontend.video-shorts.create'])}}', '{{get_phrase('Create Video & Shorts ')}}');" class="btn common_btn" data-bs-toggle="modal"
+                    data-bs-target=""> <i
+                    class="fa-solid fa-plus-circle me-2"></i>{{get_phrase('Create')}}
+                </a> 
+            @else
+                <a href="{{ route('login') }}"  class="btn common_btn"> <i
+                    class="fa-solid fa-plus-circle me-2"></i>{{get_phrase('Create')}}
+                </a> 
+            @endif
+            
             <a href="{{ route('shorts') }}" class="btn @if(Route::currentRouteName() == 'shorts') common_btn_2 @else common_btn @endif "><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9.81969 1.33334H6.17969V4.24001H9.81969V1.33334Z" fill="#0D091D"/>
                 <path d="M10.8203 1.33334V4.24001H14.5803C14.2403 2.40668 12.887 1.34001 10.8203 1.33334Z" fill="#0D091D"/>
@@ -23,7 +31,16 @@
                 </span></a>
         </div>
     </div>
-    @if(count($vidoes)>0)
+    @if(count($categories)>0)
+    <div class="card border-none radius-8 blog-tags">
+        <div class="tags">
+            @foreach ($categories as $category )
+                <a href="{{ route('category.video',$category->id) }}" class="">{{ $category->type }}</a>
+            @endforeach 
+        </div>
+    </div>
+    @endif
+    @if(count($videos)>0)
     <div id="videoShowData">
         @include('frontend.video-shorts.single-video')
     </div>

@@ -5,7 +5,7 @@
 
 <div class="single-wrap">
     <div class="sblog_feature bg-white radius-8">
-        <div class="blog-feature " style="background-image: url('{{ get_blog_image($blog->thumbnail,'coverphoto') }}')">
+        <div class="blog-feature " style="min-height: 0px; background-image: url('{{ get_blog_image($blog->thumbnail,'coverphoto') }}')">
             <div class="blog-head">
                 <div class="d-flex align-items-center">
                     <img src="{{ get_user_image($blog->user_id,'optimized') }}" class="user-round user_image_show_on_modal" alt="">
@@ -63,7 +63,7 @@
                             <div class="comment-form nBlog_user d-flex p-3 bg-secondary">
                                 <img src="{{get_user_image(Auth()->user()->photo, 'optimized')}}" alt="" class="rounded-circle h-39 img-fluid " width="40px">
                                 <form action="javascript:void(0)" class="w-100 ms-2" method="post">
-                                    <input class="form-control py-3" onkeypress="postComment(this, 0, {{$blog->id}}, 0,'blog');" rows="1" placeholder="Write Comments">
+                                    <input class="form-control py-3" onkeypress="postComment(this, 0, {{$blog->id}}, 0,'blog');" rows="1" placeholder="Écrire des commentaires">
                                 </form>
                             </div>
                             <ul class="comment-wrap pt-3 pb-0 list-unstyled" id="comments{{$blog->id}}">

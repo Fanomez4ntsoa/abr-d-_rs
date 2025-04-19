@@ -800,7 +800,7 @@ $user = Auth()->user();
                     <form action="javascript:void(0)" class="w-100 ms-2" method="post">
                         <input class="form-control py-3"
                             onkeypress="postComment(this, 0, {{ $post->post_id }}, 0,'post');" rows="1"
-                            placeholder="Write Comments">
+                            placeholder="Écrire des commentaires">
                     </form>
                 </div>
             </div>

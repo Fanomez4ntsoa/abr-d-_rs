@@ -87,7 +87,10 @@
         <input type="file" class="form-control" name="profile_photo" accept="image/*">
         </div>
 
-    <button type="submit" class="userFormEdit-btn btn">{{get_phrase('Save Changes')}}</button>
+        <button type="submit" class="btn common_btn w-100" style="background-color: #FFAA01; border-color: #FFAA01;">
+            {{get_phrase('Save')}}
+        </button>
+        
 
     </form>
     </div>

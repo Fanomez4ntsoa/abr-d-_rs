@@ -1,4 +1,4 @@
-@if(isset($post_react) && $post_react == true)
+@if (Auth::check() && isset($post_react) && $post_react === true && !is_null($post->user_reacts))
 <div class="post-react d-flex align-items-center">
     <?php $unique_values = array_unique($user_reacts); ?>
     <ul class="react-icons">
@@ -43,7 +43,7 @@
 @endif
 
 @if(isset($my_react) && $my_react == true)
-    @if(array_key_exists($user_info->id, $user_reacts))
+    @if((Auth::check()) && (isset($post_react)) && ( array_key_exists($user_info->id, $user_reacts)))
         @if($user_reacts[$user_info->id] == 'like')
             <div class="like-color">
                 {{-- <img class="w-17px mt--6px" src="{{asset('storage/images/liked.svg')}}" alt=""> --}}
