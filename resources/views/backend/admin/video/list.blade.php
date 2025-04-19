@@ -30,6 +30,7 @@
                 <tr>
                   <th scope="col">{{ get_phrase('Sl No') }}</th>
                   <th scope="col">{{ get_phrase('Video') }}</th>
+                  <th scope="col">{{ get_phrase('Category') }}</th>
                   <th scope="col">{{ get_phrase('Video owner') }}</th>
                   <th scope="col" class="text-center">{{ get_phrase('Action') }}</th>
                 </tr>
@@ -45,6 +46,11 @@
                             <a href="{{route('videos', $video->id)}}" class="text-dark" target="_blank">{{ $video->title }}</a>
                         </div>
                         </td>
+                        <td>
+                          <div class="dAdmin_info_name min-w-100px">
+                              <a href="{{route('videos', $video->id)}}" class="text-dark" target="_blank">{{  $video->videoCategory->type ?? get_phrase(' ') }} </a>
+                          </div>
+                          </td>
                         <td>
                         <div class="dAdmin_info_name min-w-100px">
                             <a href="{{route('user.profile.view', $video->getUser->id)}}" class="text-dark" target="_blank">{{ $video->getUser->name ?? "" }}</a>

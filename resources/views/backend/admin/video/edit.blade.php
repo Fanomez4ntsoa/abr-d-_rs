@@ -29,9 +29,8 @@
                           </ul>
                       </div>
                   @endif
-                  <form method="POST" action="{{ route('admin.video.edit', $video_details->id) }}" enctype="multipart/form-data">
+                  <form method="POST" action="{{ route('admin.video.updated', $video_details->id) }}" enctype="multipart/form-data">
                       @csrf
-                      @method('PUT')
                       <div class="mb-3">
                           <label for="title" class="form-label eForm-label">{{ get_phrase('Video title') }}</label>
                           <input type="text" class="form-control eForm-control" value="{{ old('title', $video_details->title) }}" id="title" name="title" placeholder="{{ get_phrase('Video title') }}" required>

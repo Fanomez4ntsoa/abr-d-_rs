@@ -1,3 +1,4 @@
+
 <div class="main_content">
     <!-- Mani section header and breadcrumb -->
     <div class="mainSection-title">
@@ -7,12 +8,12 @@
             class="d-flex justify-content-between align-items-center flex-wrap gr-15"
           >
             <div class="d-flex flex-column">
-              <h4><?php echo e(get_phrase('All Video')); ?></h4>
+              <h4><?php echo e(get_phrase('All Blogs')); ?></h4>
               
             </div>
 
             <div class="export-btn-area">
-              <a href="<?php echo e(route('admin.video.create')); ?>" class="export_btn"><i class="fas fa-plus me-2"></i> <?php echo e(get_phrase('Create')); ?></a>
+              <a href="<?php echo e(route('admin.blog.create')); ?>" class="export_btn"><i class="fas fa-plus me-2"></i> <?php echo e(get_phrase('Create')); ?></a>
             </div>
           </div>
         </div>
@@ -29,32 +30,26 @@
               <thead>
                 <tr>
                   <th scope="col"><?php echo e(get_phrase('Sl No')); ?></th>
-                  <th scope="col"><?php echo e(get_phrase('Video')); ?></th>
-                  <th scope="col"><?php echo e(get_phrase('Category')); ?></th>
-                  <th scope="col"><?php echo e(get_phrase('Video owner')); ?></th>
+                  <th scope="col"><?php echo e(get_phrase('Blog')); ?></th>
+                  <th scope="col"><?php echo e(get_phrase('Blog owner')); ?></th>
                   <th scope="col" class="text-center"><?php echo e(get_phrase('Action')); ?></th>
                 </tr>
               </thead>
               <tbody>
-                <?php $__currentLoopData = $videos; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $video): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php $__currentLoopData = $blogs; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $key => $blog): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <tr>
                         <th scope="row">
                         <p class="row-number"><?php echo e(++$key); ?></p>
                         </th>
                         <td>
                         <div class="dAdmin_info_name min-w-100px">
-                            <a href="<?php echo e(route('videos', $video->id)); ?>" class="text-dark" target="_blank"><?php echo e($video->title); ?></a>
+                            <a href="<?php echo e(route('single.blog', $blog->id)); ?>" class="text-dark" target="_blank"><?php echo e($blog->title); ?></a>
                         </div>
                         </td>
                         <td>
-                          <div class="dAdmin_info_name min-w-100px">
-                              <a href="<?php echo e(route('videos', $video->id)); ?>" class="text-dark" target="_blank"><?php echo e($video->videoCategory->type ?? get_phrase(' ')); ?> </a>
-                          </div>
-                          </td>
-                        <td>
                         <div class="dAdmin_info_name min-w-100px">
-                            <a href="<?php echo e(route('user.profile.view', $video->getUser->id)); ?>" class="text-dark" target="_blank"><?php echo e($video->getUser->name ?? ""); ?></a>
-                            <br><small><?php echo e($video->getUser->email); ?></small>
+                            <a href="<?php echo e(route('user.profile.view', $blog->getUser->id)); ?>" class="text-dark" target="_blank"><?php echo e($blog->getUser->name ?? ""); ?></a>
+                            <br><small><?php echo e($blog->getUser->email); ?></small>
                         </div>
                         </td>
                         
@@ -65,9 +60,9 @@
 
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end eDropdown-menu-2 eDropdown-table-action">
-                              <li><a class="dropdown-item" href="<?php echo e(route('videos', $video->id)); ?>"><?php echo e(get_phrase('View on frontend')); ?></a></li>
-                              <li><a class="dropdown-item" href="<?php echo e(route('admin.video.edit', $video->id)); ?>"><?php echo e(get_phrase('Edit')); ?></a></li>
-                              <li><a class="dropdown-item" onclick="return confirm('<?php echo e(get_phrase('Are You Sure Want To Delete?')); ?>')" href="<?php echo e(route('videos', ['delete' => 'yes', 'id' => $video->id])); ?>"><?php echo e(get_phrase('Delete')); ?></a></li>
+                              <li><a class="dropdown-item" href="<?php echo e(route('single.blog', $blog->id)); ?>"><?php echo e(get_phrase('View on frontend')); ?></a></li>
+                              <li><a class="dropdown-item" href="<?php echo e(route('admin.blog.edit', $blog->id)); ?>"><?php echo e(get_phrase('Edit')); ?></a></li>
+                              <li><a class="dropdown-item" onclick="return confirm('<?php echo e(get_phrase('Are You Sure Want To Delete?')); ?>')" href="<?php echo e(route('admin.blog', ['delete' => 'yes', 'id' => $blog->id])); ?>"><?php echo e(get_phrase('Delete')); ?></a></li>
                             </ul>
                           </div>
                         </td>
@@ -89,4 +84,4 @@
 
 
 
-<?php /**PATH C:\Users\USER\Documents\GitHub\abr-d-_rs\resources\views/backend/admin/video/list.blade.php ENDPATH**/ ?>
+<?php /**PATH C:\Users\USER\Documents\GitHub\abr-d-_rs\resources\views/backend/admin/blog/list.blade.php ENDPATH**/ ?>

@@ -29,9 +29,8 @@
                           </ul>
                       </div>
                   <?php endif; ?>
-                  <form method="POST" action="<?php echo e(route('admin.video.edit', $video_details->id)); ?>" enctype="multipart/form-data">
+                  <form method="POST" action="<?php echo e(route('admin.video.updated', $video_details->id)); ?>" enctype="multipart/form-data">
                       <?php echo csrf_field(); ?>
-                      <?php echo method_field('PUT'); ?>
                       <div class="mb-3">
                           <label for="title" class="form-label eForm-label"><?php echo e(get_phrase('Video title')); ?></label>
                           <input type="text" class="form-control eForm-control" value="<?php echo e(old('title', $video_details->title)); ?>" id="title" name="title" placeholder="<?php echo e(get_phrase('Video title')); ?>" required>

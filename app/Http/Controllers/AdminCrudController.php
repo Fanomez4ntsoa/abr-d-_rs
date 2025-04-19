@@ -959,51 +959,96 @@ class AdminCrudController extends Controller
         }
     }   
 
-    public function video_updated(Request $request, $id)
-    {
-
-       // Vérifier si une catégorie valide est sélectionnée (facultatif)
-       if ($request->video_category_id == 'Select a category') {
-            flash()->addError('Please select a valid category');
-            return redirect()->back()->withInput();
-        }
-
-        // Valider les données soumises
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'url' => 'required|url',
-            'video_category_id' => 'nullable|exists:video_categories,id',
-            'mobile_app_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-        ]);
-
+    public function video_updated(Request $request, $id){
         try {
-            // Trouver la vidéo
+            // Valider les données
+            $rules = [
+                'title' => 'required|string|max:255',
+                'video_category_id' => 'required|exists:video_categories,id',
+                'category' => 'required|in:video,shorts',
+                'privacy' => 'required|in:public,private',
+                'video' => 'nullable|file|mimes:mp4,mov,wmv,mkv,webm,avi,m4v|max:500000', // 500MB
+                'description' => 'nullable|string',
+                'mobile_app_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', // 2MB
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                flash()->addError(get_phrase('Validation failed'));
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+
+            // Vérifier si une catégorie valide est sélectionnée
+            if ($request->video_category_id == '') {
+                flash()->addError(get_phrase('Please select a valid category'));
+                return redirect()->back()->withInput();
+            }
+
+            // Récupérer la vidéo existante
             $video = Video::findOrFail($id);
 
-            // Gérer l'upload de l'image (si présente)
-            $thumbnailPath = $video->mobile_app_image;
-            if ($request->hasFile('mobile_app_image')) {
-                // Supprimer l'ancienne image si elle existe
-                if ($thumbnailPath && Storage::disk('public')->exists($thumbnailPath)) {
-                    Storage::disk('public')->delete($thumbnailPath);
+            // Gérer les fichiers
+            $file_name = $video->file;
+            if ($request->hasFile('video') && $request->file('video')->isValid()) {
+                // Supprimer l'ancien fichier s'il existe
+                if ($video->file && Storage::exists($video->file)) {
+                    Storage::delete($video->file);
                 }
-                // Uploader la nouvelle image
-                $file = $request->file('mobile_app_image');
-                $filename = time() . '_' . $file->getClientOriginalName();
-                $thumbnailPath = $file->storeAs('videos/mobile_app_image', $filename, 'public');
+                $file_name = $request->file('video')->store('videos', 'public');
+            }
+
+            $mobile_app_image = $video->mobile_app_image;
+            if ($request->hasFile('mobile_app_image') && $request->file('mobile_app_image')->isValid()) {
+                // Supprimer l'ancienne image s'il existe
+                if ($video->mobile_app_image && Storage::exists($video->mobile_app_image)) {
+                    Storage::delete($video->mobile_app_image);
+                }
+                $mobile_app_image = $request->file('mobile_app_image')->store('thumbnails', 'public');
             }
 
             // Mettre à jour la vidéo
-            $video->update([
-                'video_category_id' => $request->video_category_id,
-                'title' => $request->title,
-                'description' => $request->description,
-                'url' => $request->url,
-                'mobile_app_image' => $thumbnailPath,
-            ]);
+            $video->title = $request->title;
+            $video->user_id = auth()->user()->id;
+            $video->privacy = $request->privacy;
+            $video->category = $request->category;
+            $video->video_category_id = $request->video_category_id;
+            $video->mobile_app_image = $mobile_app_image;
+            $video->file = $file_name;
+            $video->view = $video->view ?? json_encode([]);
+            $video->save();
 
-            flash()->addSuccess('Video updated successfully');
+            // Mettre à jour ou créer le post associé
+            $post = Posts::where('publisher', 'video_and_shorts')->where('publisher_id', $video->id)->first();
+            if ($post) {
+                $post->user_id = auth()->user()->id;
+                $post->publisher = 'video_and_shorts';
+                $post->publisher_id = $video->id;
+                $post->post_type = $request->category;
+                $post->privacy = $request->privacy;
+                $post->description = $request->title;
+                $post->mobile_app_image = $mobile_app_image;
+                $post->tagged_user_ids = $post->tagged_user_ids ?? json_encode([]);
+                $post->user_reacts = $post->user_reacts ?? json_encode([]);
+                $post->status = 'active';
+                $post->save();
+            } else {
+                // Créer un nouveau post si aucun n'existe
+                $post = new Posts();
+                $post->user_id = auth()->user()->id;
+                $post->publisher = 'video_and_shorts';
+                $post->publisher_id = $video->id;
+                $post->post_type = $request->category;
+                $post->privacy = $request->privacy;
+                $post->description = $request->title;
+                $post->mobile_app_image = $mobile_app_image;
+                $post->tagged_user_ids = json_encode([]);
+                $post->user_reacts = json_encode([]);
+                $post->status = 'active';
+                $post->save();
+            }
+
+            flash()->addSuccess(get_phrase('Video/Shorts Updated Successfully'));
             return redirect()->route('admin.video');
 
         } catch (\Exception $e) {
@@ -1011,6 +1056,58 @@ class AdminCrudController extends Controller
             return redirect()->back()->withInput();
         }
     }
+
+    // public function video_updated(Request $request, $id)
+    // {
+
+    //    // Vérifier si une catégorie valide est sélectionnée (facultatif)
+    //    if ($request->video_category_id == 'Select a category') {
+    //         flash()->addError('Please select a valid category');
+    //         return redirect()->back()->withInput();
+    //     }
+
+    //     // Valider les données soumises
+    //     $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'description' => 'required|string',
+    //         'video_category_id' => 'nullable|exists:video_categories,id',
+    //         'mobile_app_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+    //     ]);
+
+    //     try {
+    //         // Trouver la vidéo
+    //         $video = Video::findOrFail($id);
+
+    //         // Gérer l'upload de l'image (si présente)
+    //         $mobile_app_image = $video->mobile_app_image;
+    //         if ($request->hasFile('mobile_app_image')) {
+    //             // Supprimer l'ancienne image si elle existe
+    //             if ($mobile_app_image && Storage::disk('public')->exists($mobile_app_image)) {
+    //                 Storage::disk('public')->delete($mobile_app_image);
+    //             }
+    //             // Uploader la nouvelle image
+    //             $file = $request->file('mobile_app_image');
+    //             $filename = time() . '_' . $file->getClientOriginalName();
+    //             $mobile_app_image = $file->storeAs('videos/mobile_app_image', $filename, 'public');
+    //         }
+
+    //         // Mettre à jour la vidéo
+    //         $video->update([
+    //             'video_category_id' => $request->video_category_id,
+    //             'title' => $request->title,
+    //             'description' => $request->description,
+    //             'url' => $request->url,
+    //             'mobile_app_image' => $thumbnailPath,
+    //         ]);
+
+    //         flash()->addSuccess('Video updated successfully');
+    //         return redirect()->route('admin.video');
+
+    //     } catch (\Exception $e) {
+    //         flash()->addError('Failed to update video: ' . $e->getMessage());
+    //         return redirect()->back()->withInput();
+    //     }
+    // }
 
 
 
