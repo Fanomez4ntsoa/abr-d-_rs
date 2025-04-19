@@ -4929,10 +4929,11 @@ textarea.form-control-lg {
 }
 
 .alert-success {
-  color: #0f5132;
-  background-color: #d1e7dd;
-  border-color: #badbcc;
+  color: #0D3475; 
+  background-color: #FFAA01; 
+  border-color: #f7a05b;
 }
+
 .alert-success .alert-link {
   color: #0c4128;
 }
@@ -4947,9 +4948,9 @@ textarea.form-control-lg {
 }
 
 .alert-warning {
-  color: #664d03;
-  background-color: #fff3cd;
-  border-color: #ffecb5;
+  color: #0D3475;
+  background-color: #FFAA01;
+  border-color: #FFAA01;
 }
 .alert-warning .alert-link {
   color: #523e02;

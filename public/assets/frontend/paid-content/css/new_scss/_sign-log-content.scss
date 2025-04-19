@@ -77,7 +77,7 @@
   @include d-center;
   height: toRem(60);
   border-radius: toRem(10);
-  background-color:#020202;
+  background-color:#0D3475;
   text-decoration: none;
   @include fontFamily(18, $fw_SemiBold, 16, #fff !important);
 }
@@ -86,11 +86,11 @@
   text-align: center;
   @include fontFamily(16, $fw_SemiBold, 16, #101010);
   a {
-    color: #020202 !important;
+    color: #0D3475 !important;
   }
 }
 
 .formLink {
-  @include fontFamily(16, $fw_SemiBold, 16, #020202 !important);
+  @include fontFamily(16, $fw_SemiBold, 16, #0D3475 !important);
   text-decoration: none;
 }

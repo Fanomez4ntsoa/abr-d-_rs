@@ -48,7 +48,7 @@ a.story-entry video {
 
 .input-prev-text.bg-5a2ff9 {
 
-    background-color:#020202;
+    background-color:#0D3475;
 
     color: #fff;
 
@@ -58,7 +58,7 @@ a.story-entry video {
 
 .input-prev-text.bg-ff7856 {
 
-    background-color: #fc8b15;
+    background-color: #FFAA01;
 
     color: #fff;
 
@@ -162,11 +162,11 @@ a.story-entry video {
 
 #timeline-posts .like-color {
 
-    color: #020202;
+    color: #0D3475;
 
     font-weight: 800;
 
-    fill: #020202;
+    fill: #0D3475;
 
 }
 
@@ -1076,7 +1076,7 @@ a.story-entry video {
 
     height: 100%;
 
-    background-color:#020202;
+    background-color:#0D3475;
 
     border-radius: 50px;
 
@@ -1096,7 +1096,7 @@ input[type="radio"] {
 
 .text-danger {
 
-    color: #ff0063 !important;
+    color: #FFAA01 !important;
 
 }
 
@@ -1104,7 +1104,7 @@ input[type="radio"] {
 
 .form-validation-error-label {
 
-    color: #ff0063 !important;
+    color: #FFAA01 !important;
 
 }
 
@@ -1300,11 +1300,11 @@ input[type="radio"] {
 
 .tags-selected-custom {
 
-    background-color:#020202;
+    background-color:#0D3475;
 
     color: #fff;
 
-    border: 2px solid #020202;
+    border: 2px solid #0D3475;
 
 }
 
@@ -1618,7 +1618,7 @@ select.form-control {
 
     width: 100%;
 
-    max-width: 155px;
+    max-width: 100px;
 
     margin-top: 4px;
 
@@ -1652,7 +1652,7 @@ select.form-control {
 
 .header-controls .notify-control .notification-button {
 
-    background: #020202;
+    background: #0D3475;
 
     border: none;
 
@@ -1676,7 +1676,7 @@ select.form-control {
 
 .header-controls .group-control .notification-button {
 
-    background: #fc8b15;
+    background: #FFAA01;
 
     border: none;
 
@@ -1700,7 +1700,7 @@ select.form-control {
 
 .header-controls .inbox-control .message_custom_button {
 
-    background: #020202;
+    background: #0D3475;
 
     border: none;
 
@@ -1926,12 +1926,10 @@ select.form-control {
 
 .thumbnail-110-106{
 
-    height: 110px;
-
+    height: 183.3px;
+    width: 183.3px;
     background-size: cover;
-
     background-position: center;
-
     border-radius: 10px;
 
 }
@@ -2108,7 +2106,7 @@ select.form-control {
 
 .login-btns a{
 
-    background: #020202 !important;
+    background: #0D3475 !important;
 
     padding: 10px 32px;
 
@@ -2122,13 +2120,13 @@ select.form-control {
 
 .login-btns a.active, .login-btns a:hover, .login-btns a:focus{
 
-    background: #fc8b15 !important;
+    background: #FFAA01 !important;
 
     padding: 10px 32px;
 
-    color: #020202 !important;
+    color: #0D3475 !important;
 
-    border: 1px solid #fc8b15 !important;
+    border: 1px solid #FFAA01 !important;
 
     font-size: 18px;
 
@@ -2374,7 +2372,7 @@ select.form-control {
 
     display: inline-block;
 
-    background-color:#020202;
+    background-color:#0D3475;
 
     color: #fff;
 
@@ -2432,13 +2430,13 @@ select.form-control {
 
     .login-btns a{
 
-        background: #fc8b15;
+        background: #FFAA01;
 
         padding: 8px 15px !important;
 
         color: #fff;
 
-        border: 1px solid #fc8b15;
+        border: 1px solid #FFAA01;
 
         font-size: 18px;
 
@@ -2716,11 +2714,11 @@ ul.react-list img{
 
 .tags a.active{
 
-    background-color:#020202;
+    background-color:#0D3475;
 
     color: #fff;
 
-    border: 2px solid #020202;
+    border: 2px solid #0D3475;
 
 }
 
@@ -2886,7 +2884,7 @@ body.login .form-group input{
 
     border: 2px solid #fff;
 
-    background-color:#020202;
+    background-color:#0D3475;
 
     font-size: 12px;
 
@@ -2912,7 +2910,7 @@ body.login .form-group input{
 
     border-radius: 50%;
 
-    border: 2px solid #020202;
+    border: 2px solid #0D3475;
 
     object-fit: cover;
 
@@ -3268,7 +3266,7 @@ a.story-entry .ct-story {
 
 .profile-header{
 
-    padding: 180px 0 0 !important;
+    padding: 180px 0 138px !important;
 
 }
 

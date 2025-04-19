@@ -64,8 +64,65 @@ use Carbon\Carbon;
                         <div class="align-items-center d-flex justify-content-end g-12">
                             @if (Auth::check())
 
-                                <div class="group-control">
-                                    <a href="{{ route('ai_image.image_generator') }}" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #0D3475"></i></a>
+                            <div class="group-control">
+                                <a href="{{ route('ai_image.image_generator') }}" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #0D3475"></i></a>
+                            </div>
+
+                            <div class="group-control">
+                                <a href="javascript:;" class="notification-button"><img id="dark" src="{{$image}}" alt=""></a>
+                            </div>
+                            <div class="group-control">
+                                <a href="{{ route('profile.friends') }}" class="notification-button"><i
+                                        class="fa-solid fa-user-group"  style="color: #0D3475"></i></a>
+                            </div>
+                            @php
+                                $last_msg = \App\Models\Chat::where('sender_id', auth()->user()->id)
+                                    ->orWhere('reciver_id', auth()->user()->id)
+                                    ->orderBy('id', 'DESC')
+                                    ->limit('1')
+                                    ->first();
+                                if (!empty($last_msg)) {
+                                    if ($last_msg->sender_id == auth()->user()->id) {
+                                        $msg_to = $last_msg->reciver_id;
+                                    } else {
+                                        $msg_to = $last_msg->sender_id;
+                                    }
+                                }
+                                
+                                $unread_msg = \App\Models\Chat::where('reciver_id', auth()->user()->id)
+                                    ->where('read_status', '0')
+                                    ->count();
+                            @endphp
+                            <div class="inbox-control">
+                                <a href="@if(isset($msg_to)) {{ route('chat', $msg_to) }} @else {{route('chat','all')}} @endif"
+                                    class="message_custom_button position-relative">
+                                    <i class="fa-brands fa-rocketchat" style="color: #0D3475"></i>
+                                    @if ($unread_msg > 0)
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
+                                            {{ get_phrase($unread_msg) }}
+                                        </span>
+                                    @endif
+                                </a>
+                            </div>
+                            @php
+                                $unread_notification = \App\Models\Notification::where('reciver_user_id', auth()->user()->id)
+                                    ->where('status', '0')
+                                    ->count();
+                            @endphp
+
+                            <div class="notify-control ">
+                                <a class="notification-button position-relative" id="notification-button" href="javascript:;">
+                                    <i class="fa-solid fa-bell" style="color: #0D3475"></i>
+                                    @if ($unread_notification > 0)
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
+                                            {{ get_phrase($unread_notification) }}
+                                        </span>
+                                    @endif
+                                </a>
+                                <div class="notification_panel" id="notification_panel">
+                                    @include('frontend.notification.notification')
                                 </div>
 
                                 <div class="group-control">

@@ -206,7 +206,7 @@
                                     <button type="button" data-tab="tab-file" class="btn btn-secondary m_btn"><img
                                         src="<?php echo e(asset('storage/images/image.svg')); ?>"
                                         alt="photo"></button>
-                                    <button type="button" data-tab="tab-ai" class="btn btn-secondary m_btn"><i class="fa-solid fa-robot" style="color: #020202"></i></button>
+                                    <button type="button" data-tab="tab-ai" class="btn btn-secondary m_btn"><i class="fa-solid fa-robot" style="color: #0D3475"></i></button>
                                 <button type="button" data-tab="tab-tag" class="btn btn-secondary m_btn"><img
                                         src="<?php echo e(asset('storage/images/peoples.png')); ?>"
                                         alt="photo"></button>

@@ -38,11 +38,11 @@
 
 .crator-items {
 
-    aspect-ratio: 1/.90;
+    /* aspect-ratio: 1/.90; */
 
     max-width: 10rem;
 
-    min-height: 138px#020202
+    min-height: 138px#0D3475
 
 }
 
@@ -206,7 +206,7 @@
 
 }
 
-#020202
+#0D3475
 
 .live {
 

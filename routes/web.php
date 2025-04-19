@@ -159,6 +159,7 @@ Route::controller(MemoriesController::class)->middleware('auth', 'user', 'verifi
 // Badge  Controller
 Route::controller(BadgeController::class)->middleware('auth', 'user', 'verified', 'activity','prevent-back-history')->group(function () {
     Route::get('/badge', 'badge')->name('badge');
+    // Route::get('/badge-{type}', 'badge')->name('badge');
     Route::get('/badge/info', 'badge_info')->name('badge.info');
     Route::post('badge/payment_configuration/{id}', 'payment_configuration')->name('badge.payment_configuration');
 });

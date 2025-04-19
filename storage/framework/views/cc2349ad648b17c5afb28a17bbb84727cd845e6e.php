@@ -883,7 +883,7 @@ $user = Auth()->user();
 
                                 ->whereDate('end_date', '>=', $currentDate)
 
-                                ->first();#020202
+                                ->first();#0D3475
 
                               ?>
 
@@ -1818,7 +1818,7 @@ $user = Auth()->user();
 
                         onkeypress="postComment(this, 0, <?php echo e($post->post_id); ?>, 0,'post');" rows="1"
 
-                        placeholder="Write Comments">
+                        placeholder="Écrire des commentaires">
 
                 </form>
 

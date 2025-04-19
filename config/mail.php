@@ -93,8 +93,8 @@ return [
     */
 
     'from' => [
-        'address' => $config['MAIL_USERNAME'],
-        'name' => $config['MAIL_FROM_NAME'],
+        'address' => env('MAIL_FROM_ADDRESS'),
+        'name' => env('MAIL_FROM_NAME'),
     ],
 
     /*
