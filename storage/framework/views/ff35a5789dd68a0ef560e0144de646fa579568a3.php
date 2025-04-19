@@ -149,7 +149,7 @@
             <div class="d-flex align-items-center justify-content-between">
                 <h3 class="widget-title"><?php echo e(get_phrase('Active users')); ?> </h3>
                 <div class="d-flex align-items-center widget-controls">
-
+        
                 </div>
             </div>
             <div class="contact-lists side_contact mt-3">
@@ -157,70 +157,57 @@
                     $friends = \App\Models\Friendships::where(function ($query) {
                         $query->where('accepter', auth()->user()->id)->orWhere('requester', auth()->user()->id);
                     })
-                        ->where('is_accepted', 1)
-                        ->get();
-                 // Block User Each Other
-                $blockedByUser = DB::table('block_users')->where('user_id', auth()->user()->id)->pluck('block_user')->toArray();
-                $blockedByOthers = DB::table('block_users')->where('block_user', auth()->user()->id)->pluck('user_id')->toArray();
+                    ->where('is_accepted', 1)
+                    ->get();
+        
+                    // Block User Each Other
+                    $blockedByUser = DB::table('block_users')->where('user_id', auth()->user()->id)->pluck('block_user')->toArray();
+                    $blockedByOthers = DB::table('block_users')->where('block_user', auth()->user()->id)->pluck('user_id')->toArray();
                 ?>
-                <?php $__currentLoopData = $friends; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $friend): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                <?php 
-                //  User Block
-                if (in_array($friend->accepter, $blockedByUser)) {
-                        continue;
-                    }
-                    if (in_array($friend->requester, $blockedByOthers)) {
-                        continue;
-                    }
                 
+                <?php
+                    $displayedUsers = []; // Liste des utilisateurs déjà affichés
                 ?>
-                    <?php if($friend->requester == auth()->user()->id): ?>
-                        
-                        <?php if(!empty($friend->getFriendAccepter) && $friend->getFriendAccepter->isOnline()): ?>
-                            <?php if($friend->getFriendAccepter->id != auth()->user()->id): ?>
-                                <div class="single-contact d-flex align-items-center justify-content-between">
-                                    <div class="avatar d-flex">
-                                        <a href="<?php echo e(route('chat', $friend->getFriendAccepter->id)); ?>"
-                                            class="d-flex align-items-center">
-                                            <div class="avatar me-2">
-                                                <img src="<?php echo e(get_user_image($friend->getFriendAccepter->photo, 'optimized')); ?>"
-                                                    class="rounded-circle w-45px" alt="">
-                                                <span class="online-status active"></span>
-                                            </div>
-                                            <h4><?php echo e($friend->getFriendAccepter->name); ?></h4>
-                                        </a>
+        
+                <?php $__currentLoopData = $friends; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $friend): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <?php 
+                        // Vérification si l'utilisateur est bloqué par l'autre utilisateur ou si l'autre utilisateur est bloqué
+                        if (in_array($friend->accepter, $blockedByUser) || in_array($friend->requester, $blockedByOthers)) {
+                            continue;
+                        }
+        
+                        // Définir l'ami à afficher
+                        $user = null;
+                        if ($friend->requester == auth()->user()->id && !empty($friend->getFriendAccepter)) {
+                            $user = $friend->getFriendAccepter;
+                        } elseif (!empty($friend->getFriend)) {
+                            $user = $friend->getFriend;
+                        }
+                    ?>
+        
+                    <?php if($user && $user->id != auth()->user()->id && $user->isOnline() && !in_array($user->id, $displayedUsers)): ?>
+                        <?php
+                            $displayedUsers[] = $user->id; // Marquer cet utilisateur comme déjà affiché
+                        ?>
+        
+                        <div class="single-contact d-flex align-items-center justify-content-between">
+                            <div class="avatar d-flex">
+                                <a href="<?php echo e(route('chat', $user->id)); ?>" class="d-flex align-items-center">
+                                    <div class="avatar me-2">
+                                        <img src="<?php echo e(get_user_image($user->photo, 'optimized')); ?>" class="rounded-circle w-45px h-45" alt="">
+                                        <span class="online-status active"></span>
                                     </div>
-                                    <div class="login-time">
-
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        <?php endif; ?>
-                    <?php else: ?>
-                        <?php if($friend->getFriend->isOnline()): ?>
-                            <?php if($friend->getFriend->id != auth()->user()->id): ?>
-                                <div class="single-contact d-flex align-items-center justify-content-between">
-                                    <div class="avatar d-flex">
-                                        <a href="<?php echo e(route('chat', $friend->getFriend->id)); ?>"
-                                            class="d-flex align-items-center">
-                                            <div class="avatar me-2">
-                                                <img src="<?php echo e(get_user_image($friend->getFriend->photo, 'optimized')); ?>"
-                                                    class="rounded-circle w-45px h-45" alt="">
-                                                <span class="online-status active"></span>
-                                            </div>
-                                            <h4><?php echo e($friend->getFriend->name); ?></h4>
-                                        </a>
-                                    </div>
-                                    <div class="login-time">
-
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-                        <?php endif; ?>
+                                    <h4><?php echo e($user->name); ?></h4>
+                                </a>
+                            </div>
+                            <div class="login-time">
+                                <!-- Optionnel : ajout d'autres infos comme la dernière activité -->
+                            </div>
+                        </div>
                     <?php endif; ?>
                 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
-        </div> <!-- Widget End -->
+        </div> <!-- Widget End -->        
     <?php endif; ?>
     <?php if(Route::currentRouteName() == 'profile' ||
             Route::currentRouteName() == 'profile.photos' ||

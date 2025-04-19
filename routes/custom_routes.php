@@ -357,8 +357,7 @@ Route::controller(AdminCrudController::class)->group(function () {
    // Badge Raoute Here
    Route::get('admin/badge', 'badge')->name('admin.badge')->middleware('auth', 'verified', 'admin', 'prevent-back-history');  
    Route::get('admin/badge/delete/{id}', 'delete_badge_history')->name('admin.badge.delete')->middleware('auth', 'verified', 'admin', 'prevent-back-history');  
-
-   Route::POST('admin/badge/price/save/', 'badge_settings_save')->name('admin.badge.price.save')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
+   Route::post('admin/badge/price/save/', 'badge_settings_save')->name('admin.badge.price.save')->middleware('auth', 'verified', 'admin', 'prevent-back-history');
 
    // Badge Raoute Here
 

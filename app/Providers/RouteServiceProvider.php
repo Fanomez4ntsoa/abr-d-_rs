@@ -67,14 +67,9 @@ class RouteServiceProvider extends ServiceProvider
             if (DB::connection()->getDatabaseName() != 'db_name') {
                 if (Schema::hasTable('addons')) {
                     if (addon_status('fundraiser') == 1) {
-                        try {
-                            Route::middleware('web')
-                            ->namespace($this->namespace)
-                            ->group(base_path('routes/fundraiser.php'));
-                        } catch (\Throwable $th) {
-                            $error = $th->getMessage();
-                        }
-                        
+                        Route::middleware('web')
+                        ->namespace($this->namespace)
+                        ->group(base_path('routes/fundraiser.php'));
                     }
                 }
             }

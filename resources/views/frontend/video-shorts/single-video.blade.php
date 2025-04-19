@@ -131,7 +131,7 @@
             <div class="comment-form d-flex mb-1">
                 <img src="{{get_user_image(Auth()->user()->photo, 'optimized')}}" alt="" class="h-39 rounded-circle img-fluid" width="40px">
                 <form action="javascript:void(0)" class="w-100 ms-2" method="post">
-                    <input class="form-control py-3" onkeypress="postComment(this, 0, {{$post->post_id}}, 0,'post');" rows="1" placeholder="Write Comments">
+                    <input class="form-control py-3" onkeypress="postComment(this, 0, {{$post->post_id}}, 0,'post');" rows="1" placeholder="Écrire des commentaires.">
                 </form>
             </div>
             <ul class="comment-wrap p-3 pb-0 list-unstyled" id="comments{{$post->post_id}}">

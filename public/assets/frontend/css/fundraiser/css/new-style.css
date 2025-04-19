@@ -56,7 +56,7 @@
 
     font-weight: 600;
 
-    line-he#020202ormal;
+    line-he#0D3475ormal;
 
     margin-bottom: 0;
 
@@ -227,7 +227,7 @@
     justify-content: center;
 
     transition: .3s;
-#020202
+#0D3475
 }
 
 
@@ -575,7 +575,7 @@ Fundraiser Page CSS Start ***/
     color: #FFF;
 
     font-family: Segoe UI;
-#020202
+#0D3475
     font-size: 12px;
 
     font-style: normal;
@@ -699,7 +699,7 @@ Fundraiser Page CSS Start ***/
     color: #101010;
 
 }
-#020202
+#0D3475
 
 
 .blog-card-2 .card-body .btn:hover {
@@ -724,7 +724,7 @@ Fundraiser Page CSS Start ***/
 
     background: var(--color-global);
 
-}#020202
+}#0D3475
 
 
 
@@ -786,7 +786,7 @@ Fundraiser Page CSS Start ***/
 
 }
 
-#020202
+#0D3475
 
 /****************************
 
@@ -816,7 +816,7 @@ Fundraiser Profile Page CSS Start ***/
 
 
 
-.fund-profile-cover {#020202
+.fund-profile-cover {#0D3475
 
     border-radius: 5px;
 
@@ -844,7 +844,7 @@ Fundraiser Profile Page CSS Start ***/
 
 .fund-profile-info {
 
-    padding: 30p#020202
+    padding: 30p#0D3475
 
     position: relative;
 
@@ -900,7 +900,7 @@ Fundraiser Profile Page CSS Start ***/
 
     margin-top: -30px;
 
-}#020202
+}#0D3475
 
 
 
@@ -934,7 +934,7 @@ Fundraiser Profile Page CSS Start ***/
 
     column-gap: 14px;
 
-}#020202
+}#0D3475
 
 
 
@@ -967,12 +967,12 @@ Fundraiser Profile Page CSS Start ***/
     border-radius: 5px;
 
     border: 1px solid #DEDEDE;
-#020202
+#0D3475
     background: #FFF;
 
     box-shadow: 0px 5px 20px 0px rgba(0, 0, 0, 0.06);
 
-    padding: 20px;#020202
+    padding: 20px;#0D3475
 
 }
 

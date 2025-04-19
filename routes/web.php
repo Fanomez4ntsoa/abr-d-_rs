@@ -10,7 +10,6 @@ use App\Http\Controllers\StoryController;
 use App\Http\Controllers\Updater;
 use Illuminate\Http\Request;
 use App\Models\Account_active_request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -156,6 +155,7 @@ Route::controller(MemoriesController::class)->middleware('auth', 'user', 'verifi
 // Badge  Controller
 Route::controller(BadgeController::class)->middleware('auth', 'user', 'verified', 'activity','prevent-back-history')->group(function () {
     Route::get('/badge', 'badge')->name('badge');
+    // Route::get('/badge-{type}', 'badge')->name('badge');
     Route::get('/badge/info', 'badge_info')->name('badge.info');
     Route::post('badge/payment_configuration/{id}', 'payment_configuration')->name('badge.payment_configuration');
 });

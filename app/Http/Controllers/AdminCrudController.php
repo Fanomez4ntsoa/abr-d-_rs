@@ -29,6 +29,7 @@ use Illuminate\Validation\Rule;
 use Image;
 use Session;
 use App\Models\Badge;
+use Illuminate\Support\Facades\Log;
 
 class AdminCrudController extends Controller
 {
@@ -813,9 +814,25 @@ class AdminCrudController extends Controller
 
     // Badge Start
     public function Badge(){  
-        $page_data['badges'] = Badge::get();
-        $page_data['badge_price'] = Setting::where('type', 'badge_price')->value('description');
-        $page_data['view_path'] = 'badge.badge-history';
+        // $page_data['badges'] = Badge::get();
+        // $page_data['badge_price'] = Setting::where('type', 'badge_price')->value('description');
+        // $page_data['view_path'] = 'badge.badge-history';
+        // return view('backend.index', $page_data);
+
+        // Récupérer les prix des badges
+        $badge_price = Setting::where('type', 'badge_price')->value('description');
+        $badge_price_pro = Setting::where('type', 'badge_price_pro')->value('description');
+
+        // Récupérer tous les badges (Simple et Pro) pour l'historique
+        $badges = Badge::orderBy('id', 'DESC')->get();
+
+        // Préparer les données pour la vue
+        $page_data['badge_price'] = $badge_price;
+        $page_data['badge_price_pro'] = $badge_price_pro;
+        $page_data['badges'] = $badges;
+        $page_data['view_path'] = 'badge.badge-history'; // Chemin de la sous-vue
+
+        // Rendre la vue via le layout principal
         return view('backend.index', $page_data);
     }
 
@@ -829,9 +846,42 @@ class AdminCrudController extends Controller
 
     public function badge_settings_save(Request $request)
     {
-        Setting::where('type', 'badge_price')->update(['description' => $request->badge_price]);
-        flash()->addSuccess('Badge Price Updated Successfully');
-        return redirect()->back();
+        // Setting::where('type', 'badge_price')->update(['description' => $request->badge_price]);
+        // flash()->addSuccess('Badge Price Updated Successfully');
+        // return redirect()->back();
+
+        // Valider les données
+        $request->validate([
+            'type' => 'required|in:simple,pro',
+            'badge_price' => 'required|numeric|min:0',
+        ]);
+
+        // Récupérer le type et le prix depuis le formulaire
+        $type = $request->input('type');
+        $price = $request->input('badge_price');
+
+        // Déterminer la clé à mettre à jour
+        $setting_key = $type === 'simple' ? 'badge_price' : 'badge_price_pro';
+
+        // Ajouter un log pour déboguer
+        Log::info('Saving price: Type = ' . $type . ', Setting Key = ' . $setting_key . ', Price = ' . $price);
+        
+        try {
+            // Mettre à jour la table settings
+            Setting::updateOrCreate(
+                ['type' => $setting_key],
+                ['description' => $price]
+            );
+        
+            // Rediriger avec un message de succès
+            return redirect()->route('admin.badge')->with('success', get_phrase('Price updated successfully'));
+        } catch (\Exception $e) {
+            // Ajouter un log pour l'erreur
+            Log::error('Error saving badge price: ' . $e->getMessage());
+        
+            // Rediriger avec un message d'erreur
+            return redirect()->route('admin.badge')->with('error', get_phrase('Failed to update price: ') . $e->getMessage());
+        }
     }
 
   //=========== job Addon  Start Here  ============//

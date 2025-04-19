@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     use HasFactory;
+
+    protected $table = 'settings';
+
+    protected $primaryKey = 'setting_id';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
+    
+    protected $fillable = ['type', 'description'];
 }

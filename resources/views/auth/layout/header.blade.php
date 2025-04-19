@@ -13,28 +13,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="{{ get_system_logo_favicon($system_favicon,'favicon') }}">
 
-    <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/fontawesome/all.min.css') }}">
-    <!-- CSS Library -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/owl.carousel.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/nice-select.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/venobox.min.css') }}">
 
-    <!-- Style css -->
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/frontend/css/own.css') }}">
-
-   
 </head>
 
 <body class="bg-white login">
 
-
 @php $system_light_logo = \App\Models\Setting::where('type', 'system_light_logo')->value('description'); @endphp
 
-<!-- header -->
-    <header class="header header-default py-3">
+<header class="header header-default py-3">
     <nav class="navigation">
         <div class="container">
             <div class="row">
@@ -53,16 +46,37 @@
                     <div class="login-btns ms-5">
                         <a href="{{ route('login') }}" class="btn @if(Route::currentRouteName() == 'login' || Route::currentRouteName() == 'verification.notice') active @endif">
                             {{ __('Connexion') }}
-                        </a>                        
+                        </a>
                         @if(get_settings('public_signup') == 1)
                             <a href="{{ route('register') }}" class="btn @if(Route::currentRouteName() == 'register') active @endif">
                                 {{ __("S'inscrire") }}
                             </a>
-                        @endif                        
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 </header>
-<!-- Header End -->
+
+<style>
+    @media only screen and (max-width: 767px) {
+        .navbar-brand img {
+            height: 25px;
+            max-width: 200px;
+        }
+
+        .login-btns .btn {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+
+        .login-btns .btn.active {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+    }
+</style>
+
+</body>
+</html>

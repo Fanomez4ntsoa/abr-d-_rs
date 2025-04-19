@@ -15,7 +15,7 @@
             
             <form method="GET" action="{{ route('filter.product') }}" class=" row">
                 <div class="form-group mb-12">
-                    <input type="search" class="submit_on_enter inputs " name="search" value="@if(isset($_GET['search']) && $_GET['search']!="" ){{$_GET['search']}}@endif" class="bg-secondary rounded" placeholder="Type To Search">
+                    <input type="search" class="submit_on_enter inputs " name="search" value="@if(isset($_GET['search']) && $_GET['search']!="" ){{$_GET['search']}}@endif" class="bg-secondary rounded" placeholder="Tapez pour rechercher">
                 </div>
                 <h3 class="sub-title">{{get_phrase('Filters')}}</h3>
                 <div class="row">
@@ -60,7 +60,7 @@
                     </div> --}}
                     <div class="col-md-4">
                         <div class="form-group ">
-                            <input type="text" name="location" class="submit_on_enter pl-18" value="@if(isset($_GET['location']) && $_GET['location']!="" ){{$_GET['location']}}@endif"  placeholder="Location">
+                            <input type="text" name="location" class="submit_on_enter pl-18" value="@if(isset($_GET['location']) && $_GET['location']!="" ){{$_GET['location']}}@endif"  placeholder="Localisation">
                         </div>
                     </div>
                 </div>

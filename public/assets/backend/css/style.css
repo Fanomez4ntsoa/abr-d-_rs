@@ -243,9 +243,10 @@ Common styles END
 }
 
 .btn-primary {
-  background-color: #00a3ff !important;
-  border-color: #00a3ff !important;
+  background-color: #FFAA01 !important; /* Ton orange */
+  border-color: #FFAA01 !important; /* Bordure de l'orange */
 }
+
 
 .btn-warning {
   background-color: #ffc700 !important;

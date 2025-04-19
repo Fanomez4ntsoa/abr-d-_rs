@@ -45,7 +45,7 @@ class ChatController extends Controller
     public function chat_save(Request $request){
         $reciver = $request->reciver_id;
         $user_id = auth()->user()->id;
-        
+
         $firstmessageThrade = Message_thrade::where(function ($query) use($reciver,$user_id) {
             $query->where('sender_id', $reciver)
                 ->where('reciver_id', $user_id);
@@ -55,7 +55,7 @@ class ChatController extends Controller
         })
         ->first();
 
-        
+
         $messageThradeCount = Message_thrade::where(function ($query) use($reciver,$user_id) {
             $query->where('sender_id', $reciver)
                 ->where('reciver_id', $user_id);
@@ -103,7 +103,7 @@ class ChatController extends Controller
                         }
                        // $file_name = $file_name.'.'.$file_extention;
 
-                        
+
                         $media_file_data = array('user_id' => auth()->user()->id,'chat_id'=>$last_chat_id, 'file_name' => $file_name, 'file_type' => $file_type, 'privacy' => 'public');
                         $media_file_data['created_at'] = time();
                         $media_file_data['updated_at'] = $media_file_data['created_at'];
@@ -118,7 +118,7 @@ class ChatController extends Controller
                 }else{
                     $response = array('appendElement' => '#message_body','content' => $message,'clickTo'=>'#messageResetBox');
                 }
-                
+
                 return json_encode($response);
             }
         }else{
@@ -153,9 +153,9 @@ class ChatController extends Controller
                     }
                     //$file_name = $file_name.'.'.$file_extention;
 
-                    
+
                     $media_file_data = array('user_id' => auth()->user()->id,'chat_id'=> $last_chat_id , 'file_name' => $file_name, 'file_type' => $file_type, 'privacy' => 'public');
-                    
+
                     $media_file_data['chat_id'] = $chat->id;
                     $media_file_data['created_at'] = time();
                     $media_file_data['updated_at'] = $media_file_data['created_at'];
@@ -221,7 +221,7 @@ class ChatController extends Controller
             })
             ->orWhere(function($query) use ($user){
                 $query->where('sender_id',$user->id)->where('reciver_id', auth()->user()->id);
-            })->limit(1)->orderBy('id', 'desc')->first();            
+            })->limit(1)->orderBy('id', 'desc')->first();
 
             $lastText = $lastMsg->thumbsup == "1"? "<i class='fa-solid fa-thumbs-up'></i>":$lastMsg->message;
             $output.='<div class="single-contact d-flex align-items-center justify-content-between">
@@ -229,7 +229,7 @@ class ChatController extends Controller
                             <a href="'.route('chat',$user->id) .' " class="d-flex align-items-center">
                                 <div class="avatar me-3">
                                     <img src=" '. get_user_image($user->photo,'optimized') .' " class="img-fluid rounded-circle h-39" alt="">
-                                    
+
                                 </div>
                             </a>
                             <div class="avatar-info">
@@ -247,10 +247,10 @@ class ChatController extends Controller
                                 </ul>
                             </div>
                         </div>
-                    </div>';              
+                    </div>';
         }
         return $output;
-        
+
     }
 
 
@@ -283,7 +283,7 @@ class ChatController extends Controller
     }
 
 
-  
+
 
 
 
@@ -297,6 +297,3 @@ class ChatController extends Controller
 
 
 }
-
-
-

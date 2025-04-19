@@ -175,7 +175,7 @@
   "use strict";
   $(document).ready(function(){
     // Chart Global Color
-    Chart.defaults.color = "#020202";
+    Chart.defaults.color = "#0D3475";
     Chart.defaults.borderColor = "#fafaff";
     
     
@@ -203,7 +203,7 @@
                           <?php echo DB::table('users')->whereDate('created_at', '>=', $year.'-12-01')->whereDate('created_at', '<=', $year.'-12-'.date('t', strtotime($year.'-12-01')))->count(); ?>,
 
                         ],
-                      backgroundColor: "#020202"
+                      backgroundColor: "#0D3475"
                   }
               ]
               },

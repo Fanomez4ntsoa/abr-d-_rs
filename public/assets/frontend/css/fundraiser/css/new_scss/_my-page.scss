@@ -35,7 +35,7 @@
 .page-s-btn {
   @include d-center;
   height: toRem(35);
-  background-color:#020202;
+  background-color:#0D3475;
   border-radius: toRem(5);
   @include fontFamily(14, $fw_SemiBold, 22, #fff);
   &:hover {
@@ -59,11 +59,11 @@
       height: toRem(26);
       background-color: #dfd9f6;
       border-radius: 50%;
-      color: #020202;
+      color: #0D3475;
       transition: all 0.3s;
 
       &:hover {
-        background-color:#020202;
+        background-color:#0D3475;
         color: #fff;
       }
     }
@@ -135,7 +135,7 @@
     height: toRem(45);
     margin: 0 auto;
     border-radius: toRem(5);
-    background-color:#020202;
+    background-color:#0D3475;
     @include fontFamily(16, $fw_SemiBold, 22, #fff);
   }
 
@@ -158,5 +158,5 @@
   height: toRem(45);
   border-radius: toRem(5);
   background-color: #dfd9f6;
-  @include fontFamily(16, $fw_SemiBold, 22, #020202);
+  @include fontFamily(16, $fw_SemiBold, 22, #0D3475);
 }

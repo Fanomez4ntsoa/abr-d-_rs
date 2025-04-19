@@ -168,8 +168,8 @@ Common styles END
   border-color: #f1416c !important;
 }
 .btn-primary {
-  background-color: #00a3ff !important;
-  border-color: #00a3ff !important;
+  background-color: #FFAA01 !important; /* Ton orange */
+  border-color: #FFAA01 !important; /* Bordure de l'orange */
 }
 .btn-warning {
   background-color: #ffc700 !important;
@@ -373,7 +373,7 @@ Common styles END
     overflow-x: hidden;
   }
   .navigation-section > .navigation-section-backdrop {
-    background-color: #02020259;
+    background-color: #0D347559;
     z-index: 10;
     position: fixed;
     top: 0;

@@ -268,7 +268,7 @@
   font-size: 1.875rem;
   font-weight: 700;
   line-height: 1.375rem;
-  color: #020202;
+  color: #0D3475;
 }
 
 .fz-34-b-34-black {
@@ -307,7 +307,7 @@
 
 .eForm-control:focus,
 .eForm-control:hover {
-  border: 0.0625rem solid #020202;
+  border: 0.0625rem solid #0D3475;
 }
 
 .eForm-control::-moz-placeholder {
@@ -334,12 +334,12 @@ textarea.eForm-control {
   margin-top: 0.35em;
   margin-right: 0.3125rem;
   box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
-  border: 1px solid #020202;
+  border: 1px solid #0D3475;
 }
 
 .eForm-check:checked {
-  background-color:#020202;
-  border-color: #020202;
+  background-color:#0D3475;
+  border-color: #0D3475;
 }
 
 .eForm-check~label {
@@ -351,7 +351,7 @@ textarea.eForm-control {
 
 .eForm-check~label a {
   text-decoration: none;
-  color: #020202 !important;
+  color: #0D3475 !important;
 }
 
 .pcMonthlyPrice .input-group-text {
@@ -450,11 +450,11 @@ textarea.eForm-control {
 
 .sp_Modal .modal-dialog .modal-content .modal-body .confirmBtn .btn-red {
   background-color: #dfd9f6 !important;
-  color: #020202 !important;
+  color: #0D3475 !important;
 }
 
 .sp_Modal .modal-dialog .modal-content .modal-body .confirmBtn .btn-yes {
-  background-color:#020202 !important;
+  background-color:#0D3475 !important;
 }
 
 .sp_Modal .modal-dialog.withDrawalModal {
@@ -502,7 +502,7 @@ textarea.eForm-control {
   justify-content: center;
   align-items: center;
   height: 2.1875rem;
-  background-color:#020202;
+  background-color:#0D3475;
   border-radius: 0.3125rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -532,12 +532,12 @@ textarea.eForm-control {
   height: 1.625rem;
   background-color: #dfd9f6;
   border-radius: 50%;
-  color: #020202;
+  color: #0D3475;
   transition: all 0.3s;
 }
 
 .social-links li a:hover {
-  background-color:#020202;
+  background-color:#0D3475;
   color: #fff;
 }
 
@@ -632,7 +632,7 @@ textarea.eForm-control {
   height: 2.8125rem;
   margin: 0 auto;
   border-radius: 0.3125rem;
-  background-color:#020202;
+  background-color:#0D3475;
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.375rem;
@@ -664,7 +664,7 @@ textarea.eForm-control {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.375rem;
-  color: #020202;
+  color: #0D3475;
 }
 
 .about-profile {
@@ -699,7 +699,7 @@ textarea.eForm-control {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1.625rem;
-  color: #020202;
+  color: #0D3475;
 }
 
 .locked {
@@ -740,7 +740,7 @@ textarea.eForm-control {
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.5rem;
-  color: #020202;
+  color: #0D3475;
 }
 
 .locked-info .info {
@@ -754,7 +754,7 @@ textarea.eForm-control {
 .locked-info a {
   display: inline-flex;
   padding: 0.75rem 1.875rem;
-  background-color:#020202;
+  background-color:#0D3475;
   border-radius: 0.3125rem;
   font-size: 1rem;
   font-weight: 600;
@@ -772,7 +772,7 @@ textarea.eForm-control {
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.5rem;
-  color: #020202;
+  color: #0D3475;
 }
 
 .sign-log-content {
@@ -869,7 +869,7 @@ textarea.eForm-control {
   align-items: center;
   height: 3.75rem;
   border-radius: 0.625rem;
-  background-color:#020202;
+  background-color:#0D3475;
   text-decoration: none;
   font-size: 1.125rem;
   font-weight: 600;
@@ -886,14 +886,14 @@ textarea.eForm-control {
 }
 
 .sign-log-link a {
-  color: #020202 !important;
+  color: #0D3475 !important;
 }
 
 .formLink {
   font-size: 1rem;
   font-weight: 600;
   line-height: 1rem;
-  color: #020202 !important;
+  color: #0D3475 !important;
   text-decoration: none;
 }
 
@@ -960,7 +960,7 @@ textarea.eForm-control {
 .eNav-Tabs-custom button.nav-link:hover span {
   width: 100%;
   z-index: 1;
-  background-color:#020202;
+  background-color:#0D3475;
 }
 
 .eNav-Tabs-custom button.nav-link span {
@@ -971,7 +971,7 @@ textarea.eForm-control {
   position: absolute;
   top: -1px;
   left: 0;
-  background-color:#020202;
+  background-color:#0D3475;
   z-index: 1;
   transition: all 0.3s;
 }
@@ -1090,7 +1090,7 @@ textarea.eForm-control {
 
 .btn-save,
 .btn-upload {
-  background-color:#020202;
+  background-color:#0D3475;
   color: #fff !important;
 }
 
@@ -1098,7 +1098,7 @@ textarea.eForm-control {
   display: inline-block;
   padding: 0.625rem 1.25rem 0.6875rem;
   border-radius: 0.3125rem;
-  background-color:#020202;
+  background-color:#0D3475;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.375rem;
@@ -1155,7 +1155,7 @@ textarea.eForm-control {
 }
 
 .form-switch input.form-check-input:checked {
-  background-color:#020202 !important;
+  background-color:#0D3475 !important;
 }
 
 .withdrawalOptions .row {
@@ -1289,13 +1289,13 @@ textarea.eForm-control {
 
 .t-Download-btn a:hover {
   color: #fff !important;
-  background-color:#020202;
+  background-color:#0D3475;
 }
 
 .btn-paypal {
   display: inline-block;
   padding: 0.6875rem 1.25rem 0.625rem;
-  background-color:#020202;
+  background-color:#0D3475;
   border-radius: 0.3125rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1311,13 +1311,13 @@ textarea.eForm-control {
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.375rem;
-  color: #020202 !important;
+  color: #0D3475 !important;
 }
 
 .btn-started {
   display: inline-block;
   padding: 0.75rem 1.8125rem;
-  background-color:#020202;
+  background-color:#0D3475;
   border-radius: 0.3125rem;
   font-size: 0.875rem;
   font-weight: 600;
@@ -1480,7 +1480,7 @@ textarea.eForm-control {
   align-items: center;
   padding: 0.875rem 1.8125rem;
   border-radius: 1.5625rem;
-  background-color:#020202;
+  background-color:#0D3475;
   font-size: 1.0625rem;
   font-weight: 600;
   line-height: 1.375rem;
@@ -1547,7 +1547,7 @@ textarea.eForm-control {
   align-items: center;
   background-color: #dfd9f6;
   font-size: 2.5625rem;
-  color: #020202;
+  color: #0D3475;
 }
 
 .feedWithout .info {

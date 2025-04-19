@@ -880,7 +880,7 @@ $user = Auth()->user();
 
                                 ->first();
 
-                              @endphp#020202
+                              @endphp#0D3475
 
                               <div class="eUserFeature">
 
@@ -1822,7 +1822,7 @@ $user = Auth()->user();
 
                         onkeypress="postComment(this, 0, {{ $post->post_id }}, 0,'post');" rows="1"
 
-                        placeholder="Write Comments">
+                        placeholder="Écrire des commentaires">
 
                 </form>
 

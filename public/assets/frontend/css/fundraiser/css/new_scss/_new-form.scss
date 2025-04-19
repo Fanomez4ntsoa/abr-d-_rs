@@ -20,7 +20,7 @@ $f-border-hover-size: toRem(1);
 $f-border-style: solid;
 $f-border-hover-style: solid;
 $f-border-color: #c4c4c4;
-$f-border-hover-color: #020202;
+$f-border-hover-color: #0D3475;
 $f-border-radius: toRem(10);
 // Placeholder Font
 $f-p-font-size: 13;
@@ -87,16 +87,16 @@ textarea {
   margin-top: 0.35em;
   margin-right: toRem(5);
   box-shadow: 0 0 0 rgba(0, 0, 0, 0) !important;
-  border: 1px solid #020202;
+  border: 1px solid #0D3475;
   &:checked {
-    background-color:#020202;
-    border-color: #020202;
+    background-color:#0D3475;
+    border-color: #0D3475;
   }
   ~ label {
     @include fontFamily(14, $fw_SemiBold, 16, #101010);
     a {
       text-decoration: none;
-      color: #020202 !important;
+      color: #0D3475 !important;
     }
   }
 }

@@ -78,7 +78,7 @@ a.story-entry {
             width  : 40px;
             height : 40px;
             padding: 1px;
-            border : 2px solid #020202;
+            border : 2px solid #0D3475;
             @include border-radius(50%);
         }
     }
@@ -295,7 +295,7 @@ section.create-story-sec {
     }
 
     &:nth-child(3) {
-        background-color: #fc8b15;
+        background-color: #FFAA01;
     }
 
     &:nth-child(4) {
