@@ -897,7 +897,7 @@ class AdminCrudController extends Controller
 
     public function video_edit($id)
     {
-        $page_data['video_details'] = Video::find($id)->first();
+        $page_data['video_details'] = Video::find($id);
         $page_data['view_path'] = 'video.edit';
         return view('backend.index', $page_data);
     }
