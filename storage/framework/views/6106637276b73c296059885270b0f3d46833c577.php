@@ -4,9 +4,11 @@ use App\Models\User;
 use Carbon\Carbon;
 
         $date = Carbon::today();
-        $new_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('status', '0')
-            ->orderBy('id', 'DESC')->get();
-        $older_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('created_at', '<', $date)->orderBy('id', 'DESC')->get();
+        if(Auth::check()){
+            $new_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('status', '0')
+                ->orderBy('id', 'DESC')->get();
+            $older_notification = Notification::where('reciver_user_id', auth()->user()->id)->where('created_at', '<', $date)->orderBy('id', 'DESC')->get();
+        }
 
 ?>
 
@@ -60,6 +62,7 @@ use Carbon\Carbon;
                 <div class="col-lg-4 col-sm-8">
                     <div class="header-controls">
                         <div class="align-items-center d-flex justify-content-end g-12">
+                            <?php if(Auth::check()): ?>
 
                             <div class="group-control">
                                 <a href="<?php echo e(route('ai_image.image_generator')); ?>" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #0D3475"></i></a>
@@ -123,60 +126,128 @@ use Carbon\Carbon;
                                 <div class="notification_panel" id="notification_panel">
                                     <?php echo $__env->make('frontend.notification.notification', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
                                 </div>
-                            </div>
-                            
-                            <div class="profile-control dropdown">
-                                <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="<?php echo e(get_user_image(auth()->user()->photo, 'optimized')); ?>"
-                                        class="rounded-circle" alt="">
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item"
-                                            href="<?php echo e(route('profile')); ?>"><?php echo e(get_phrase('My Profile')); ?></a></li>
-                                    <?php if(auth()->user()->user_role == 'admin'): ?>
-                                        <li><a class="dropdown-item"
-                                                href="<?php echo e(route('admin.dashboard')); ?>"><?php echo e(get_phrase('Go to admin panel')); ?></a>
-                                        </li>
-                                    <?php endif; ?>
 
-                                    <?php if(auth()->user()->user_role == 'general'): ?>
-                                        <li><a class="dropdown-item"
-                                                href="<?php echo e(route('user.dashboard')); ?>"><?php echo e(get_phrase('Dashboard')); ?></a>
-                                        </li>
-                                    <?php endif; ?>
-
+                                <div class="group-control">
+                                    <a href="javascript:;" class="notification-button"><img id="dark" src="<?php echo e($image); ?>" alt=""></a>
+                                </div>
+                                <div class="group-control">
+                                    <a href="<?php echo e(route('profile.friends')); ?>" class="notification-button"><i
+                                            class="fa-solid fa-user-group"  style="color: #0D3475"></i></a>
+                                </div>
+                                <?php
+                                    $last_msg = \App\Models\Chat::where('sender_id', auth()->user()->id)
+                                        ->orWhere('reciver_id', auth()->user()->id)
+                                        ->orderBy('id', 'DESC')
+                                        ->limit('1')
+                                        ->first();
+                                    if (!empty($last_msg)) {
+                                        if ($last_msg->sender_id == auth()->user()->id) {
+                                            $msg_to = $last_msg->reciver_id;
+                                        } else {
+                                            $msg_to = $last_msg->sender_id;
+                                        }
+                                    }
                                     
-                                    <li>
-                                        <a class="dropdown-item"
-                                            href="<?php echo e(route('user.settings')); ?>"><?php echo e(get_phrase('Payment Settings')); ?>
+                                    $unread_msg = \App\Models\Chat::where('reciver_id', auth()->user()->id)
+                                        ->where('read_status', '0')
+                                        ->count();
+                                ?>
+                                <div class="inbox-control">
+                                    <a href="<?php if(isset($msg_to)): ?> <?php echo e(route('chat', $msg_to)); ?> <?php else: ?> <?php echo e(route('chat','all')); ?> <?php endif; ?>"
+                                        class="message_custom_button position-relative">
+                                        <i class="fa-brands fa-rocketchat" style="color: #0D3475"></i>
+                                        <?php if($unread_msg > 0): ?>
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
+                                                <?php echo e(get_phrase($unread_msg)); ?>
 
-                                        </a>
-                                    </li>
-                                    
-                                    <?php if(auth()->user()->status == 1): ?>
+                                            </span>
+                                        <?php endif; ?>
+                                    </a>
+                                </div>
+                                <?php
+                                    $unread_notification = \App\Models\Notification::where('reciver_user_id', auth()->user()->id)
+                                        ->where('status', '0')
+                                        ->count();
+                                ?>
+
+                                <div class="notify-control ">
+                                    <a class="notification-button position-relative" id="notification-button" href="javascript:;">
+                                        <i class="fa-solid fa-bell" style="color: #0D3475"></i>
+                                        <?php if($unread_notification > 0): ?>
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
+                                                <?php echo e(get_phrase($unread_notification)); ?>
+
+                                            </span>
+                                        <?php endif; ?>
+                                    </a>
+                                    <div class="notification_panel" id="notification_panel">
+                                        <?php echo $__env->make('frontend.notification.notification', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                    </div>
+                                </div>
+                                
+                                <div class="profile-control dropdown">
+                                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton1"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="<?php echo e(get_user_image(auth()->user()->photo, 'optimized')); ?>"
+                                            class="rounded-circle" alt="">
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item"
+                                                href="<?php echo e(route('profile')); ?>"><?php echo e(get_phrase('My Profile')); ?></a></li>
+                                        <?php if(auth()->user()->user_role == 'admin'): ?>
+                                            <li><a class="dropdown-item"
+                                                    href="<?php echo e(route('admin.dashboard')); ?>"><?php echo e(get_phrase('Go to admin panel')); ?></a>
+                                            </li>
+                                        <?php endif; ?>
+
+                                        <?php if(auth()->user()->user_role == 'general'): ?>
+                                            <li><a class="dropdown-item"
+                                                    href="<?php echo e(route('user.dashboard')); ?>"><?php echo e(get_phrase('Dashboard')); ?></a>
+                                            </li>
+                                        <?php endif; ?>
+
+                                        
                                         <li>
-                                            <a href="<?php echo e(route('all_settings.view')); ?>" 
-                                            class="dropdown-item"><?php echo e(get_phrase('Settings')); ?></a>
-                                        </li>
-                                    <?php endif; ?>
-
-                                    <li><a class="dropdown-item"
-                                            href="<?php echo e(route('user.password.change')); ?>"><?php echo e(get_phrase('Change Password')); ?></a>
-                                    </li>
-                                    <li>
-                                        <form method="POST" action="<?php echo e(route('logout')); ?>">
-                                            <?php echo csrf_field(); ?>
-                                            <a class="dropdown-item" href="route('logout')"
-                                                onclick="event.preventDefault();
-                                                                    this.closest('form').submit();">
-                                                <?php echo e(get_phrase('Se déconnecter')); ?>
+                                            <a class="dropdown-item"
+                                                href="<?php echo e(route('user.settings')); ?>"><?php echo e(get_phrase('Payment Settings')); ?>
 
                                             </a>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                                        </li>
+                                        
+                                        <?php if(auth()->user()->status == 1): ?>
+                                            <li>
+                                                <a href="<?php echo e(route('all_settings.view')); ?>" 
+                                                class="dropdown-item"><?php echo e(get_phrase('Settings')); ?></a>
+                                            </li>
+                                        <?php endif; ?>
+
+                                        <li><a class="dropdown-item"
+                                                href="<?php echo e(route('user.password.change')); ?>"><?php echo e(get_phrase('Change Password')); ?></a>
+                                        </li>
+                                        <li>
+                                            <form method="POST" action="<?php echo e(route('logout')); ?>">
+                                                <?php echo csrf_field(); ?>
+                                                <a class="dropdown-item" href="route('logout')"
+                                                    onclick="event.preventDefault();
+                                                                        this.closest('form').submit();">
+                                                    <?php echo e(get_phrase('Se déconnecter')); ?>
+
+                                                </a>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>    
+                            <?php elseif(!Auth::check()): ?>
+                                <!-- Contrôles pour utilisateurs non connectés -->
+                                <div class="group-control login-btns">
+                                    <a href="<?php echo e(route('login')); ?>" class="btn btn-sm-primary">Se connecter</a>
+                                </div>
+                                <div class="group-control login-btns">
+                                    <a href="<?php echo e(route('register')); ?>" class="btn btn-primary">S'inscrire</a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
