@@ -32,17 +32,40 @@
         list-style: none;
         padding: 0;
     }
+
     .badge-card .entry_badge li {
         display: flex;
-        align-items: flex-start;
-        margin-bottom: 15px;
+        align-items: flex-start; /* Alignement en haut pour les descriptions longues */
+        margin-bottom: 12px; /* Espacement entre les éléments */
     }
+
     .badge-card .entry_badge i {
         color: #007bff;
         margin-right: 10px;
         font-size: 1.2rem;
     }
+
+    .badge-card .entry_badge li i {
+        margin-right: 8px;
+        font-size: 0.9rem; /* Réduit la taille de l’icône */
+        margin-top: 2px; /* Ajustement pour l’alignement */
+    }
     .badge-card .entry_badge .entry_badge_text h6 {
+        margin: 0;
+        font-size: 0.95rem; /* Taille réduite pour les titres */
+        font-weight: 500; /* Poids moyen pour une bonne lisibilité */
+        line-height: 1.3; /* Espacement entre les lignes */
+        color: #333;
+    }
+    .badge-card .entry_badge .entry_badge_text p {
+        margin: 2px 0 0 0; /* Espacement minimal au-dessus */
+        font-size: 0.85rem; /* Taille réduite pour les descriptions */
+        font-weight: 400; /* Poids léger pour les descriptions */
+        line-height: 1.4; /* Espacement entre les lignes pour aérer */
+        color: #666; /* Couleur plus claire pour les descriptions */
+    }
+
+    /* .badge-card .entry_badge .entry_badge_text h6 {
         margin-bottom: 5px;
         font-size: 1rem;
         font-weight: 600;
@@ -51,7 +74,7 @@
         margin-bottom: 0;
         font-size: 0.9rem;
         color: #6c757d;
-    }
+    } */
     .btn.common_btn {
         border: 2px solid #6f42c1;
         color: #6f42c1;
@@ -108,7 +131,7 @@
                             <!-- Formulaire pour les cartes comparatives -->
                             <form action="<?php echo e(route('badge.info')); ?>" method="GET">
                                 <div class="row mb-4">
-                                    <!-- Carte pour Badge Simple -->
+                                    <!-- Carte pour Badge Fondateur -->
                                     <div class="col-md-6 mb-3">
                                         <div class="badge-card p-4 <?php echo e($badge_type == 'simple' ? 'selected' : ''); ?>" onclick="selectBadge('badge-simple')" data-type="simple">
                                             <div class="d-flex align-items-center mb-3">
@@ -121,51 +144,216 @@
                                                 <li>
                                                     <i class="fa-solid fa-circle-check"></i>
                                                     <div class="entry_badge_text">
-                                                        <h6><?php echo e(get_phrase('A verified badge')); ?></h6>
-                                                        <p><?php echo e(get_phrase('Your audience can trust that you\'re a real person sharing your real stories.')); ?></p>
+                                                        <h6>Offre réservée aux 500 premiers inscrits pendant la phase Bêta (jusqu’au 17 mai).</h6>
+                                                        <p>À partir du 17 mai, ce badge deviendra le Badge Passionné, à 250€/an.
+                                                            Rejoignez les pionniers du 1er réseau social 100% piscine.
+                                                            Accédez à vie à un espace exclusif, humain et utile, réservé aux membres les plus engagés.</p>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <i class="fa-solid fa-circle-check"></i>
                                                     <div class="entry_badge_text">
-                                                        <h6><?php echo e(get_phrase('Increased account protection')); ?></h6>
-                                                        <p><?php echo e(get_phrase('Worry less about impersonation with proactive identity monitoring.')); ?></p>
+                                                        <h6>Statut Fondateur visible à vie</h6>
+                                                        <p>Votre badge apparaît partout sur votre profil :
+                                                            Reconnaissance, visibilité, et place privilégiée dans la communauté.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Support personnalisé 7j/7 par des piscinistes</h6>
+                                                        <p>Un accompagnement pour :
+                                                            L’entretien de votre piscine
+                                                            Le SAV, les pannes, les fuites
+                                                            L’analyse et la lecture de vos devis (construction, rénovation, équipements)</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Vente directe entre membres certifiés, sans commission</h6>
+                                                        <p>Publiez un nombre illimité d’annonces dans le Marché.
+                                                            Vendez librement, sans intermédiaire ni frais.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Devenez un acteur de la communauté</h6>
+                                                        <p>La lecture est ouverte à tous, mais l’interaction est réservée aux membres certifiés :
+                                                            Commentaires sur les vidéos, vitrines, articles
+                                                            Participation aux discussions dans les salons
+                                                            Publication de vos vidéos & reels dans le Cinéma
+                                                            Rédaction d’articles dans la Bibliothèque
+                                                            Création de groupes dans les Salons</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Accès anticipé aux offres boutiques</h6>
+                                                        <p>Recevez les promotions 48 heures avant leur mise en ligne publique.
+                                                            Profitez des meilleurs prix, en priorité.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Webinaire mensuel exclusif</h6>
+                                                        <p>Chaque mois, participez à une réunion privée animée par le fondateur.
+                                                            Découvrez en avant-première les nouveautés, promotions et évolutions du réseau.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Un badge. Une communauté. Une vraie différence.</h6>
                                                     </div>
                                                 </li>
                                             </ul>
-                                            <!-- Prix supprimé ici -->
                                         </div>
                                     </div>
 
-                                    <!-- Carte pour Badge Pro -->
+                                    <!-- Carte pour Badge Ambassadeur -->
                                     <div class="col-md-6 mb-3">
                                         <div class="badge-card p-4 <?php echo e($badge_type == 'pro' ? 'selected' : ''); ?>" onclick="selectBadge('badge-pro')" data-type="pro">
                                             <div class="d-flex align-items-center mb-3">
                                                 <input type="radio" name="type" value="pro" id="badge-pro" <?php echo e($badge_type == 'pro' ? 'checked' : ''); ?>>
                                                 <label for="badge-pro" class="ms-2 mb-0">
-                                                    <h5 class="mb-0"><?php echo e(get_phrase('Badge Embassendeur')); ?></h5>
+                                                    <h5 class="mb-0"><?php echo e(get_phrase('Badge Ambassadeur')); ?></h5>
                                                 </label>
                                             </div>
                                             <ul class="entry_badge">
                                                 <li>
                                                     <i class="fa-solid fa-circle-check"></i>
                                                     <div class="entry_badge_text">
-                                                        <h6><?php echo e(get_phrase('A verified badge')); ?></h6>
-                                                        <p><?php echo e(get_phrase('Your audience can trust that you\'re a real person sharing your real stories.')); ?></p>
+                                                        <h6>Offre réservée aux 200 premiers piscinistes inscrits pendant la phase Bêta (jusqu’au 17 mai).</h6>
+                                                        <p>À partir du 17 mai, ce badge deviendra le Badge Pisciniste, au tarif de 500€/an.
+                                                            Devenez un acteur clé du 1er Éco Système 100% piscine.</p>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <i class="fa-solid fa-circle-check"></i>
                                                     <div class="entry_badge_text">
-                                                        <h6><?php echo e(get_phrase('Increased account protection')); ?></h6>
-                                                        <p><?php echo e(get_phrase('Worry less about impersonation with proactive identity monitoring.')); ?></p>
+                                                        <h6>Visibilité prioritaire et reconnaissance officielle</h6>
+                                                        <p>Votre badge Ambassadeur est affiché sur votre profil, votre vitrine, vos publications, vos commentaires et sur l’ensemble de vos produits et services à la vente.
+                                                            Vous êtes automatiquement identifié comme pisciniste certifié ayant contribué au lancement du concept.
+                                                            Votre présence dès la Bêta vous place comme référence historique et partenaire de confiance.</p>
                                                     </div>
                                                 </li>
                                                 <li>
                                                     <i class="fa-solid fa-circle-check"></i>
                                                     <div class="entry_badge_text">
-                                                        <h6><?php echo e(get_phrase('Exclusive verified badge')); ?></h6>
-                                                        <p><?php echo e(get_phrase('Stand out with a premium identity that highlights your professionalism and credibility.')); ?></p>
+                                                        <h6>Référencement géolocalisé sur le moteur de recherche piscine</h6>
+                                                        <p>Vous êtes référencé dans le moteur de recherche dédié aux piscinistes certifiés, accessible aux particuliers depuis le centre commercial virtuel.
+                                                            Les clients peuvent vous trouver facilement par ville, département ou zone d’intervention, pour des projets de construction, rénovation ou entretien.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Vendez sans intermédiaire, sans commission</h6>
+                                                        <p>Proposez vos produits ou services dans le Marché dédié, sans aucune limite et sans frais prélevés.
+                                                            Gardez 100% de vos ventes, maîtrisez votre activité de A à Z.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Référencement géolocalisé sur le moteur de recherche piscine</h6>
+                                                        <p>Vous êtes référencé dans le moteur de recherche dédié aux piscinistes certifiés, accessible aux particuliers depuis le centre commercial virtuel.
+                                                            Les clients peuvent vous trouver facilement par ville, département ou zone d’intervention, pour des projets de construction, rénovation ou entretien.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Accès complet à l’écosystème professionnel piscine</h6>
+                                                        <p>Rejoignez un réseau B2B exclusif entre piscinistes, artisans, fabricants, distributeurs et marques du secteur.
+                                                            Accédez aux appels d’offres, développez des synergies et échangez avec d’autres professionnels certifiés.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Accès à la Centrale d’Achat</h6>
+                                                        <p>Accédez à une centrale d’achat réservée aux pros avec les meilleures offres négociées du secteur piscine.
+                                                            Optimisez vos coûts, améliorez vos marges et sécurisez votre approvisionnement.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Accès à l’Espace Offres d’Emploi – 100% Piscine</h6>
+                                                        <p>Trouvez les bons profils dans un métier exigeant et spécifique.
+                                                            Sur la plateforme, vous bénéficiez d’un espace emploi entièrement dédié au secteur de la piscine.
+                                                            Vous pouvez y publier vos offres d’emploi, missions ponctuelles ou stages, et les rendre visibles uniquement aux personnes sensibilisées ou formées au métier.
+                                                            C’est l’outil idéal pour recruter plus facilement dans un secteur où il est difficile de trouver du personnel qualifié.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Participation à l’Association des Piscinistes</h6>
+                                                        <p>En tant qu’Ambassadeur, vous accédez à un espace privé réservé aux professionnels du secteur piscine.
+                                                            Surnommé "Association des Piscinistes", il fonctionne comme un réseau social interne, conçu par et pour les pros.
+                                                            Créez ou rejoignez des groupes, échangez librement, posez vos questions, partagez vos retours d’expérience…
+                                                            Un espace collaboratif et solidaire, loin des groupes impersonnels.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Développez votre image avec des outils puissants</h6>
+                                                        <p>Créez une vitrine qui sera mise en avant dans la Galerie et les Allées du centre commercial virtuel.
+                                                            Valorisez votre savoir-faire et attirez les bons clients tout au long de l’année.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Devenez rédacteur dans l’Espace Presse</h6>
+                                                        <p>Publiez des contenus pour booster votre référencement naturel (SEO) et gagner en notoriété.
+                                                            Partagez vos conseils, vos innovations ou votre expertise dans les rubriques les plus consultées de la plateforme.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Accès à l’Espace Associatif</h6>
+                                                        <p>Un projet associatif, une idée pour Madagascar, un besoin de soutien ou de financement ?
+                                                            Déposez votre dossier dans l’Espace Associatif.
+                                                            Vos actions pourront être mises en avant et soutenues par la communauté ou relayées auprès de nos partenaires.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Webinaire mensuel privé avec le fondateur</h6>
+                                                        <p>Chaque mois, participez à une session animée par le fondateur.
+                                                            Découvrez les nouveautés, anticipez les évolutions et participez à la stratégie globale du réseau.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Avantages réservés aux Ambassadeurs</h6>
+                                                        <p>50% sur la location de votre boutique dans le Shop
+                                                            50% sur toutes les campagnes marketing et sponsorisées</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Support dédié 7j/7</h6>
+                                                        <p>Notre équipe vous accompagne 7 jours sur 7 :
+                                                            Conseils, modération, assistance technique ou stratégie – vous n’êtes jamais seul.</p>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <h6>Un badge unique. Un réseau d’élite. Une vitrine pour développer votre business.</h6>
                                                     </div>
                                                 </li>
                                             </ul>
@@ -290,4 +478,5 @@
             </div>
         </div>
     </div>
-</div><?php /**PATH C:\Users\DELL\Desktop\Voary\Piscine de Romain\AbracadamallReseau\AbracadamallReseau\resources\views/frontend/badge/badge.blade.php ENDPATH**/ ?>
+</div>
+<?php /**PATH C:\Users\DELL\Desktop\Voary\Piscine de Romain\AbracadamallReseau\AbracadamallReseau\resources\views/frontend/badge/badge.blade.php ENDPATH**/ ?>

@@ -179,13 +179,13 @@ class BadgeController extends Controller
     {
         // Récuperer le type, avec 'simple' comme valeur par défaut
         $view_type = $request->type ?? $request->badge_type ?? 'simple';
-        
         // le prix en fonction du type
         $badge_price = $view_type === 'pro' ? get_settings('badge_price_pro') : get_settings('badge_price');
 
         // Préparer les données pour la vue
         $page_data['view_path'] = 'frontend.badge.badge_info';
         $page_data['view_type'] = $view_type;
+        
         $page_data['badge_price'] = $badge_price;
         
         return view('frontend.index', $page_data);
@@ -198,7 +198,6 @@ class BadgeController extends Controller
             'description' => 'required',
         ]);
 
-        // 🟢 Récupère le type envoyé via le formulaire
         $type = $request->badge_type ?? 'simple';
 
         // 🔁 Choix du prix en fonction du type

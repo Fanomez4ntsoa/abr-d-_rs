@@ -13,28 +13,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" href="<?php echo e(get_system_logo_favicon($system_favicon,'favicon')); ?>">
 
-    <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/bootstrap.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/fontawesome/all.min.css')); ?>">
-    <!-- CSS Library -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/owl.carousel.min.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/nice-select.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/venobox.min.css')); ?>">
 
-    <!-- Style css -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/style.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(asset('assets/frontend/css/own.css')); ?>">
-
-   
 </head>
 
 <body class="bg-white login">
 
-
 <?php $system_light_logo = \App\Models\Setting::where('type', 'system_light_logo')->value('description'); ?>
 
-<!-- header -->
-    <header class="header header-default py-3">
+<header class="header header-default py-3">
     <nav class="navigation">
         <div class="container">
             <div class="row">
@@ -54,17 +47,39 @@
                         <a href="<?php echo e(route('login')); ?>" class="btn <?php if(Route::currentRouteName() == 'login' || Route::currentRouteName() == 'verification.notice'): ?> active <?php endif; ?>">
                             <?php echo e(__('Connexion')); ?>
 
-                        </a>                        
+                        </a>
                         <?php if(get_settings('public_signup') == 1): ?>
                             <a href="<?php echo e(route('register')); ?>" class="btn <?php if(Route::currentRouteName() == 'register'): ?> active <?php endif; ?>">
                                 <?php echo e(__("S'inscrire")); ?>
 
                             </a>
-                        <?php endif; ?>                        
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </nav>
 </header>
-<!-- Header End --><?php /**PATH C:\Users\DELL\Desktop\Voary\Piscine de Romain\AbracadamallReseau\AbracadamallReseau\resources\views/auth/layout/header.blade.php ENDPATH**/ ?>
+
+<style>
+    @media only screen and (max-width: 767px) {
+        .navbar-brand img {
+            height: 25px;
+            max-width: 200px;
+        }
+
+        .login-btns .btn {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+
+        .login-btns .btn.active {
+            font-size: 12px;
+            padding: 6px 12px;
+        }
+    }
+</style>
+
+</body>
+</html>
+<?php /**PATH C:\Users\DELL\Desktop\Voary\Piscine de Romain\AbracadamallReseau\AbracadamallReseau\resources\views/auth/layout/header.blade.php ENDPATH**/ ?>

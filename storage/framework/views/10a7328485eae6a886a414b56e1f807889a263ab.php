@@ -36,7 +36,7 @@
 <?php endif; ?>
 
 <?php if(isset($my_react) && $my_react == true): ?>
-    <?php if(array_key_exists(Auth()->user()->id, $user_comment_reacts)): ?>
+    <?php if((Auth::check()) && (array_key_exists(Auth()->user()->id, $user_comment_reacts))): ?>
         <?php if($user_comment_reacts[Auth()->user()->id] == 'like'): ?>
             
             <div class="like-color"><svg width="20" class="mt-3px" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">

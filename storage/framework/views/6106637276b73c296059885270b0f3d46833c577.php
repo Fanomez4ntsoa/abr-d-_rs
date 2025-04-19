@@ -64,67 +64,8 @@ use Carbon\Carbon;
                         <div class="align-items-center d-flex justify-content-end g-12">
                             <?php if(Auth::check()): ?>
 
-                            <div class="group-control">
-                                <a href="<?php echo e(route('ai_image.image_generator')); ?>" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #0D3475"></i></a>
-                            </div>
-
-                            <div class="group-control">
-                                <a href="javascript:;" class="notification-button"><img id="dark" src="<?php echo e($image); ?>" alt=""></a>
-                            </div>
-                            <div class="group-control">
-                                <a href="<?php echo e(route('profile.friends')); ?>" class="notification-button"><i
-                                        class="fa-solid fa-user-group"  style="color: #0D3475"></i></a>
-                            </div>
-                            <?php
-                                $last_msg = \App\Models\Chat::where('sender_id', auth()->user()->id)
-                                    ->orWhere('reciver_id', auth()->user()->id)
-                                    ->orderBy('id', 'DESC')
-                                    ->limit('1')
-                                    ->first();
-                                if (!empty($last_msg)) {
-                                    if ($last_msg->sender_id == auth()->user()->id) {
-                                        $msg_to = $last_msg->reciver_id;
-                                    } else {
-                                        $msg_to = $last_msg->sender_id;
-                                    }
-                                }
-                                
-                                $unread_msg = \App\Models\Chat::where('reciver_id', auth()->user()->id)
-                                    ->where('read_status', '0')
-                                    ->count();
-                            ?>
-                            <div class="inbox-control">
-                                <a href="<?php if(isset($msg_to)): ?> <?php echo e(route('chat', $msg_to)); ?> <?php else: ?> <?php echo e(route('chat','all')); ?> <?php endif; ?>"
-                                    class="message_custom_button position-relative">
-                                    <i class="fa-brands fa-rocketchat" style="color: #0D3475"></i>
-                                    <?php if($unread_msg > 0): ?>
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
-                                            <?php echo e(get_phrase($unread_msg)); ?>
-
-                                        </span>
-                                    <?php endif; ?>
-                                </a>
-                            </div>
-                            <?php
-                                $unread_notification = \App\Models\Notification::where('reciver_user_id', auth()->user()->id)
-                                    ->where('status', '0')
-                                    ->count();
-                            ?>
-
-                            <div class="notify-control ">
-                                <a class="notification-button position-relative" id="notification-button" href="javascript:;">
-                                    <i class="fa-solid fa-bell" style="color: #0D3475"></i>
-                                    <?php if($unread_notification > 0): ?>
-                                        <span
-                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill notificatio_counter_bg">
-                                            <?php echo e(get_phrase($unread_notification)); ?>
-
-                                        </span>
-                                    <?php endif; ?>
-                                </a>
-                                <div class="notification_panel" id="notification_panel">
-                                    <?php echo $__env->make('frontend.notification.notification', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                                <div class="group-control">
+                                    <a href="<?php echo e(route('ai_image.image_generator')); ?>" class="notification-button" title="AI image generator"><i class="fa-solid fa-robot" style="color: #0D3475"></i></a>
                                 </div>
 
                                 <div class="group-control">

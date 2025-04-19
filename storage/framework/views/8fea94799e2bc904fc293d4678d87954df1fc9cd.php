@@ -139,7 +139,7 @@
             <div class="footer-nav">
                 <div class="footer-menu">
                     <ul>
-                        <li><a href="<?php echo e(route('about.view')); ?>"><?php echo e(get_phrase('About')); ?></a></li>
+                        <li><a href="<?php echo e(route('about.view')); ?>"><?php echo e(get_phrase('Mentions légales')); ?></a></li>
                         <li><a href="<?php echo e(route('policy.view')); ?>"><?php echo e(get_phrase('Privacy Policy')); ?></a></li>
                     </ul>
                 </div>

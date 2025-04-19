@@ -138,7 +138,7 @@
             <div class="footer-nav">
                 <div class="footer-menu">
                     <ul>
-                        <li><a href="{{ route('about.view') }}">{{ get_phrase('About') }}</a></li>
+                        <li><a href="{{ route('about.view') }}">{{ get_phrase('Mentions légales') }}</a></li>
                         <li><a href="{{ route('policy.view') }}">{{ get_phrase('Privacy Policy') }}</a></li>
                     </ul>
                 </div>

@@ -137,10 +137,10 @@
                                 <!-- Section des avantages -->
                                 <div class="benefits-section">
                                     <h3>{{ get_phrase('What you get with your subscription.') }}</h3>
-                                    <form action="{{ route('badge.payment_configuration', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
+                                    {{-- <form action="{{ route('badge.payment_configuration', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <ul class="entry_badge">
-                                            @if(!$view_type == 'pro')
+                                            @if($view_type == 'simple')
                                                 <li>
                                                     <i class="fa-solid fa-check"></i>
                                                     <div class="entry_badge_text">
@@ -225,13 +225,9 @@
                                                 </li>
                                             @endif
                                             @if($view_type == 'pro')
-                                                <li>
-                                                    <i class="fa-solid fa-check"></i>
-                                                    <div class="entry_badge_text">
-                                                        <label for="exclusive">{{ get_phrase('Exclusive verified badge') }}</label>
-                                                        <input id="exclusive" type="hidden" name="exclusive" value="Exclusive verified badge" required>
-                                                    </div>
-                                                </li>
+                                                <input id="exclusive" type="hidden" name="exclusive" value="Exclusive verified badge" required>
+                                                <input id="title" type="hidden" name="title" value="A verified badge" required>
+                                                <input id="description" type="hidden" name="description" value="Increased account protection" required>
                                                 <li>
                                                     <i class="fa-solid fa-check"></i>
                                                     <div class="entry_badge_text">
@@ -329,6 +325,183 @@
                                         <!-- Bouton Pay Now -->
                                         <button type="submit" class="btn btn-pay-now">
                                             {{ get_phrase('Pay Now') }} <i class="fa-solid fa-arrow-right"></i>
+                                        </button>
+                                    </form> --}}
+                                    <form action="{{ route('badge.payment_configuration', ['id' => auth()->user()->id]) }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <ul class="entry_badge">
+                                            @if($view_type == 'simple')
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="title">Un badge vérifié</label>
+                                                        <input id="title" type="hidden" name="title" value="Un badge vérifié" required>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="description">Protection accrue du compte</label>
+                                                        <input id="description" type="hidden" name="description" value="Protection accrue du compte" required>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Contenu du Badge Fondateur {{ currency($badge_price) }} à vie : Statut Fondateur affiché à vie sur votre profil</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Support personnalisé 24h/24 et 7j/7 par des experts en piscine</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Vente directe entre membres certifiés, sans commission</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Accès à vie au réseau social communautaire piscine</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Possibilité d’interagir (commentaires, discussions, vitrines, etc.)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Publier des vidéos et reels dans le Cinéma</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Rédiger des articles dans la Bibliothèque</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Créer des groupes dans les Salons</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Accès anticipé aux offres boutiques (48 heures avant le public)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Participation au webinaire mensuel animé par le fondateur</label>
+                                                    </div>
+                                                </li>
+                                            @endif
+                                            @if($view_type == 'pro')
+                                                <input id="description" type="hidden" name="description" value="Protection accrue du compte" required>
+                                                <input id="title" type="hidden" name="title" value="Un badge vérifié" required>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Badge vérifié exclusif</label>
+                                                        <input id="exclusive" type="hidden" name="exclusive" value="Badge vérifié exclusif" required>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Statut Ambassadeur affiché sur votre profil, vos publications et votre vitrine</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Reconnaissance en tant que professionnel de la piscine certifié ayant contribué au lancement du concept</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Référencement géolocalisé sur le moteur de recherche dédié aux professionnels de la piscine certifiés</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Ventes sans commission sur le Marché (produits et services illimités)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Accès complet au réseau professionnel B2B piscine</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Accès au Hub d’Achat (tarifs négociés, conditions préférentielles)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Publication d’offres d’emploi ou de stages dans l’Espace Emploi 100% piscine</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Accès à l’Association des Professionnels de la Piscine (groupe privé pour pros)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Création d’une vitrine professionnelle certifiée, mise en avant dans la Galerie</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Possibilité de devenir rédacteur dans l’Espace Presse (SEO et visibilité)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Accès à l’Espace Associatif (projets caritatifs, idées à soutenir)</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Outil de connexion directe avec des influenceurs piscine et jardin pour vos campagnes</label>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fa-solid fa-check"></i>
+                                                    <div class="entry_badge_text">
+                                                        <label for="exclusive">Participation au webinaire mensuel privé avec le fondateur</label>
+                                                    </div>
+                                                </li>
+                                            @endif
+                                        </ul>
+                                    
+                                        <!-- Champ caché pour le type de badge -->
+                                        <input type="hidden" name="badge_type" value="{{ $view_type }}">
+                                        <!-- Bouton Pay Now -->
+                                        <button type="submit" class="btn btn-pay-now">
+                                            Payer maintenant <i class="fa-solid fa-arrow-right"></i>
                                         </button>
                                     </form>
                                 </div>

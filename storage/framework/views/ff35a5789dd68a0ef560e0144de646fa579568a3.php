@@ -71,37 +71,45 @@
             ): ?>
         <div class="widget">
             <div class="d-flex align-items-center">
-                <?php
-
-                    $tz = auth()->user()->timezone;
-                    if (!empty($tz)) {
-                        $timestamp = time();
-                        $dt = new DateTime('now', new DateTimeZone($tz)); //first argument "must" be a string
-                        $dt->setTimestamp($timestamp);
-                        $current_hour = $dt->format('H');
-                    } else {
-                        $current_hour = date('H', time());
-                    }
-                ?>
-
-                <?php if($current_hour >= 5 && $current_hour < 12): ?>
-                    <img class="img-fluid" src="<?php echo e(asset('assets/frontend/images/sun.svg')); ?>" height="30px"
-                        width="30px" alt="">
-                <?php elseif($current_hour >= 12 && $current_hour < 17): ?>
-                    <img class="img-fluid" src="<?php echo e(asset('storage/images/cloud-sun.png')); ?>" alt="">
+                <?php if(auth()->guard()->check()): ?>
                     
-                <?php else: ?>
-                  <img class="img-fluid" src="<?php echo e(asset('assets/frontend/images/moon2.png')); ?>" height="30px"
-                width="30px" alt="">
-                <?php endif; ?>
-                <h3 class="h6 ms-2"><?php echo e(get_phrase('Hi')); ?>, <?php echo e(Auth()->user()->name); ?>
-
+                    <?php
+                        $tz = auth()->user()->timezone;
+                        if (!empty($tz)) {
+                            $timestamp = time();
+                            $dt = new DateTime('now', new DateTimeZone($tz)); //first argument "must" be a string
+                            $dt->setTimestamp($timestamp);
+                            $current_hour = $dt->format('H');
+                        } else {
+                            $current_hour = date('H', time());
+                        }
+                    ?>
+                    
                     <?php if($current_hour >= 5 && $current_hour < 12): ?>
-                        <span class="d-block text-primary"><?php echo e(get_phrase('Good Morning')); ?>!</span>
+                        <img class="img-fluid" src="<?php echo e(asset('assets/frontend/images/sun.svg')); ?>" height="30px"
+                            width="30px" alt="">
                     <?php elseif($current_hour >= 12 && $current_hour < 17): ?>
-                        <span class="d-block text-primary"><?php echo e(get_phrase('Good Afternoon')); ?>!</span>
+                        <img class="img-fluid" src="<?php echo e(asset('storage/images/cloud-sun.png')); ?>" alt="">
+                        
                     <?php else: ?>
-                        <span class="d-block text-primary"><?php echo e(get_phrase('Good Evening')); ?>!</span>
+                    <img class="img-fluid" src="<?php echo e(asset('assets/frontend/images/moon2.png')); ?>" height="30px"
+                    width="30px" alt="">
+                    <?php endif; ?>
+
+                <?php endif; ?>
+
+                <h3 class="h6 ms-2"><?php echo e(get_phrase('Hi')); ?>, 
+                    <?php if(auth()->guard()->check()): ?>
+                        <?php echo e(Auth()->user()->name); ?>
+
+       
+                        <?php if($current_hour >= 5 && $current_hour < 12): ?>
+                            <span class="d-block text-primary"><?php echo e(get_phrase('Good Morning')); ?>!</span>
+                        <?php elseif($current_hour >= 12 && $current_hour < 17): ?>
+                            <span class="d-block text-primary"><?php echo e(get_phrase('Good Afternoon')); ?>!</span>
+                        <?php else: ?>
+                            <span class="d-block text-primary"><?php echo e(get_phrase('Good Evening')); ?>!</span>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </h3>
             </div>
@@ -153,59 +161,62 @@
                 </div>
             </div>
             <div class="contact-lists side_contact mt-3">
-                <?php
-                    $friends = \App\Models\Friendships::where(function ($query) {
-                        $query->where('accepter', auth()->user()->id)->orWhere('requester', auth()->user()->id);
-                    })
-                    ->where('is_accepted', 1)
-                    ->get();
-        
-                    // Block User Each Other
-                    $blockedByUser = DB::table('block_users')->where('user_id', auth()->user()->id)->pluck('block_user')->toArray();
-                    $blockedByOthers = DB::table('block_users')->where('block_user', auth()->user()->id)->pluck('user_id')->toArray();
-                ?>
-                
-                <?php
-                    $displayedUsers = []; // Liste des utilisateurs déjà affichés
-                ?>
-        
-                <?php $__currentLoopData = $friends; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $friend): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <?php 
-                        // Vérification si l'utilisateur est bloqué par l'autre utilisateur ou si l'autre utilisateur est bloqué
-                        if (in_array($friend->accepter, $blockedByUser) || in_array($friend->requester, $blockedByOthers)) {
-                            continue;
-                        }
-        
-                        // Définir l'ami à afficher
-                        $user = null;
-                        if ($friend->requester == auth()->user()->id && !empty($friend->getFriendAccepter)) {
-                            $user = $friend->getFriendAccepter;
-                        } elseif (!empty($friend->getFriend)) {
-                            $user = $friend->getFriend;
-                        }
+                <?php if(auth()->guard()->check()): ?>
+                    <?php
+                        $friends = \App\Models\Friendships::where(function ($query) {
+                            $query->where('accepter', auth()->user()->id)->orWhere('requester', auth()->user()->id);
+                        })
+                        ->where('is_accepted', 1)
+                        ->get();
+            
+                        // Block User Each Other
+                        $blockedByUser = DB::table('block_users')->where('user_id', auth()->user()->id)->pluck('block_user')->toArray();
+                        $blockedByOthers = DB::table('block_users')->where('block_user', auth()->user()->id)->pluck('user_id')->toArray();
                     ?>
-        
-                    <?php if($user && $user->id != auth()->user()->id && $user->isOnline() && !in_array($user->id, $displayedUsers)): ?>
-                        <?php
-                            $displayedUsers[] = $user->id; // Marquer cet utilisateur comme déjà affiché
+                
+                    <?php
+                        $displayedUsers = []; // Liste des utilisateurs déjà affichés
+                    ?>
+                    
+                    <?php $__currentLoopData = $friends; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $friend): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <?php 
+                            // Vérification si l'utilisateur est bloqué par l'autre utilisateur ou si l'autre utilisateur est bloqué
+                            if (in_array($friend->accepter, $blockedByUser) || in_array($friend->requester, $blockedByOthers)) {
+                                continue;
+                            }
+            
+                            // Définir l'ami à afficher
+                            $user = null;
+                            if ($friend->requester == auth()->user()->id && !empty($friend->getFriendAccepter)) {
+                                $user = $friend->getFriendAccepter;
+                            } elseif (!empty($friend->getFriend)) {
+                                $user = $friend->getFriend;
+                            }
                         ?>
-        
-                        <div class="single-contact d-flex align-items-center justify-content-between">
-                            <div class="avatar d-flex">
-                                <a href="<?php echo e(route('chat', $user->id)); ?>" class="d-flex align-items-center">
-                                    <div class="avatar me-2">
-                                        <img src="<?php echo e(get_user_image($user->photo, 'optimized')); ?>" class="rounded-circle w-45px h-45" alt="">
-                                        <span class="online-status active"></span>
-                                    </div>
-                                    <h4><?php echo e($user->name); ?></h4>
-                                </a>
+            
+                        <?php if($user && $user->id != auth()->user()->id && $user->isOnline() && !in_array($user->id, $displayedUsers)): ?>
+                            <?php
+                                $displayedUsers[] = $user->id; // Marquer cet utilisateur comme déjà affiché
+                            ?>
+            
+                            <div class="single-contact d-flex align-items-center justify-content-between">
+                                <div class="avatar d-flex">
+                                    <a href="<?php echo e(route('chat', $user->id)); ?>" class="d-flex align-items-center">
+                                        <div class="avatar me-2">
+                                            <img src="<?php echo e(get_user_image($user->photo, 'optimized')); ?>" class="rounded-circle w-45px h-45" alt="">
+                                            <span class="online-status active"></span>
+                                        </div>
+                                        <h4><?php echo e($user->name); ?></h4>
+                                    </a>
+                                </div>
+                                <div class="login-time">
+                                    <!-- Optionnel : ajout d'autres infos comme la dernière activité -->
+                                </div>
                             </div>
-                            <div class="login-time">
-                                <!-- Optionnel : ajout d'autres infos comme la dernière activité -->
-                            </div>
-                        </div>
-                    <?php endif; ?>
-                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                        <?php endif; ?>
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
+                
             </div>
         </div> <!-- Widget End -->        
     <?php endif; ?>

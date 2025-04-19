@@ -69,8 +69,7 @@ class MainController extends Controller
                 ->select('posts.*', 'users.name', 'users.photo', 'posts.created_at as created_at')
                 ->orderBy('posts.post_id', 'DESC')
                 ->take(24)
-                ->get()
-                ->random(8);
+                ->get();
 
             // Pas de stories ni de données d'amitié pour les utilisateurs non connectés
             $stories = collect();

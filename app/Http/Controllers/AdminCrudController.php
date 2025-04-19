@@ -1113,6 +1113,7 @@ class AdminCrudController extends Controller
 
 
     // Badge Start
+    // Badge Start
     public function Badge(){  
         // $page_data['badges'] = Badge::get();
         // $page_data['badge_price'] = Setting::where('type', 'badge_price')->value('description');

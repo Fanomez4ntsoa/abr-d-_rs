@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <?php if(Auth()->user()->id == $comment->user_id): ?>
+            <?php if((Auth::check()) && (Auth()->user()->id == $comment->user_id)): ?>
             <div class="post-controls dropdown dotted">
                 <a class="dropdown-toggle" href="#" id="navbarDropdown" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
