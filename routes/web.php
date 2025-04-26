@@ -85,6 +85,7 @@ Route::controller(ModalController::class)->middleware('auth', 'user', 'verified'
  
 //Home controllers group routing
 Route::get('/', [MainController::class, 'timeline'])->name('timeline');
+Route::get('/timeline/posts', [MainController::class, 'loadMorePosts'])->name('timeline.posts');
 
 Route::controller(MainController::class)->middleware('auth', 'user', 'user', 'verified', 'activity', 'prevent-back-history')->group(function () {
     // Route::get('/', 'timeline')->name('timeline');

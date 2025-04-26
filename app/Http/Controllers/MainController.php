@@ -29,6 +29,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -76,104 +77,191 @@ class MainController extends Controller
             // Pas de stories ni de données d'amitié pour les utilisateurs non connectés
             $stories = collect();
             $friendships = collect();
+        $user = Auth::user();
+        $userId = $user ? $user->id : null;
 
-            $page_data['friendships'] = $friendships;
-            $page_data['stories'] = $stories;
-            $page_data['posts'] = $posts;
-            $page_data['view_path'] = 'frontend.main_content.index';
+        // Charger les posts initiaux (10 maximum)
+        $posts = Cache::remember("posts_timeline_{$userId}_initial", now()->addMinutes(5), function () use ($userId) {
+            $query = Posts::active()->with('getUser');
+            if ($userId) {
+                $query->forTimeline($userId);
+            } else {
+                $query->where('privacy', Posts::PRIVACY_PUBLIC);
+            }
 
-            return view('frontend.index', $page_data);
-        }
+            return $query->orderBy('post_id', 'DESC')->take(5)->get();
+        });
+
+        // Charger les stories (3 maximum, seulement pour utilisateurs connectés)
+        $stories = $user ? Cache::remember("stories_{$userId}", now()->addMinutes(5), function () use ($userId) {
+            return Stories::active()
+                        ->forTimeline($userId)
+                        ->with('user')
+                        ->orderBy('story_id', 'DESC')
+                        ->take(3)
+                        ->get();
+        }) : collect();
+
+        // Charger les friendships (seulement pour utilisateurs connectés)
+        $friendships = $user ? Cache::remember("friendships_{$userId}", now()->addHours(1), function () use ($userId) {
+            return Friendships::accepted($userId)
+                             ->with(['getFriend', 'getFriendAccepter'])
+                             ->orderBy('importance', 'DESC')
+                             ->get();
+        }) : collect();
+
+        return view('frontend.index', [
+            'posts' => $posts,
+            'stories' => $stories,
+            'friendships' => $friendships,
+            'view_path' => 'frontend.main_content.index',
+        ]);
+
+        // if (!Auth::check()) {
+        //     $posts = Posts::where('posts.privacy', 'public')
+        //         ->where('posts.status', 'active')
+        //         ->where('posts.report_status', '0')
+        //         ->where('publisher', '!=', 'paid_content')
+        //         ->join('users', 'posts.user_id', '=', 'users.id')
+        //         ->select('posts.*', 'users.name', 'users.photo', 'posts.created_at as created_at')
+        //         ->orderBy('posts.post_id', 'DESC')
+        //         ->take(24)
+        //         ->get();
+
+        //     // Pas de stories ni de données d'amitié pour les utilisateurs non connectés
+        //     $stories = collect();
+        //     $friendships = collect();
+
+        //     $page_data['friendships'] = $friendships;
+        //     $page_data['stories'] = $stories;
+        //     $page_data['posts'] = $posts;
+        //     $page_data['view_path'] = 'frontend.main_content.index';
+
+        //     return view('frontend.index', $page_data);
+        // }
 
         //First 10 stories
-        $stories = Stories::where(function ($query) {
-            $query->whereJsonContains('users.friends', [$this->user->id])
-                ->where('stories.privacy', '!=', 'private')
-                ->orWhere('stories.user_id', $this->user->id);
-        })
-            ->where('stories.status', 'active')
-            ->where('stories.created_at', '>=', (time() - 86400))
-            ->join('users', 'stories.user_id', '=', 'users.id')
-            ->select('stories.*', 'users.name', 'users.photo', 'users.friends', 'stories.created_at as created_at')
-            ->take(5)->orderBy('stories.story_id', 'DESC')->get();
+        // $stories = Stories::where(function ($query) {
+        //     $query->whereJsonContains('users.friends', [$this->user->id])
+        //         ->where('stories.privacy', '!=', 'private')
+        //         ->orWhere('stories.user_id', $this->user->id);
+        // })
+            // ->where('stories.status', 'active')
+            // ->where('stories.created_at', '>=', (time() - 86400))
+            // ->join('users', 'stories.user_id', '=', 'users.id')
+            // ->select('stories.*', 'users.name', 'users.photo', 'users.friends', 'stories.created_at as created_at')
+            // ->take(5)->orderBy('stories.story_id', 'DESC')->get();
 
         //First 10 posts
-        $posts = Posts::where(function ($query) {
-            $query->whereJsonContains('users.friends', [$this->user->id])
-                ->where('posts.privacy', '!=', 'private')
-                ->orWhere('posts.user_id', $this->user->id)
+        // $posts = Posts::where(function ($query) {
+        //     $query->whereJsonContains('users.friends', [$this->user->id])
+        //         ->where('posts.privacy', '!=', 'private')
+        //         ->orWhere('posts.user_id', $this->user->id)
 
 
 
-                //if folowing any users, pages, groups and others if not friend listed
-                ->orWhere(function ($query3) {
-                    $query3->where('posts.privacy', 'public')
-                        ->where(function ($query4) {
-                            $query4->where('posts.publisher', 'post')
-                                ->join('followers', function (JoinClause $join) {
-                                    $join->on('posts.publisher_id', '=', 'followers.follow_id')
-                                        ->where('followers.user_id', auth()->user()->id);
-                                });
-                        })
-                        ->orWhere(function ($query5) {
-                            $query5->where('posts.publisher', 'profile_picture')
-                                ->join('followers', function (JoinClause $join1) {
-                                    $join1->on('posts.publisher_id', '=', 'followers.follow_id')
-                                        ->where('followers.user_id', auth()->user()->id);
-                                });
-                        })
-                        ->orWhere(function ($query6) {
-                            $query6->where('posts.publisher', 'page')
-                                ->join('followers', function (JoinClause $join2) {
-                                    $join2->on('posts.publisher_id', '=', 'followers.page_id')
-                                        ->where('followers.user_id', auth()->user()->id);
-                                });
-                        })
-                        ->orWhere(function ($query7) {
-                            $query7->where('posts.publisher', 'group')
-                                ->join('followers', function (JoinClause $join3) {
-                                    $join3->on('posts.publisher_id', '=', 'followers.group_id')
-                                        ->where('followers.user_id', auth()->user()->id);
-                                });
-                        });
-                });
-        })
-            ->where('posts.status', 'active')
-            ->where('posts.report_status', '0')
-            ->where('publisher', '!=', 'paid_content') // post type can not be paid content
-            ->join('users', 'posts.user_id', '=', 'users.id')
+        //         //if folowing any users, pages, groups and others if not friend listed
+        //         ->orWhere(function ($query3) {
+        //             $query3->where('posts.privacy', 'public')
+        //                 ->where(function ($query4) {
+        //                     $query4->where('posts.publisher', 'post')
+        //                         ->join('followers', function (JoinClause $join) {
+        //                             $join->on('posts.publisher_id', '=', 'followers.follow_id')
+        //                                 ->where('followers.user_id', auth()->user()->id);
+        //                         });
+        //                 })
+        //                 ->orWhere(function ($query5) {
+        //                     $query5->where('posts.publisher', 'profile_picture')
+        //                         ->join('followers', function (JoinClause $join1) {
+        //                             $join1->on('posts.publisher_id', '=', 'followers.follow_id')
+        //                                 ->where('followers.user_id', auth()->user()->id);
+        //                         });
+        //                 })
+        //                 ->orWhere(function ($query6) {
+        //                     $query6->where('posts.publisher', 'page')
+        //                         ->join('followers', function (JoinClause $join2) {
+        //                             $join2->on('posts.publisher_id', '=', 'followers.page_id')
+        //                                 ->where('followers.user_id', auth()->user()->id);
+        //                         });
+        //                 })
+        //                 ->orWhere(function ($query7) {
+        //                     $query7->where('posts.publisher', 'group')
+        //                         ->join('followers', function (JoinClause $join3) {
+        //                             $join3->on('posts.publisher_id', '=', 'followers.group_id')
+        //                                 ->where('followers.user_id', auth()->user()->id);
+        //                         });
+        //                 });
+        //         });
+        // })
+        //     ->where('posts.status', 'active')
+        //     ->where('posts.report_status', '0')
+        //     ->where('publisher', '!=', 'paid_content') // post type can not be paid content
+        //     ->join('users', 'posts.user_id', '=', 'users.id')
 
-            ->where(function ($query) {
-                $query->where('posts.publisher', '!=', 'video_and_shorts')
-                    ->orWhere(function ($query2) {
-                        $query2->join('group_members', function (JoinClause $join) {
-                            $join->on('posts.publisher_id', '=', 'group_members.group_id')
-                                ->where('posts.publisher', '=', 'group')
-                                ->where('group_members.user_id', '=', auth()->user()->id);
-                        });
-                    });
-            })
+        //     ->where(function ($query) {
+        //         $query->where('posts.publisher', '!=', 'video_and_shorts')
+        //             ->orWhere(function ($query2) {
+        //                 $query2->join('group_members', function (JoinClause $join) {
+        //                     $join->on('posts.publisher_id', '=', 'group_members.group_id')
+        //                         ->where('posts.publisher', '=', 'group')
+        //                         ->where('group_members.user_id', '=', auth()->user()->id);
+        //                 });
+        //             });
+        //     })
 
-            ->select('posts.*', 'users.name', 'users.photo', 'users.friends', 'posts.created_at as created_at')
-            ->take(15)->orderBy('posts.post_id', 'DESC')->get();
+        //     ->select('posts.*', 'users.name', 'users.photo', 'users.friends', 'posts.created_at as created_at')
+        //     ->take(15)->orderBy('posts.post_id', 'DESC')->get();
 
 
-            // New
-            $friendships = Friendships::where(function ($query) {
-                $query->where('accepter', auth()->user()->id)
-                    ->orWhere('requester', auth()->user()->id);
-            })
-                ->where('is_accepted', 1)
-                ->orderBy('friendships.importance', 'desc')
-                ->get();
+        //     // New
+        //     $friendships = Friendships::where(function ($query) {
+        //         $query->where('accepter', auth()->user()->id)
+        //             ->orWhere('requester', auth()->user()->id);
+        //     })
+        //         ->where('is_accepted', 1)
+        //         ->orderBy('friendships.importance', 'desc')
+        //         ->get();
 
-            $page_data['friendships'] = $friendships;
-          //new
+        //     $page_data['friendships'] = $friendships;
+        //   //new
         
-        $page_data['stories'] = $stories;
-        $page_data['posts'] = $posts;
-        $page_data['view_path'] = 'frontend.main_content.index';
-        return view('frontend.index', $page_data);
+        // $page_data['stories'] = $stories;
+        // $page_data['posts'] = $posts;
+        // $page_data['view_path'] = 'frontend.main_content.index';
+        // return view('frontend.index', $page_data);
+    }
+
+    public function loadMorePosts(Request $request)
+    {
+        $lastPostId = $request->input('last_post_id', 0);
+        $user = Auth::user();
+        $userId = $user ? $user->id : null;
+
+        $posts = Cache::remember("posts_timeline_{$userId}_{$lastPostId}", now()->addMinutes(5), function () use ($userId, $lastPostId) {
+            $query = Posts::active()->with('user');
+            $query->where('post_id', '<', $lastPostId ?: PHP_INT_MAX);
+            if ($userId) {
+                $query->forTimeline($userId);
+            } else {
+                $query->where('privacy', Posts::PRIVACY_PUBLIC);
+            }
+            return $query->orderBy('post_id', 'DESC')->take(10)->get();
+        });
+
+        return response()->json([
+            'posts' => $posts->map(function ($post) {
+                return [
+                    'post_id' => $post->post_id,
+                    'content' => $post->content,
+                    'created_at' => $post->created_at->toDateTimeString(), // Envoyer la date brute
+                    'user' => [
+                        'name' => $post->user ? $post->user->name ?? 'Utilisateur inconnu' : 'Utilisateur inconnu',
+                        'photo' => $post->user ? $post->user->photo ?? 'default.jpg' : 'default.jpg',
+                    ],
+                ];
+            }),
+            'has_more' => $posts->count() === 10,
+        ]);
     }
 
     public function load_post_by_scrolling(Request $request)

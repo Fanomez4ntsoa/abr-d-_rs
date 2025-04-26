@@ -69,17 +69,46 @@ class User extends Authenticatable implements MustVerifyEmail
 
 
 
-    public function isOnline(){
+    public function isOnline()
+    {
         return Cache::has('user-is-online-'.$this->id);
     }
 
-    public static function get_user_image($file_name = "", $optimized = ""){
+    public static function get_user_image($file_name = "", $optimized = "")
+    {
         $optimized = $optimized.'/';
         if(base_path('public/storage/userimage/'.$optimized.$file_name) && is_file('public/storage/userimage/'.$optimized.$file_name)){
             return asset('storage/userimage/'.$optimized.$file_name);
         }else{
             return asset('storage/userimage/default.png');
         }
+    }
+    
+    public function posts()
+    {
+        return $this ->hasMany(Posts::class, 'user_id');
+    }
+
+    public function stories()
+    {
+        return $this->hasMany(Stories::class, 'user_id');
+    }
+
+    public function friendships()
+    {
+        return $this->hasMany(Friendships::class, 'requester')
+                    ->orWhere('accepter', $this->id)
+                    ->where('is_accepted', 1);
+    }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friendships', 'requester', 'accepter')
+                    ->wherePivot('is_accepted', 1)
+                    ->union(
+                        $this->belongsToMany(User::class, 'friendships', 'accepter', 'requester')
+                             ->wherePivot('is_accepted', 1)
+                    );
     }
 
     public function sendEmailVerificationNotification()
