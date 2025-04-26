@@ -1,6 +1,4 @@
 <?php
-$config = json_decode(file_get_contents(base_path('config/config.json')), true);
-
 return [
 
     /*
@@ -14,7 +12,8 @@ return [
     |
     */
 
-    'default' => $config['MAIL_MAILER'],
+    // 'default' => $config['MAIL_MAILER'],
+    'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
     |--------------------------------------------------------------------------
@@ -35,13 +34,23 @@ return [
     */
 
     'mailers' => [
+        // 'smtp' => [
+        //     'transport' => 'smtp',
+        //     'host' => env('MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
+        //     'port' => env('MAIL_PORT', '2525'),
+        //     'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+        //     'username' => env('MAIL_USERNAME', '8470d025789578'),
+        //     'password' => env('MAIL_PASSWORD', '****a263'),
+        //     'timeout' => null,
+        //     'auth_mode' => null,
+        // ],
         'smtp' => [
             'transport' => 'smtp',
-            'host' => env('MAIL_HOST'),
-            'port' => env('MAIL_PORT'),
-            'encryption' => env('MAIL_ENCRYPTION'),
-            'username' => env('MAIL_USERNAME'),
-            'password' => env('MAIL_PASSWORD'),
+            'host' => 'sandbox.smtp.mailtrap.io',
+            'port' => 2525,
+            'encryption' => 'tls',
+            'username' => '8470d025789578',
+            'password' => '****a263',
             'timeout' => null,
             'auth_mode' => null,
         ],
@@ -93,8 +102,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS'),
-        'name' => env('MAIL_FROM_NAME'),
+        'address' => env('MAIL_FROM_ADDRESS', 'no-reply@mada.mg'),
+        'name' => env('MAIL_FROM_NAME', 'No-Reply'),
     ],
 
     /*

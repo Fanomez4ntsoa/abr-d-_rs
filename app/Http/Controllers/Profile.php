@@ -40,7 +40,7 @@ class Profile extends Controller
             ->join('users', 'posts.user_id', '=', 'users.id')
             ->select('posts.*', 'users.name', 'users.photo', 'users.friends', 'posts.created_at as created_at')
             ->take(5)->orderBy('posts.post_id', 'DESC')->get();
-
+        
          // New
          $friendships = Friendships::where(function ($query) {
             $query->where('accepter', auth()->user()->id)

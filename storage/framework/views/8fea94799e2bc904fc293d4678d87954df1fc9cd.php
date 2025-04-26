@@ -9,22 +9,23 @@
     <div class="offcanvas-body s_offcanvas">
         <div class="timeline-navigation">   
             <nav class="menu-wrap">
-                <h6 class="ms-2 mt-3" style="color:#FFAA01; background: #0D3475; padding: 10px 24px; border-radius: 5px; display: inline-block; white-space: nowrap; font-size: 14px;">
-                    Éco-Système PIscine & Jardin
+                <h6 class="mt-3" style="color:#FFAA01; background: #0D3475; padding: 10px 24px; border-radius: 5px; display: inline-block; white-space: nowrap; font-size: 12px;">
+                    Centre Commercial Virtuel 100% PISCINE
                 </h6>
                                            
                 <ul>
-                    
+                     
                     <li class="<?php if(Route::currentRouteName() == 'timeline' || Route::currentRouteName() == 'single.post'): ?> active <?php endif; ?>"><a href="<?php echo e(route('timeline')); ?>"><img
                         src="<?php echo e(asset('storage/images/timeline-2.svg')); ?>"
-                        alt="Timeline"><?php echo e(get_phrase('Timeline')); ?></a></li>
+                        alt="Timeline"><?php echo e(get_phrase('Les Allées')); ?></a></li>
+                    
                     <li class="<?php if(Route::currentRouteName() == 'profile' ||
                         Route::currentRouteName() == 'profile.friends' ||
                         Route::currentRouteName() == 'profile.photos' ||
                         Route::currentRouteName() == 'profile.album' ||
                         Route::currentRouteName() == 'profile.videos'): ?> active <?php endif; ?>"><a href="<?php echo e(route('profile')); ?>"><img
                             src="<?php echo e(asset('storage/images/man-2.svg')); ?>"
-                            alt="Profile"><?php echo e(get_phrase('Profile')); ?></a>
+                            alt="Profile"><?php echo e(get_phrase('Les Boutiques')); ?></a>
                     </li> 
                     
                     <li class="<?php if(Route::currentRouteName() == 'pages' ||
@@ -32,21 +33,25 @@
                     Route::currentRouteName() == 'single.page.photos' ||
                     Route::currentRouteName() == 'page.videos'): ?> active <?php endif; ?>"><a href="<?php echo e(route('pages')); ?>"><img
                         src="<?php echo e(asset('storage/images/page-2.svg')); ?>"
-                        alt="Page"><?php echo e(get_phrase('Vitrines')); ?></a></li> 
+                        alt="Page"><?php echo e(get_phrase('La galérie')); ?></a></li> 
                      
                     <li class="<?php if(Route::currentRouteName() == 'videos' ||
                         Route::currentRouteName() == 'video.detail.info' ||
                         Route::currentRouteName() == 'shorts' ||
                         Route::currentRouteName() == 'save.all.view'): ?> active <?php endif; ?>"><a href="<?php echo e(route('videos')); ?>"><img
                             src="<?php echo e(asset('storage/images/video-2.svg')); ?>"
-                            alt="Video and Shorts"><?php echo e(get_phrase('Video and Shorts')); ?></a></li>  
+                            alt="Video and Shorts"><?php echo e(get_phrase('Le Cinéma')); ?></a>
+                    </li>
+                    
                     <li class="<?php if(Route::currentRouteName() == 'groups' ||
                         Route::currentRouteName() == 'single.group' ||
                         Route::currentRouteName() == 'group.people.info' ||
                         Route::currentRouteName() == 'group.event.view' ||
                         Route::currentRouteName() == 'single.group.photos'): ?> active <?php endif; ?>"><a href="<?php echo e(route('groups')); ?>"><img
                         src="<?php echo e(asset('storage/images/group-2.svg')); ?>"
-                        alt="Group"><?php echo e(get_phrase('Groupes')); ?></a></li> 
+                        alt="Group"><?php echo e(get_phrase('Les Salons')); ?></a>
+                    </li>
+                    
                     <li class="<?php if(Route::currentRouteName() == 'blogs' ||
                         Route::currentRouteName() == 'create.blog' ||
                         Route::currentRouteName() == 'myblog' ||
@@ -54,12 +59,26 @@
                         Route::currentRouteName() == 'single.blog' ||
                         Route::currentRouteName() == 'category.blog'): ?> active <?php endif; ?>"><a href="<?php echo e(route('blogs')); ?>"><img
                             src="<?php echo e(asset('storage/images/blogging-2.svg')); ?>"
-                            alt="Blog"><?php echo e(get_phrase('Blog')); ?></a></li>
+                            alt="Blog"><?php echo e(get_phrase('La Bibliothèque')); ?></a>
+                    </li>
+                    
+                    <li class="<?php if(Route::currentRouteName() == 'blogs' ||
+                        Route::currentRouteName() == 'create.blog' ||
+                        Route::currentRouteName() == 'myblog' ||
+                        Route::currentRouteName() == 'blog.edit' ||
+                        Route::currentRouteName() == 'single.blog' ||
+                        Route::currentRouteName() == 'category.blog'): ?> active <?php endif; ?>"><a href="<?php echo e(route('blogs')); ?>"><img
+                            src="<?php echo e(asset('storage/images/blogging-2.svg')); ?>"
+                            alt="Blog"><?php echo e(get_phrase('Le Coin Presse')); ?></a>
+                    </li>
+                    
                     <li class="<?php if(Route::currentRouteName() == 'event' ||
                         Route::currentRouteName() == 'userevent' ||
                         Route::currentRouteName() == 'single.event'): ?> active <?php endif; ?>"><a href="<?php echo e(route('event')); ?>"><img
                         src="<?php echo e(asset('storage/images/events-2.svg')); ?>"
-                        alt="Event"><?php echo e(get_phrase('Événements ')); ?></a></li>
+                        alt="Event"><?php echo e(get_phrase('L’Agenda ')); ?></a>
+                    </li>
+                    
                     <li class="<?php if(Route::currentRouteName() == 'allproducts' ||
                         Route::currentRouteName() == 'userproduct' ||
                         Route::currentRouteName() == 'single.product' ||
@@ -67,31 +86,34 @@
                         Route::currentRouteName() == 'product.saved'): ?> active <?php endif; ?>"><a
                         href="<?php echo e(route('allproducts')); ?>"><img
                             src="<?php echo e(asset('storage/images/marketplace-2.svg')); ?>"
-                            alt="Marketplace"><?php echo e(get_phrase('Petites Annonces')); ?></a>
-                    </li>  
+                            alt="Marketplace"><?php echo e(get_phrase('Le Marché')); ?></a>
+                    </li>
+                    
                     <li>
                         <a href="#">
                             <img src="<?php echo e(asset('storage/images/shopPiscine.svg')); ?>" alt="Shop">
-                             <?php echo e(get_phrase('Accueil du Shop')); ?>
+                             <?php echo e(get_phrase('Les Boutiques')); ?>
 
                         </a>
                     </li>
-                            
+                    
+                    
                     <?php if(addon_status('fundraiser') == 1): ?>
                     <li class="<?php if(Route::currentRouteName() == 'fundraiser.index'): ?> active <?php endif; ?>">
                         <a href="<?php echo e(route('fundraiser.index')); ?>">
                             <img src="<?php echo e(asset('storage/images/emojies.svg')); ?>" alt="emoji" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 6px;">
-                            <span><?php echo e(get_phrase('Financement participatif')); ?></span>
+                            <span><?php echo e(get_phrase('L’Espace Associatif')); ?></span>
                         </a>
                     </li>
                     <?php endif; ?>
+                    
                     <?php if(addon_status('job') == 1): ?>          
                     <li class="<?php if(Route::currentRouteName() == 'jobs'): ?> active <?php endif; ?>"><a href="<?php echo e(route('jobs')); ?>"><img
                             src="<?php echo e(asset('storage/images/jobs.svg')); ?>"
-                            alt="Jobs"><?php echo e(get_phrase('Offres d\'emploi')); ?></a>
+                            alt="Jobs"><?php echo e(get_phrase('La Bourse à l\'Emploi')); ?></a>
                     </li>
                     <?php endif; ?> 
-         
+                    
                     <?php if(addon_status('paid_content') == 1): ?>
                     <li class="<?php if(Route::currentRouteName() == 'paid.content' ||
                                 Route::currentRouteName() == 'creator.timeline' ||
@@ -125,15 +147,20 @@
                                             style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,53.72549%,0%);fill-opacity:1;" />
                                     </g>
                                 </svg>
-                                <?php echo e(get_phrase('Partenariats & Influence')); ?></a>
+                                <?php echo e(get_phrase('Le Coin VIP')); ?></a>
                         </li>
                     <?php endif; ?>
-                     
+                    
                     <li class="<?php if(Route::currentRouteName() == 'badge'): ?> active <?php endif; ?>"><a href="<?php echo e(route('badge')); ?>"><img
                         src="<?php echo e(asset('storage/images/badge.svg')); ?>"
-                        alt="Badge"><?php echo e(get_phrase('Louez une boutique')); ?></a></li>   
+                        alt="Badge"><?php echo e(get_phrase('Badge Fondateur (particulier)')); ?></a>
+                    </li>
+                    
+                    <li class="<?php if(Route::currentRouteName() == 'badge'): ?> active <?php endif; ?>"><a href="<?php echo e(route('badge')); ?>"><img
+                        src="<?php echo e(asset('storage/images/badge.svg')); ?>"
+                        alt="Badge"><?php echo e(get_phrase('Badge Ambassadeur (pisciniste)')); ?></a>
+                    </li>   
                                     
-                   
                 </ul>
             </nav>
             <div class="footer-nav">

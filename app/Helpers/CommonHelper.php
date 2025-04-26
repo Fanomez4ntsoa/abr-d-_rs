@@ -3,11 +3,15 @@
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Schema;
 
 if (!function_exists('addon_status')) {
     function addon_status($unique_identifier = '')
     {
-        $result = DB::table('addons')->where('unique_identifier', $unique_identifier)->value('status');
+        $result = DB::table('addons')
+            ->where('unique_identifier', $unique_identifier)
+            ->value('status');
+
         return $result;
     }
 }

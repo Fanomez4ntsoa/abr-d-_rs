@@ -9,44 +9,49 @@
     <div class="offcanvas-body s_offcanvas">
         <div class="timeline-navigation">   
             <nav class="menu-wrap">
-                <h6 class="ms-2 mt-3" style="color:#FFAA01; background: #0D3475; padding: 10px 24px; border-radius: 5px; display: inline-block; white-space: nowrap; font-size: 14px;">
-                    Éco-Système PIscine & Jardin
+                <h6 class="mt-3" style="color:#FFAA01; background: #0D3475; padding: 10px 24px; border-radius: 5px; display: inline-block; white-space: nowrap; font-size: 12px;">
+                    Centre Commercial Virtuel 100% PISCINE
                 </h6>
                                            
                 <ul>
-                    {{-- fil d'actualiter  --}}
+                    {{-- fil d'actualiter == Les Allées --}} 
                     <li class="@if (Route::currentRouteName() == 'timeline' || Route::currentRouteName() == 'single.post') active @endif"><a href="{{ route('timeline') }}"><img
                         src="{{ asset('storage/images/timeline-2.svg') }}"
-                        alt="Timeline">{{ get_phrase('Timeline') }}</a></li>
+                        alt="Timeline">{{ get_phrase('Les Allées') }}</a></li>
+                    {{-- Les Boutiques --}}
                     <li class="@if (Route::currentRouteName() == 'profile' ||
                         Route::currentRouteName() == 'profile.friends' ||
                         Route::currentRouteName() == 'profile.photos' ||
                         Route::currentRouteName() == 'profile.album' ||
                         Route::currentRouteName() == 'profile.videos') active @endif"><a href="{{ route('profile') }}"><img
                             src="{{ asset('storage/images/man-2.svg') }}"
-                            alt="Profile">{{ get_phrase('Profile') }}</a>
+                            alt="Profile">{{ get_phrase('Les Boutiques') }}</a>
                     </li> 
-                    {{-- vitrine --}}
+                    {{-- vitrine == Le galérie --}}
                     <li class="@if (Route::currentRouteName() == 'pages' ||
                     Route::currentRouteName() == 'single.page' ||
                     Route::currentRouteName() == 'single.page.photos' ||
                     Route::currentRouteName() == 'page.videos') active @endif"><a href="{{ route('pages') }}"><img
                         src="{{ asset('storage/images/page-2.svg') }}"
-                        alt="Page">{{ get_phrase('Vitrines') }}</a></li> 
-                     {{-- Accueil du Shop --}}
+                        alt="Page">{{ get_phrase('La galérie') }}</a></li> 
+                     {{-- Video & shorts == Le Cinéma --}}
                     <li class="@if (Route::currentRouteName() == 'videos' ||
                         Route::currentRouteName() == 'video.detail.info' ||
                         Route::currentRouteName() == 'shorts' ||
                         Route::currentRouteName() == 'save.all.view') active @endif"><a href="{{ route('videos') }}"><img
                             src="{{ asset('storage/images/video-2.svg') }}"
-                            alt="Video and Shorts">{{ get_phrase('Video and Shorts') }}</a></li>  
+                            alt="Video and Shorts">{{ get_phrase('Le Cinéma') }}</a>
+                    </li>
+                    {{-- Les Salons (groupes pour particulier) --}}
                     <li class="@if (Route::currentRouteName() == 'groups' ||
                         Route::currentRouteName() == 'single.group' ||
                         Route::currentRouteName() == 'group.people.info' ||
                         Route::currentRouteName() == 'group.event.view' ||
                         Route::currentRouteName() == 'single.group.photos') active @endif"><a href="{{ route('groups') }}"><img
                         src="{{ asset('storage/images/group-2.svg') }}"
-                        alt="Group">{{ get_phrase('Groupes') }}</a></li> 
+                        alt="Group">{{ get_phrase('Les Salons') }}</a>
+                    </li>
+                    {{-- La Bibliothèque (blog 1 pour les particulier) --}}
                     <li class="@if (Route::currentRouteName() == 'blogs' ||
                         Route::currentRouteName() == 'create.blog' ||
                         Route::currentRouteName() == 'myblog' ||
@@ -54,12 +59,26 @@
                         Route::currentRouteName() == 'single.blog' ||
                         Route::currentRouteName() == 'category.blog') active @endif"><a href="{{ route('blogs') }}"><img
                             src="{{ asset('storage/images/blogging-2.svg') }}"
-                            alt="Blog">{{ get_phrase('Blog') }}</a></li>
+                            alt="Blog">{{ get_phrase('La Bibliothèque') }}</a>
+                    </li>
+                    {{-- Le Coin Presse (blog 2 pour les pros) --}}
+                    <li class="@if (Route::currentRouteName() == 'blogs' ||
+                        Route::currentRouteName() == 'create.blog' ||
+                        Route::currentRouteName() == 'myblog' ||
+                        Route::currentRouteName() == 'blog.edit' ||
+                        Route::currentRouteName() == 'single.blog' ||
+                        Route::currentRouteName() == 'category.blog') active @endif"><a href="{{ route('blogs') }}"><img
+                            src="{{ asset('storage/images/blogging-2.svg') }}"
+                            alt="Blog">{{ get_phrase('Le Coin Presse') }}</a>
+                    </li>
+                    {{-- L’Agenda --}}
                     <li class="@if (Route::currentRouteName() == 'event' ||
                         Route::currentRouteName() == 'userevent' ||
                         Route::currentRouteName() == 'single.event') active @endif"><a href="{{ route('event') }}"><img
                         src="{{ asset('storage/images/events-2.svg') }}"
-                        alt="Event">{{ get_phrase('Événements ') }}</a></li>
+                        alt="Event">{{ get_phrase('L’Agenda ') }}</a>
+                    </li>
+                    {{-- Le Marché --}}
                     <li class="@if (Route::currentRouteName() == 'allproducts' ||
                         Route::currentRouteName() == 'userproduct' ||
                         Route::currentRouteName() == 'single.product' ||
@@ -67,30 +86,33 @@
                         Route::currentRouteName() == 'product.saved') active @endif"><a
                         href="{{ route('allproducts') }}"><img
                             src="{{ asset('storage/images/marketplace-2.svg') }}"
-                            alt="Marketplace">{{ get_phrase('Petites Annonces') }}</a>
-                    </li>  
+                            alt="Marketplace">{{ get_phrase('Le Marché') }}</a>
+                    </li>
+                    {{-- Accueil du Shop == Les Boutiques --}}
                     <li>
                         <a href="#">
                             <img src="{{ asset('storage/images/shopPiscine.svg') }}" alt="Shop">
-                             {{ get_phrase('Accueil du Shop') }}
+                             {{ get_phrase('Les Boutiques') }}
                         </a>
                     </li>
-                            {{-- Job Addon  --}}
+                    
+                    {{-- Job Addon == Espace Associatif --}}
                     @if (addon_status('fundraiser') == 1)
                     <li class="@if (Route::currentRouteName() == 'fundraiser.index') active @endif">
                         <a href="{{ route('fundraiser.index') }}">
                             <img src="{{ asset('storage/images/emojies.svg') }}" alt="emoji" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 6px;">
-                            <span>{{ get_phrase('Financement participatif') }}</span>
+                            <span>{{ get_phrase('L’Espace Associatif') }}</span>
                         </a>
                     </li>
                     @endif
+                    {{-- La Bourse à l’Emploi --}}
                     @if (addon_status('job') == 1)          
                     <li class="@if (Route::currentRouteName() == 'jobs') active @endif"><a href="{{ route('jobs') }}"><img
                             src="{{ asset('storage/images/jobs.svg') }}"
-                            alt="Jobs">{{ get_phrase('Offres d\'emploi') }}</a>
+                            alt="Jobs">{{ get_phrase('La Bourse à l\'Emploi') }}</a>
                     </li>
                     @endif 
-         {{-- paid content --}}
+                    {{-- paid content == COIN VIP --}}
                     @if (addon_status('paid_content') == 1)
                     <li class="@if (Route::currentRouteName() == 'paid.content' ||
                                 Route::currentRouteName() == 'creator.timeline' ||
@@ -124,15 +146,20 @@
                                             style=" stroke:none;fill-rule:nonzero;fill:rgb(100%,53.72549%,0%);fill-opacity:1;" />
                                     </g>
                                 </svg>
-                                {{ get_phrase('Partenariats & Influence') }}</a>
+                                {{ get_phrase('Le Coin VIP') }}</a>
                         </li>
                     @endif
-                     {{-- Louez une boutique --}}
+                    {{-- Badge Fondateur (particulier) --}}
                     <li class="@if (Route::currentRouteName() == 'badge') active @endif"><a href="{{ route('badge') }}"><img
                         src="{{ asset('storage/images/badge.svg') }}"
-                        alt="Badge">{{ get_phrase('Louez une boutique') }}</a></li>   
+                        alt="Badge">{{ get_phrase('Badge Fondateur (particulier)') }}</a>
+                    </li>
+                    {{-- Badge Ambassadeur (pisciniste) --}}
+                    <li class="@if (Route::currentRouteName() == 'badge') active @endif"><a href="{{ route('badge') }}"><img
+                        src="{{ asset('storage/images/badge.svg') }}"
+                        alt="Badge">{{ get_phrase('Badge Ambassadeur (pisciniste)') }}</a>
+                    </li>   
                     {{-- Profile--}}                
-                   
                 </ul>
             </nav>
             <div class="footer-nav">

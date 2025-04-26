@@ -11,8 +11,7 @@ use App\Models\Badge;
 use Carbon\Carbon;
 
 use Illuminate\Http\Request;
-
-
+use Illuminate\Support\Facades\Auth;
 
 class BadgeController extends Controller
 
@@ -157,17 +156,20 @@ class BadgeController extends Controller
         //     ->orderBy('id', 'DESC')
         //     ->first();
 
-        if($type == 'pro'){
-            $page_data['badges'] = Badge::where('user_id', auth()->user()->id)
-                ->where('type', 'pro')
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
-            $page_data['badges'] = Badge::where('user_id', auth()->user()->id)
-                ->where('type', 'simple')
-                ->orderBy('id', 'DESC')
-                ->get();
+        if(Auth::check()){
+            if($type == 'pro'){
+                $page_data['badges'] = Badge::where('user_id', auth()->user()->id)
+                    ->where('type', 'pro')
+                    ->orderBy('id', 'DESC')
+                    ->get();
+            } else {
+                $page_data['badges'] = Badge::where('user_id', auth()->user()->id)
+                    ->where('type', 'simple')
+                    ->orderBy('id', 'DESC')
+                    ->get();
+            }
         }
+        $page_data['badges'] = collect();
 
         $page_data['badge_type'] = $type;
         $page_data['view_path'] = 'frontend.badge.badge';

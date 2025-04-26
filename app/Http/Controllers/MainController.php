@@ -28,6 +28,7 @@ use Carbon\Carbon;
 //For used ZOOM
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
@@ -65,6 +66,7 @@ class MainController extends Controller
                 ->where('posts.status', 'active')
                 ->where('posts.report_status', '0')
                 ->where('publisher', '!=', 'paid_content')
+                ->where('publisher', '=', 'poste')
                 ->join('users', 'posts.user_id', '=', 'users.id')
                 ->select('posts.*', 'users.name', 'users.photo', 'posts.created_at as created_at')
                 ->orderBy('posts.post_id', 'DESC')
@@ -243,7 +245,7 @@ class MainController extends Controller
     {
 
         //Data validation
-
+        
         $rules = array('privacy' => ['required', Rule::in(['private', 'public', 'friends'])]);
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -345,6 +347,7 @@ class MainController extends Controller
             $data['description'] = '';
             $data['hashtag'] = '';
         }
+        
         // Mobile App View Image
         $mobile_app_image = FileUploader::upload($request->mobile_app_image,'public/storage/post/images/');
         $data['mobile_app_image'] = $mobile_app_image;
@@ -357,7 +360,6 @@ class MainController extends Controller
         $data['updated_at'] = $data['created_at'];
 
         $post_id = Posts::insertGetId($data);
-
         
         if ($request->ai_image) {
             $ai_image = $request->ai_image;
@@ -408,16 +410,27 @@ class MainController extends Controller
 
                 return json_encode(array('validationError' => $validation_errors));
             }
-
+            
             foreach ($request->multiple_files as $key => $media_file) {
-                $file_name = random(40);
-                $file_extention = strtolower($media_file->getClientOriginalExtension());
-                if ($file_extention == 'avi' || $file_extention == 'mp4' || $file_extention == 'webm' || $file_extention == 'mov' || $file_extention == 'wmv' || $file_extention == 'mkv') {
-                    $file_name = FileUploader::upload($media_file, 'public/storage/post/videos/' . $file_name . '.' . $file_extention);
-                    $file_type = 'video';
-                } else {
-                    $file_name = FileUploader::upload($media_file, 'public/storage/post/images/' . $file_name . '.' . $file_extention, 1000, null, 300);
-                    $file_type = 'image';
+                try {
+                    $file_name = random(40);
+                    $file_extention = strtolower($media_file->getClientOriginalExtension());
+                    if ($file_extention == 'avi' || $file_extention == 'mp4' || $file_extention == 'webm' || $file_extention == 'mov' || $file_extention == 'wmv' || $file_extention == 'mkv') {
+                        $destinationPath = 'storage/post/video/' . $file_name . '.' . $file_extention;
+                        $file_name = FileUploader::upload($media_file, $destinationPath);
+                        $file_type = 'video';
+                    } else {
+                        $destinationPath = 'storage/post/images/' . $file_name . '.' . $file_extention;
+                        $file_name = FileUploader::upload($media_file, $destinationPath, 1000, null, 300);
+                        $file_type = 'image';
+                    }
+                } catch (\Throwable $th) {
+                    Log::error('File upload failed', [
+                        'message' => $th->getMessage(),
+                        'file' => $th->getFile(),
+                        'line' => $th->getLine(),
+                    ]);
+                    return json_encode(['error' => 'File upload failed: ' . $th->getMessage()]);
                 }
                 // $file_name = $file_name . '.' . $file_extention;
 

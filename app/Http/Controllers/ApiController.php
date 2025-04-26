@@ -76,16 +76,22 @@ class ApiController extends Controller
 
     public function login(Request $request)
     {
+        $start_total = microtime(true);
         $fields = $request->validate([
             'email' => 'required|string',
             'password' => 'required|string'
         ]);
+        Log::info('Validation took: ' . (microtime(true) - $start_total) . ' seconds');
 
         // email checking 
+        $start = microtime(true);
         $user = User::where('email', $fields['email'])->first();
+        Log::info('User fetch took: ' . (microtime(true) - $start) . ' seconds');
 
         // Check password
+        $start = microtime(true);
         if (!$user || !Hash::check($fields['password'], $user->password)) {
+            Log::info('Password check took: ' . (microtime(true) - $start) . ' seconds');
             if (isset($user) && $user->count() > 0) {
                 return response([
                     'message' => 'Invalid credentials!'
@@ -98,21 +104,39 @@ class ApiController extends Controller
         } else if ($user->user_role == 'general') {
 
             // $user->tokens()->delete();
-
+            $start = microtime(true);
             $token = $user->createToken('auth-token')->plainTextToken;
+            Log::info('Token generation took: ' . (microtime(true) - $start) . ' seconds');
 
             // $user->photo = get_photo('user_image', $user->photo);
+            $start = microtime(true);
+            $user_images = get_user_images($user->id);
+            Log::info('get_user_images took: ' . (microtime(true) - $start) . ' seconds');
+            // $response = [
+            //     'message' => 'Login successful',
+            //     'user' => $user,
+            //     'user_id' => $user->id,
+            //     'user_image' => get_user_images($user->id),
+            //     'cover_photo' => get_cover_photos($user->id),
+            //     'token' => $token
+            // ];
+            $start = microtime(true);
+            $cover_photos = get_cover_photos($user->id);
+            Log::info('get_cover_photos took: ' . (microtime(true) - $start) . ' seconds');
 
             $response = [
                 'message' => 'Login successful',
                 'user' => $user,
                 'user_id' => $user->id,
-                'user_image' => get_user_images($user->id),
-                'cover_photo' => get_cover_photos($user->id),
+                'user_image' => $user_images,
+                'cover_photo' => $cover_photos,
                 'token' => $token
             ];
-
+        
+            Log::info('Total login time: ' . (microtime(true) - $start_total) . ' seconds');
             return response($response, 201);
+            
+            // return response($response, 201);
         } else {
 
             //user not authorized

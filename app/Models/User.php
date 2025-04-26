@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Cache;
+use Illuminate\Support\Facades\Log;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -78,5 +80,21 @@ class User extends Authenticatable implements MustVerifyEmail
         }else{
             return asset('storage/userimage/default.png');
         }
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        Log::info('Sending email verification to: ' . $this->email);
+    
+        Log::info('Sending email verification to: ' . $this->email);
+        Log::info('Mail configuration:', [
+            'mailer' => config('mail.mailer'),
+            'host' => config('mail.host'),
+            'port' => config('mail.port'),
+            'username' => config('mail.username'),
+            'encryption' => config('mail.encryption'),
+            'from_address' => config('mail.from.address'),
+        ]);
+        $this->notify(new \Illuminate\Auth\Notifications\VerifyEmail);
     }
 }
