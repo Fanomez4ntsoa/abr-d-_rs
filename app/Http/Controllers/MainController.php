@@ -150,6 +150,7 @@ class MainController extends Controller
 
         //     return view('frontend.index', $page_data);
         // }
+>>>>>>> Stashed changes
 
         //First 10 stories
         $stories = Stories::where(function ($query) {
