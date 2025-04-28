@@ -75,6 +75,7 @@ class MainController extends Controller
             // Pas de stories ni de données d'amitié pour les utilisateurs non connectés
             $stories = collect();
             $friendships = collect();
+<<<<<<< Updated upstream
 
             $page_data['friendships'] = $friendships;
             $page_data['stories'] = $stories;
@@ -83,6 +84,72 @@ class MainController extends Controller
 
             return view('frontend.index', $page_data);
         }
+=======
+        } else {
+            $user = Auth::user();
+            $userId = $user ? $user->id : null;
+        
+
+            // Charger les posts initiaux (10 maximum)
+            $posts = Cache::remember("posts_timeline_{$userId}_initial", now()->addMinutes(5), function () use ($userId) {
+                $query = Posts::active()->with('getUser');
+                if ($userId) {
+                    $query->forTimeline($userId);
+                } else {
+                    $query->where('privacy', Posts::PRIVACY_PUBLIC);
+                }
+
+                return $query->orderBy('post_id', 'DESC')->take(5)->get();
+            });
+
+            // Charger les stories (3 maximum, seulement pour utilisateurs connectés)
+            $stories = $user ? Cache::remember("stories_{$userId}", now()->addMinutes(5), function () use ($userId) {
+                return Stories::active()
+                            ->forTimeline($userId)
+                            ->with('user')
+                            ->orderBy('story_id', 'DESC')
+                            ->take(3)
+                            ->get();
+            }) : collect();
+
+            // Charger les friendships (seulement pour utilisateurs connectés)
+            $friendships = $user ? Cache::remember("friendships_{$userId}", now()->addHours(1), function () use ($userId) {
+                return Friendships::accepted($userId)
+                                ->with(['getFriend', 'getFriendAccepter'])
+                                ->orderBy('importance', 'DESC')
+                                ->get();
+            }) : collect();
+        }
+
+        return view('frontend.index', [
+            'posts' => $posts,
+            'stories' => $stories,
+            'friendships' => $friendships,
+            'view_path' => 'frontend.main_content.index',
+        ]);
+
+        // if (!Auth::check()) {
+        //     $posts = Posts::where('posts.privacy', 'public')
+        //         ->where('posts.status', 'active')
+        //         ->where('posts.report_status', '0')
+        //         ->where('publisher', '!=', 'paid_content')
+        //         ->join('users', 'posts.user_id', '=', 'users.id')
+        //         ->select('posts.*', 'users.name', 'users.photo', 'posts.created_at as created_at')
+        //         ->orderBy('posts.post_id', 'DESC')
+        //         ->take(24)
+        //         ->get();
+
+        //     // Pas de stories ni de données d'amitié pour les utilisateurs non connectés
+        //     $stories = collect();
+        //     $friendships = collect();
+
+        //     $page_data['friendships'] = $friendships;
+        //     $page_data['stories'] = $stories;
+        //     $page_data['posts'] = $posts;
+        //     $page_data['view_path'] = 'frontend.main_content.index';
+
+        //     return view('frontend.index', $page_data);
+        // }
 
         //First 10 stories
         $stories = Stories::where(function ($query) {
